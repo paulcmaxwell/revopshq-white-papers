@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { bySlug } from '@/content/papers';
+import { anyBySlug } from '@/content/papers';
 import { loadPdf } from '@/lib/papers';
 import { unlockCookie } from '@/lib/gate';
 
@@ -9,7 +9,7 @@ export const runtime = 'nodejs';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get('slug') ?? '';
-  const paper = bySlug(slug);
+  const paper = anyBySlug(slug);
   if (!paper) {
     return NextResponse.json({ error: 'Unknown white paper.' }, { status: 404 });
   }

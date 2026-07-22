@@ -85,5 +85,33 @@ export const papers: Paper[] = [
   },
 ];
 
+// Case studies — same shape as papers, kept in their own list so the homepage
+// "White Papers" index stays papers-only while the reader and /downloads shelf
+// can serve both. Case studies carry client-attested (representative) results;
+// white papers stay first-principles.
+export const caseStudies: Paper[] = [
+  {
+    slug: 'case-ria-hubspot-migration',
+    number: 'C1',
+    series: 'revenue-systems-architecture',
+    type: 'Case Study',
+    category: 'Revenue Systems Architecture',
+    title: 'Moving a wealth CRM into HubSpot without losing the relationships',
+    deck:
+      'A registered investment advisor left Redtail for HubSpot. The hard part was householding, the account book, and the audit trail — a data-model exercise, not a data export.',
+    abstract:
+      'A mid-market RIA ran a decade of client history in Redtail — ~11,000 contacts, ~3,300 accounts, ~3,300 households, ~9,000 relationships, ~180,000 notes. This walks the migration as a first-principles data-modeling problem: map the source model, find what has no native HubSpot object (accounts, households), and treat labeled relationships as the Enterprise-deciding data they are.',
+    tags: ['HubSpot', 'Migration', 'Custom Objects', 'Wealth / RIA'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 9,
+    pages: 8,
+  },
+];
+
 export const bySlug = (slug: string): Paper | undefined =>
   papers.find((p) => p.slug === slug);
+
+/** Look up a paper OR a case study by slug (the reader serves both). */
+export const anyBySlug = (slug: string): Paper | undefined =>
+  papers.find((p) => p.slug === slug) ?? caseStudies.find((c) => c.slug === slug);

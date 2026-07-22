@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Moving a wealth CRM into HubSpot without losing the relationships — RevOps HQ</title>
+</head>
+<body>
+<!-- ARTIFACT-BODY-START -->
+<style>
+:root {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Source Serif 4", "Charter", Georgia, serif;
+  --sans: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --measure: 34rem;
+  --wide: 54rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #101613;
+    --paper-2: #161E1A;
+    --rule: #2A3630;
+    --ink: #E8EEEA;
+    --ink-2: #A9B8B0;
+    --ink-3: #7E8E86;
+    --accent: #57C79A;
+    --accent-soft: #1A2E26;
+    --mint: #2F6E55;
+    --clay: #D2916C;
+    --clay-soft: #2E211A;
+    --amber: #D6AC4A;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101613;
+  --paper-2: #161E1A;
+  --rule: #2A3630;
+  --ink: #E8EEEA;
+  --ink-2: #A9B8B0;
+  --ink-3: #7E8E86;
+  --accent: #57C79A;
+  --accent-soft: #1A2E26;
+  --mint: #2F6E55;
+  --clay: #D2916C;
+  --clay-soft: #2E211A;
+  --amber: #D6AC4A;
+}
+:root[data-theme="light"] {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 2px solid var(--ink);
+}
+.brandbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+.wordmark .mark {
+  width: 0.72rem; height: 0.72rem;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0.28rem 0.28rem 0 0 var(--mint);
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.deck {
+  font-size: 1.12rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 48ch;
+  text-wrap: balance;
+}
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.byline strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- abstract ---------- */
+
+.abstract {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.25rem;
+  max-width: 46rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.abstract p { font-size: 1rem; color: var(--ink-2); }
+
+/* ---------- sections ---------- */
+
+section { display: flex; flex-direction: column; gap: 0.85rem; }
+
+h2 {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 0.9rem;
+}
+h2 .num {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  min-width: 1.6rem;
+}
+h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin-top: 0.45rem;
+  text-wrap: balance;
+}
+p { max-width: var(--measure); }
+
+.lede::first-letter {
+  float: left;
+  font-size: 3.1rem;
+  line-height: 0.84;
+  padding: 0.16rem 0.5rem 0 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+ul, ol { max-width: var(--measure); padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.35rem; }
+li::marker { color: var(--accent); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.06em 0.34em;
+}
+
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, .doc :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ---------- callouts ---------- */
+
+.note {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--clay);
+  border-radius: 3px;
+  padding: 0.95rem 1.1rem;
+  max-width: var(--wide);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.note.good { border-left-color: var(--accent); }
+.note .label {
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 650;
+  color: var(--clay);
+}
+.note.good .label { color: var(--accent); }
+.note p { font-size: 0.94rem; color: var(--ink-2); max-width: 62ch; }
+
+/* ---------- figures ---------- */
+
+figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.6rem 0;
+  max-width: var(--wide);
+}
+.frame {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.15rem;
+  overflow-x: auto;
+}
+.frame svg { display: block; min-width: 500px; width: 100%; height: auto; }
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 64ch;
+}
+figcaption b { color: var(--ink); font-weight: 650; letter-spacing: 0.04em; }
+
+/* ---------- tables ---------- */
+
+.tablewrap { overflow-x: auto; max-width: var(--wide); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 620px;
+  font-size: 0.86rem;
+  font-family: var(--sans);
+  line-height: 1.45;
+}
+caption {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  color: var(--ink-2);
+  padding-bottom: 0.55rem;
+  max-width: 64ch;
+}
+th, td {
+  text-align: left;
+  padding: 0.7rem 0.9rem 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th:last-child, td:last-child { padding-right: 0; }
+thead th {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border-bottom: 1.5px solid var(--ink);
+  font-weight: 650;
+}
+tbody th { font-weight: 650; color: var(--ink); font-size: 0.9rem; }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 0.82rem; }
+tbody tr:last-child td, tbody tr:last-child th { border-bottom: none; }
+td small { display: block; color: var(--ink-3); font-size: 0.94em; }
+
+.rating {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.42rem;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.rating::before {
+  content: "";
+  width: 0.48rem; height: 0.48rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+  transform: translateY(-0.05rem);
+}
+.r-ok { color: var(--accent); }
+.r-mid { color: var(--amber); }
+.r-bad { color: var(--clay); }
+.rating + small { padding-left: 0.9rem; }
+
+/* ---------- SVG tokens ---------- */
+
+svg text { font-family: var(--sans); fill: var(--ink); }
+.s-label { font-size: 12px; }
+.s-small { font-size: 10.5px; fill: var(--ink-2); }
+.s-cap { font-size: 9.5px; letter-spacing: 0.11em; fill: var(--ink-3); font-weight: 650; }
+.s-title { font-size: 12.5px; font-weight: 650; }
+.s-mono { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); }
+.box { fill: var(--paper); stroke: var(--rule); stroke-width: 1.2; }
+.box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.3; }
+.box-limit { fill: none; stroke: var(--clay); stroke-width: 1.3; stroke-dasharray: 5 4; }
+.flow { stroke: var(--ink-2); stroke-width: 1.3; fill: none; }
+.flow-accent { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+.flow-limit { stroke: var(--clay); stroke-width: 1.4; fill: none; }
+.fill-accent { fill: var(--accent); }
+.fill-clay { fill: var(--clay); }
+.fill-ink2 { fill: var(--ink-2); }
+.fill-paper { fill: var(--paper-2); }
+
+/* ---------- footer ---------- */
+
+footer {
+  border-top: 2px solid var(--ink);
+  padding-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+footer .row { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content: space-between; }
+.glossary { max-width: var(--wide); display: flex; flex-direction: column; gap: 0.5rem; }
+.glossary div { font-size: 0.9rem; color: var(--ink-2); }
+.glossary b { color: var(--ink); }
+
+@media print {
+  body { background: #fff; font-size: 15.5px; }
+  .doc { max-width: none; gap: 1.5rem; padding: 0; }
+  .tablewrap { overflow: visible; }
+  table { min-width: 0; font-size: 0.78rem; }
+  .frame svg { min-width: 0; }
+  section, figure, .note, table { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+</style>
+
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C1</span>
+      <span>Revenue Systems Architecture</span>
+    </div>
+    <h1>Moving a wealth CRM into HubSpot without losing the relationships</h1>
+    <p class="deck">A registered investment advisor left Redtail for HubSpot. The hard part was never the contacts &mdash; it was householding, the account book, and the audit trail. This is the data-model exercise that decides whether the migration works.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>A mid-market RIA with an affiliated tax practice ran a decade of client history in Redtail &mdash; roughly 11,000 contacts, 3,300 investment accounts, 3,300 households, 9,000 relationships, and 180,000 notes &mdash; and wanted to standardize on HubSpot. The migration is treated as a data-modeling problem first and a software problem second: inventory the source model, map each entity to a HubSpot object, and find what has no native home. That last step &mdash; investment accounts and households &mdash; is what forces HubSpot Enterprise, and it is the decision most teams get wrong. This is a first-principles walkthrough of the object model, the association graph, the property parsing, and the idempotent migration that let a compliance-heavy firm move without losing the thing that makes it a wealth firm: the web of relationships.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> A CRM is a data model before it is software</h2>
+    <p class="lede">The instinct on a CRM migration is to export contacts, import contacts, and call the rest configuration. For a transactional sales team that mostly works. For a wealth-management firm it fails on day one, because the unit of value is not the contact. It is the <em>household</em>, the <em>account</em>, and the <em>relationships</em> between people &mdash; and none of those are contacts.</p>
+    <p>So the migration starts as an inventory, not an export. Every distinct kind of thing in the source system is written down and asked one question: what HubSpot object represents this? The answers fall into three buckets &mdash; has a native home, needs modeling, or has no home at all &mdash; and the third bucket is the whole engagement.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>Map the source model before you touch the data.</b> A CRM is a set of objects, the properties on them, and the associations between them. Migrate the model, and the records follow. Migrate the records first, and you spend the next year rebuilding a model by hand under a live team.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Where a wealth CRM and HubSpot diverge</h2>
+    <p>Redtail, like most vertical CRMs, keeps everyone in a single &ldquo;contact&rdquo; table and separates them with a type flag: individuals, businesses, trusts, and associations all live together. HubSpot does not work that way. People are Contacts; organizations are Companies; and a trust is neither cleanly. The migration has to <em>shard one table into several objects</em> and preserve an Entity-Type property so nothing is lost in the split.</p>
+    <p>Two source entities have no native HubSpot object at all, and they are the two that matter most:</p>
+    <ul>
+      <li><b>The investment account.</b> ~3,300 of them, each with balances, ownership roles, custodian, and registration. HubSpot has no standard object for it.</li>
+      <li><b>The household.</b> ~3,300 of them &mdash; the reporting and billing unit an advisor actually thinks in. Also no standard object.</li>
+    </ul>
+    <p>You can model accounts as Deals and households as Companies on a lower tier, and it looks fine in a demo. It breaks the moment you need labeled relationships. Which brings us to the part that decides the tier.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> The association graph is the firm</h2>
+    <p>The 9,000 relationships in the source are not decoration; they <em>are</em> the business. Spouse to spouse. Parent to child. Trustee, grantor, and beneficiary to a trust. Owner, joint owner, and beneficiary to an account. Head of household to member. Attorney and CPA to a client. Fifty-plus distinct relationship types, many of them on the same pair of records at once.</p>
+    <p>HubSpot can represent this &mdash; with <b>custom association labels</b> and <b>multiple labeled associations per record pair</b>. Both are Enterprise features. On Professional they import unlabeled, every relationship flattens to a generic link, and the graph that makes the firm legible collapses into noise. This is the single most consequential scoping decision on the project, and it is invisible in a product demo.</p>
+    <div class="note">
+      <span class="label">The Enterprise line</span>
+      <p>Custom objects (Account, Household) and labeled multi-associations are the features that separate a real wealth CRM from a toy. If a proposal quotes Professional for a householded book, it has mispriced the job. The tier is a data-model consequence, not a budget preference.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Everything is a keyword until you make it a field</h2>
+    <p>Because Redtail lacked dedicated fields for many attributes, the firm did what every team does: it crammed them into keyword strings and user-defined fields. Client tier, do-not-solicit flags, plan types, custodians, prospect stage &mdash; all encoded as text. Migrating them verbatim would carry the mess across; the value is in <em>parsing them apart</em> into typed HubSpot properties that workflows and reports can actually use.</p>
+    <p>The build defined roughly 200 properties, grouped by business process &mdash; tax, billing, compliance, retirement plans, communication &mdash; so a record stays navigable instead of becoming a wall of fields. Keyword clusters became single- and multi-select properties: Tier, Plan Types, Custodian, Prospect Stage, Do-Not-Solicit. Fee blobs split into an amount and a date. Legacy duplicate fields were archived rather than deleted, so nothing was destroyed on the way in.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Compliance is a workflow, not a checkbox</h2>
+    <p>An RIA has supervisory obligations a flat activity log cannot satisfy: approvals, thresholds, segregation of duties, a record of who signed off. Redtail&rsquo;s free-text activities have none of this, so it was rebuilt as controlled process in HubSpot &mdash; ticket pipelines with stage requirements and conditional routing.</p>
+    <p>The clearest example is money movement. A distribution above a set threshold to a third party cannot simply advance; the workflow routes it to a principal for approval and blocks the stage until that approval exists. The control is enforced by the system, not remembered by a person. In total the firm&rsquo;s 69 legacy activity templates were rationalized to 33 real processes, expressed as 10 ticket pipelines, 22 workflows, seven guided playbooks, and four dashboards.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> A migration you can run twice</h2>
+    <p>At this volume the migration has to be <em>idempotent</em> &mdash; safe to run again without doubling anything &mdash; because you will run it again. The mechanism is simple and worth stealing: give every record a unique external-ID property carrying its Redtail identifier, and match on it. A note stamped with its source note ID cannot be imported twice. An activity stamped with its source activity ID maps to a single HubSpot task no matter how many times the load runs.</p>
+    <p>The standard Redtail export quietly dropped columns, so extraction was rebuilt against the raw API with the Redtail ID as the key of record. Every write was logged with counts and a verification step, and a small reconciliation pass compared HubSpot against the source field by field, surfacing a short list of records to restore or recreate &mdash; with explicit logic to never recreate a record that already existed. That is how ~180,000 notes and 9,000 labeled associations land once, correctly, and stay that way.</p>
+    <div class="note good">
+      <span class="label">Transferable pattern</span>
+      <p>A unique external-ID property per object is the cheapest thing you can build and the one that makes a large migration safe. It turns imports into upserts, makes re-runs free, and gives you a real reconciliation key. Do this before you move a single record.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> What changed</h2>
+    <p>The firm now runs on a model that matches how it actually works. Households and accounts are first-class records; a decade of relationships carries their real labels; and the client history &mdash; every note, every activity &mdash; is intact and searchable in one place instead of split across a legacy tool and a stack of spreadsheets.</p>
+    <p>The operational effect is that advisors stopped reconstructing context by hand. Preparing for a client meeting had meant cross-referencing Redtail, a portfolio system, and a shared drive; with the household and its accounts, relationships, and open items on one record, that prep collapsed to a single screen and gave each advisor back an estimated four to six hours a week. Intake became a guided playbook instead of tribal knowledge, so a new household is onboarded consistently by anyone on the team. And the money-movement controls mean the compliance story is now something the system proves, not something staff swear they followed.</p>
+    <p class="micro">Figures are representative of the engagement and drawn from RevOps HQ&rsquo;s delivery experience; exact results vary by firm.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">8</span> The model, generalized</h2>
+    <p>Strip away the vertical and the exercise is reusable for any migration into HubSpot:</p>
+    <ul>
+      <li><b>Inventory the source model first.</b> Objects, properties, associations &mdash; on paper &mdash; before any export.</li>
+      <li><b>Find what has no native object.</b> That is where custom objects go, and it usually decides your tier.</li>
+      <li><b>Treat labeled relationships as data, not garnish.</b> If association labels matter, that is an Enterprise decision, full stop.</li>
+      <li><b>Parse encoded fields into typed properties.</b> Don&rsquo;t carry the keyword soup across.</li>
+      <li><b>Make it idempotent with external IDs.</b> Build the re-run safety before the first load.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same &ldquo;model before software&rdquo; discipline shows up elsewhere: representing a <em>dealer channel</em> where the buyer isn&rsquo;t the user, modeling <em>project-based</em> revenue when the deal isn&rsquo;t the work, and solving <em>identity resolution</em> at an integration boundary where a native sync multiplies records. Different verticals, one exercise.</p>
+    </div>
+  </section>
+
+  </article>
+
+<!-- ARTIFACT-BODY-END -->
+</body>
+</html>

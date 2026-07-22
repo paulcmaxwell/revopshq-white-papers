@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import BookCover from '@/components/BookCover';
-import { papers } from '@/content/papers';
+import { papers, caseStudies } from '@/content/papers';
 
 export const metadata: Metadata = {
   title: 'Downloads',
@@ -43,11 +43,25 @@ export default function Downloads() {
       <section className="container" id="case-studies">
         <div className="section-head">
           <h2>Case Studies</h2>
-          <span className="count">Forthcoming</span>
+          <span className="count">{caseStudies.length} {caseStudies.length === 1 ? 'study' : 'studies'}</span>
         </div>
-        <p className="cs-forthcoming">
-          Field write-ups of real engagements — same format, same shelf. In progress.
-        </p>
+        {caseStudies.length === 0 ? (
+          <p className="cs-forthcoming">Field write-ups of real engagements — same format, same shelf. In progress.</p>
+        ) : (
+          <div className="shelf">
+            {[...caseStudies]
+              .sort((a, b) => b.date.localeCompare(a.date) || b.number.localeCompare(a.number))
+              .map((p) => (
+                <Link key={p.slug} href={`/papers/${p.slug}?gate=1`} className="shelf-item">
+                  <BookCover paper={p} />
+                  <span className="shelf-meta">
+                    <span className="shelf-title">{p.title}</span>
+                    <span className="shelf-cta">Download PDF <span aria-hidden="true">↓</span></span>
+                  </span>
+                </Link>
+              ))}
+          </div>
+        )}
       </section>
     </>
   );

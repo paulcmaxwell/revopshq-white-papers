@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies, headers } from 'next/headers';
-import { bySlug } from '@/content/papers';
+import { anyBySlug } from '@/content/papers';
 import { submitLeadToHubSpotForm } from '@/lib/hubspot';
 import { unlockCookie, UNLOCK_MAX_AGE, validateEmail } from '@/lib/gate';
 
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'Malformed request.' }, { status: 400 });
   }
 
-  const paper = bySlug(str(data.slug));
+  const paper = anyBySlug(str(data.slug));
   if (!paper) {
     return NextResponse.json({ ok: false, error: 'Unknown white paper.' }, { status: 404 });
   }
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       lastName,
       company,
       hubspotUser,
-      resourceKind: 'White paper',
+      resourceKind: paper.type,
       resourceTitle: paper.title,
       resourceSlug: paper.slug,
     },

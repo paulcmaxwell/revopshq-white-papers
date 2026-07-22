@@ -1,14 +1,14 @@
 import { ImageResponse } from 'next/og';
-import { bySlug, papers } from '@/content/papers';
+import { anyBySlug, papers, caseStudies } from '@/content/papers';
 import { volIssue } from '@/lib/journal';
 
 export const alt = 'Revenue Foundations paper';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-// Prerender one card per paper.
+// Prerender one card per paper and case study.
 export function generateStaticParams() {
-  return papers.map((p) => ({ slug: p.slug }));
+  return [...papers, ...caseStudies].map((p) => ({ slug: p.slug }));
 }
 
 // Brand tokens (light) — the edge image runtime has no CSS vars.
@@ -22,7 +22,7 @@ const MINT = '#8FD3B6';
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const paper = bySlug(slug);
+  const paper = anyBySlug(slug);
   const title = paper?.title ?? 'Revenue Foundations';
   const category = paper?.category ?? 'Research';
   const number = paper?.number ?? '';

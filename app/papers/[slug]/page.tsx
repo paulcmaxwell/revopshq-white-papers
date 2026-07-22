@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { bySlug, papers } from '@/content/papers';
+import { anyBySlug, papers, caseStudies } from '@/content/papers';
 import { loadBody } from '@/lib/papers';
 import { unlockCookie } from '@/lib/gate';
 import DownloadGate from '@/components/DownloadGate';
@@ -15,7 +15,7 @@ import '@/content/paper.css';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return papers.map((p) => ({ slug: p.slug }));
+  return [...papers, ...caseStudies].map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const paper = bySlug(slug);
+  const paper = anyBySlug(slug);
   if (!paper) return { title: 'Not found' };
   return {
     title: paper.title,
@@ -42,7 +42,7 @@ export default async function PaperPage({
 }) {
   const { slug } = await params;
   const { gate } = await searchParams;
-  const paper = bySlug(slug);
+  const paper = anyBySlug(slug);
   if (!paper) notFound();
 
   const body = await loadBody(slug);
