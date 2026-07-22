@@ -3,6 +3,27 @@ import { papers } from '@/content/papers';
 import { series as allSeries } from '@/content/series';
 import { volIssue } from '@/lib/journal';
 import LibraryFilter from '@/components/LibraryFilter';
+import { authorByName } from '@/content/authors';
+
+function Byline({ authors }: { authors: string[] }) {
+  return (
+    <>
+      {authors.map((name, i) => {
+        const a = authorByName(name);
+        return (
+          <span key={name}>
+            {i > 0 && <span aria-hidden="true"> &amp; </span>}
+            {a?.linkedin ? (
+              <a href={a.linkedin} target="_blank" rel="noopener noreferrer" className="byline-link">{name}</a>
+            ) : (
+              name
+            )}
+          </span>
+        );
+      })}
+    </>
+  );
+}
 
 const fmtDate = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
@@ -53,7 +74,7 @@ export default function Home() {
             </h2>
             <p className="lead-deck">{lead.abstract}</p>
             <p className="lead-byline">
-              Words by {lead.authors.join(' & ')} <span aria-hidden="true">—</span> {lead.readingMinutes} min
+              Words by <Byline authors={lead.authors} /> <span aria-hidden="true">—</span> {lead.readingMinutes} min
               read <span aria-hidden="true">—</span> {fmtDate(lead.date)}
             </p>
             <Link href={`/papers/${lead.slug}`} className="lead-read">

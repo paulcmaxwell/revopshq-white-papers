@@ -16,18 +16,18 @@ export const authors: Author[] = [
   {
     slug: 'paul-maxwell',
     name: 'Paul Maxwell',
-    title: 'Solutions Architecture',
+    title: 'CEO',
     org: 'RevOps HQ',
     linkedin: 'https://www.linkedin.com/in/paulcmaxwell/',
-    bio: 'Builds and audits revenue systems and integrations for RevOps HQ.',
+    bio: 'CEO of RevOps HQ. Builds and audits revenue systems and integrations.',
   },
   {
     slug: 'james-bond',
     name: 'James Bond',
-    title: 'Revenue',
+    title: 'VP of Sales',
     org: 'RevOps HQ',
     linkedin: 'https://www.linkedin.com/in/james-bond-advantage/',
-    bio: 'Leads revenue and go-to-market at RevOps HQ.',
+    bio: 'VP of Sales at RevOps HQ. Leads revenue and go-to-market.',
   },
 ];
 
