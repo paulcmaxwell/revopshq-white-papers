@@ -528,53 +528,89 @@ main { flex: 1 0 auto; }
    Mounts inside .paper; uses the shared token block. Print-hidden.
    ============================================================ */
 .credit-calc {
-  margin: 2rem 0 0.5rem;
-  padding: 1.5rem;
+  margin: 2.25rem 0 0.5rem;
+  padding: 1.6rem;
   border: 1px solid var(--rule);
   border-top: 3px solid var(--accent);
   background: var(--paper-2);
   font-family: var(--sans);
 }
-.credit-calc figcaption { display: flex; flex-direction: column; gap: 0.2rem; margin-bottom: 1.25rem; }
+.credit-calc figcaption { display: flex; flex-direction: column; gap: 0.2rem; margin-bottom: 1.4rem; }
 .cc-kicker {
   font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--accent);
 }
 .cc-note { font-size: 0.8rem; color: var(--ink-3); }
 
-.cc-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; }
-@media (max-width: 720px) { .cc-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+.cc-presets { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 1.4rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--rule); }
+.cc-presets-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-right: 0.15rem; }
+.cc-presets button { padding: 0.34rem 0.7rem; font-family: var(--sans); font-size: 0.78rem; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; cursor: pointer; transition: border-color 0.12s, color 0.12s; }
+.cc-presets button:hover { border-color: var(--accent); color: var(--accent); }
+.cc-presets .cc-reset { margin-left: auto; color: var(--ink-3); border-color: transparent; }
+.cc-presets .cc-reset:hover { color: var(--ink); border-color: var(--rule); }
 
-.cc-inputs { display: flex; flex-direction: column; gap: 0.85rem; }
-.cc-field { display: flex; flex-direction: column; gap: 0.3rem; }
-.cc-field > label { font-size: 0.82rem; color: var(--ink); font-weight: 600; }
-.cc-field > label span { font-weight: 400; color: var(--ink-3); font-family: var(--mono); font-size: 0.72rem; }
+.cc-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2.25rem; }
+@media (max-width: 760px) { .cc-grid { grid-template-columns: 1fr; gap: 1.75rem; } }
 
-.cc-num { display: flex; align-items: center; gap: 0.5rem; }
-.cc-num input {
-  width: 6.5rem; padding: 0.4rem 0.55rem; font-family: var(--mono); font-size: 0.9rem;
-  color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px;
-}
-.cc-num input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
-.cc-unit { font-size: 0.76rem; color: var(--ink-3); }
+.cc-inputs { display: flex; flex-direction: column; gap: 1.15rem; }
 
-.cc-plan { gap: 0.4rem; }
+/* --- tier / size segmented controls --- */
+.cc-plan { display: flex; flex-direction: column; gap: 0.45rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--rule); }
+.cc-plan-label { font-size: 0.82rem; color: var(--ink); font-weight: 600; }
+.cc-plan-label span { font-weight: 400; color: var(--ink-3); font-family: var(--mono); font-size: 0.7rem; }
 .cc-segs { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .cc-segs button {
-  padding: 0.32rem 0.6rem; font-family: var(--sans); font-size: 0.78rem; color: var(--ink-2);
+  padding: 0.34rem 0.66rem; font-family: var(--sans); font-size: 0.78rem; color: var(--ink-2);
   background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; cursor: pointer;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
 .cc-segs button:hover { border-color: var(--ink-3); }
-.cc-segs button[aria-pressed="true"] {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
+.cc-segs button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.cc-segs-sm button { font-size: 0.74rem; padding: 0.28rem 0.55rem; }
 
-.cc-out { display: flex; flex-direction: column; gap: 0.9rem; }
-.cc-bar {
-  position: relative; height: 14px; background: var(--paper); border: 1px solid var(--rule);
-  border-radius: 3px; overflow: hidden; display: flex;
+/* --- slider rows (the ledger) --- */
+.cc-row { display: flex; flex-direction: column; gap: 0.4rem; }
+.cc-row-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.cc-row-label { font-size: 0.84rem; font-weight: 600; color: var(--ink); }
+.cc-row-hint { font-weight: 400; color: var(--ink-3); font-family: var(--mono); font-size: 0.7rem; }
+.cc-row-cr { font-family: var(--mono); font-size: 0.78rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.cc-row-ctl { display: flex; align-items: center; gap: 0.9rem; }
+.cc-row-val { display: inline-flex; align-items: baseline; gap: 0.3rem; white-space: nowrap; }
+.cc-row-val input {
+  width: 3.6rem; padding: 0.15rem 0.3rem; text-align: right;
+  font-family: var(--mono); font-size: 0.82rem; color: var(--ink);
+  background: transparent; border: none; border-bottom: 1px solid var(--rule);
+  font-variant-numeric: tabular-nums;
 }
+.cc-row-val input:focus { outline: none; border-bottom-color: var(--accent); }
+.cc-row-val span { font-size: 0.68rem; color: var(--ink-3); }
+
+/* --- the slider itself --- */
+.cc-slider {
+  -webkit-appearance: none; appearance: none; flex: 1; height: 2px; cursor: pointer;
+  background: linear-gradient(to right, var(--fill, var(--accent)) var(--pct, 0%), var(--rule) var(--pct, 0%));
+  border-radius: 2px;
+}
+.cc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--paper-2); border: 2px solid var(--fill, var(--accent));
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15); transition: transform 0.1s;
+}
+.cc-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.cc-slider::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%; background: var(--paper-2);
+  border: 2px solid var(--fill, var(--accent)); box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.cc-slider:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+/* --- Data Studio block --- */
+.cc-ds { display: flex; flex-direction: column; gap: 0.55rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+.cc-ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.64rem; color: var(--ink-3); }
+.cc-ticks .on { color: var(--clay); font-weight: 600; }
+
+/* --- output panel --- */
+.cc-out { display: flex; flex-direction: column; gap: 0.95rem; }
+.cc-bar { position: relative; height: 14px; background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; display: flex; }
 .cc-bar-included { background: var(--mint); height: 100%; }
 .cc-bar-over { background: var(--clay); height: 100%; }
 .cc-bar-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: 0.55; }
@@ -583,23 +619,23 @@ main { flex: 1 0 auto; }
 .cc-sw-inc { background: var(--mint); }
 .cc-sw-over { background: var(--clay); }
 
-.cc-totals { margin: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.cc-totals { margin: 0; display: flex; flex-direction: column; gap: 0.28rem; }
 .cc-totals > div { display: flex; justify-content: space-between; font-size: 0.85rem; }
 .cc-totals dt { color: var(--ink-2); }
-.cc-totals dd { margin: 0; font-family: var(--mono); color: var(--ink); }
-.cc-over-row { padding-top: 0.35rem; border-top: 1px solid var(--rule); font-weight: 600; }
+.cc-totals dd { margin: 0; font-family: var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.cc-over-row { padding-top: 0.4rem; border-top: 1px solid var(--rule); }
 .cc-over-row dt, .cc-over-row dd { color: var(--ink); font-weight: 600; }
 
-.cc-cost {
-  display: flex; flex-direction: column; gap: 0.1rem; padding: 0.85rem 1rem;
-  background: var(--accent-soft); border-radius: 4px;
-}
-.cc-cost-label { font-size: 0.74rem; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-2); }
-.cc-cost-val { font-family: var(--serif); font-size: 2rem; line-height: 1; color: var(--ink); font-weight: 600; }
+.cc-cost { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.9rem 1rem; background: var(--accent-soft); border-radius: 4px; }
+.cc-cost-label { font-size: 0.72rem; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-2); }
+.cc-cost-val { font-family: var(--serif); font-size: 2.1rem; line-height: 1; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
 .cc-cost-sub { font-size: 0.76rem; color: var(--ink-3); }
 
-.cc-break { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.cc-insight { margin: 0; font-family: var(--serif); font-size: 0.9rem; line-height: 1.45; color: var(--ink-2); padding-left: 0.8rem; border-left: 2px solid var(--clay); }
+.cc-insight b { color: var(--clay); font-weight: 600; }
+
+.cc-break { list-style: none; margin: 0; padding-top: 0.2rem; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 0.22rem; }
 .cc-break li { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-2); }
-.cc-break-n { font-family: var(--mono); color: var(--ink); }
+.cc-break-n { font-family: var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
 
 @media print { .credit-calc { display: none !important; } }

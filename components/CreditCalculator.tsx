@@ -15,38 +15,114 @@ const CREDIT_PRICE = 0.01;
 
 // Included monthly allowance by highest subscription tier (Table 1).
 const ALLOWANCE = {
-  core: { label: 'Core Hub (Marketing/Sales/Service/Content)', tiers: { starter: 500, pro: 3000, enterprise: 5000 } },
-  data: { label: 'Data Hub / Customer Platform', tiers: { starter: 500, pro: 5000, enterprise: 10000 } },
+  core: { starter: 500, pro: 3000, enterprise: 5000 },
+  data: { starter: 500, pro: 5000, enterprise: 10000 },
 } as const;
 
-// Per-action rates (Table 2), credits each.
-const RATE = {
-  prospecting: 100, // Breeze Prospecting agent — per lead
-  customer: 50, // Breeze Customer agent — per conversation
-  data: 10, // Breeze Data agent — per prompt
-  content: 1000, // Breeze Content agent — per piece
-  intent: 10, // Buyer intent — per company
-  workflow: 10, // one Breeze action in a workflow — per run
-} as const;
-
-// Data Studio: credits per sync, by dataset size.
-const DS_SIZE = { small: 25, mid: 75, large: 200 } as const; // <500K / 500K–5M / >5M rows
-const DS_FREQ = { none: 0, daily: 30, hourly: 24 * 30, q15: 96 * 30 } as const; // syncs / month
-
+// Per-action lines (Table 2). rate = credits each. max/step size the slider.
 type NumKey = 'prospecting' | 'customer' | 'data' | 'content' | 'intent' | 'workflow';
-
-const LINES: { key: NumKey; label: string; unit: string; rate: number }[] = [
-  { key: 'prospecting', label: 'Prospecting agent', unit: 'leads', rate: RATE.prospecting },
-  { key: 'customer', label: 'Customer agent', unit: 'conversations', rate: RATE.customer },
-  { key: 'data', label: 'Data agent', unit: 'prompts', rate: RATE.data },
-  { key: 'content', label: 'Content agent', unit: 'pieces', rate: RATE.content },
-  { key: 'intent', label: 'Buyer intent', unit: 'companies', rate: RATE.intent },
-  { key: 'workflow', label: 'Breeze workflow actions', unit: 'runs', rate: RATE.workflow },
+const LINES: { key: NumKey; label: string; unit: string; one: string; rate: number; max: number; step: number }[] = [
+  { key: 'prospecting', label: 'Prospecting agent', unit: 'leads', one: 'lead', rate: 100, max: 500, step: 10 },
+  { key: 'customer', label: 'Customer agent', unit: 'conversations', one: 'conversation', rate: 50, max: 1000, step: 25 },
+  { key: 'data', label: 'Data agent', unit: 'prompts', one: 'prompt', rate: 10, max: 2000, step: 25 },
+  { key: 'content', label: 'Content agent', unit: 'pieces', one: 'piece', rate: 1000, max: 100, step: 1 },
+  { key: 'intent', label: 'Buyer intent', unit: 'companies', one: 'company', rate: 10, max: 1000, step: 25 },
+  { key: 'workflow', label: 'Breeze workflow actions', unit: 'runs', one: 'run', rate: 10, max: 5000, step: 50 },
 ];
+
+// Data Studio: credits per sync by dataset size × syncs per month by frequency.
+const DS_SIZE = [
+  { key: 'small', label: '< 500K rows', rate: 25 },
+  { key: 'mid', label: '500K–5M', rate: 75 },
+  { key: 'large', label: '> 5M', rate: 200 },
+] as const;
+const DS_FREQ = [
+  { key: 'none', label: 'No sync', perMo: 0 },
+  { key: 'daily', label: 'Daily', perMo: 30 },
+  { key: 'hourly', label: 'Hourly', perMo: 24 * 30 },
+  { key: 'q15', label: 'Every 15 min', perMo: 96 * 30 },
+] as const;
 
 const fmt = (n: number) => n.toLocaleString('en-US');
 const usd = (n: number) =>
   n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: n < 100 ? 2 : 0 });
+
+// --- non-linear (log) slider mapping: fine control at low volumes, still
+// reaches the max. Position runs 0..1; value snaps to human-friendly grains. ---
+const LOG_BASE = 60;
+const POS_STEPS = 1000;
+function niceRound(v: number): number {
+  if (v <= 0) return 0;
+  if (v < 20) return Math.round(v);
+  if (v < 100) return Math.round(v / 5) * 5;
+  const p = Math.pow(10, Math.floor(Math.log10(v)) - 1);
+  return Math.round(v / p) * p;
+}
+function posToValue(f: number, max: number): number {
+  const raw = (max * (Math.pow(LOG_BASE, f) - 1)) / (LOG_BASE - 1);
+  return niceRound(raw);
+}
+function valueToPos(v: number, max: number): number {
+  if (v <= 0) return 0;
+  const f = Math.log(1 + (Math.min(v, max) / max) * (LOG_BASE - 1)) / Math.log(LOG_BASE);
+  return Math.max(0, Math.min(1, f));
+}
+
+/** A labelled editorial log-slider whose value is also click-to-type. */
+function SliderRow({
+  label, hint, value, max, unit, onChange, credits,
+}: {
+  label: string; hint: string; value: number; max: number; unit: string;
+  onChange: (v: number) => void; credits: number;
+}) {
+  const pos = valueToPos(value, max);
+  return (
+    <div className="cc-row">
+      <div className="cc-row-head">
+        <span className="cc-row-label">{label} <span className="cc-row-hint">{hint}</span></span>
+        <span className="cc-row-cr">{credits > 0 ? `${fmt(credits)} cr` : '—'}</span>
+      </div>
+      <div className="cc-row-ctl">
+        <input
+          className="cc-slider"
+          type="range"
+          min={0}
+          max={POS_STEPS}
+          step={1}
+          value={Math.round(pos * POS_STEPS)}
+          onChange={(e) => onChange(posToValue(Number(e.target.value) / POS_STEPS, max))}
+          style={{ ['--pct' as string]: `${pos * 100}%`, ['--fill' as string]: 'var(--accent)' }}
+          aria-label={label}
+        />
+        <span className="cc-row-val">
+          <input
+            type="number"
+            min={0}
+            inputMode="numeric"
+            value={value || 0}
+            onChange={(e) => onChange(Math.max(0, Number(e.target.value) || 0))}
+            aria-label={`${label} exact value`}
+          />
+          <span>{unit}/mo</span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// One-tap scenario starting points.
+type Scenario = { platform: 'core' | 'data'; tier: 'starter' | 'pro' | 'enterprise'; vol: Record<NumKey, number>; dsSize: number; dsFreq: number };
+const PRESETS: { key: string; label: string; s: Scenario }[] = [
+  {
+    key: 'pro', label: 'Typical Pro team',
+    s: { platform: 'data', tier: 'pro', vol: { prospecting: 50, customer: 100, data: 200, content: 4, intent: 100, workflow: 200 }, dsSize: 0, dsFreq: 1 },
+  },
+  {
+    key: 'heavy', label: 'Heavy AI user',
+    s: { platform: 'data', tier: 'enterprise', vol: { prospecting: 200, customer: 500, data: 1000, content: 40, intent: 300, workflow: 1000 }, dsSize: 1, dsFreq: 2 },
+  },
+];
+const EMPTY: Scenario = { platform: 'data', tier: 'pro', vol: { prospecting: 0, customer: 0, data: 0, content: 0, intent: 0, workflow: 0 }, dsSize: 0, dsFreq: 0 };
 
 function Calculator() {
   const [platform, setPlatform] = useState<'core' | 'data'>('data');
@@ -54,33 +130,47 @@ function Calculator() {
   const [vol, setVol] = useState<Record<NumKey, number>>({
     prospecting: 0, customer: 0, data: 0, content: 0, intent: 0, workflow: 0,
   });
-  const [dsSize, setDsSize] = useState<keyof typeof DS_SIZE>('small');
-  const [dsFreq, setDsFreq] = useState<keyof typeof DS_FREQ>('none');
+  const [dsSize, setDsSize] = useState(0); // index into DS_SIZE
+  const [dsFreq, setDsFreq] = useState(0); // index into DS_FREQ
 
-  const rows = useMemo(() => {
-    const base = LINES.map((l) => ({ label: l.label, unit: l.unit, credits: (vol[l.key] || 0) * l.rate }));
-    const dsCredits = DS_SIZE[dsSize] * DS_FREQ[dsFreq];
-    base.push({ label: 'Data Studio syncs', unit: 'syncs/mo', credits: dsCredits });
-    return base;
-  }, [vol, dsSize, dsFreq]);
+  const apply = (s: Scenario) => {
+    setPlatform(s.platform); setTier(s.tier); setVol({ ...s.vol }); setDsSize(s.dsSize); setDsFreq(s.dsFreq);
+  };
 
-  const total = rows.reduce((n, r) => n + r.credits, 0);
-  const included = ALLOWANCE[platform].tiers[tier];
+  const dsCredits = DS_SIZE[dsSize].rate * DS_FREQ[dsFreq].perMo;
+
+  const contribs = useMemo(() => {
+    const list = LINES.map((l) => ({ label: l.label, credits: (vol[l.key] || 0) * l.rate }));
+    list.push({ label: 'Data Studio syncs', credits: dsCredits });
+    return list;
+  }, [vol, dsCredits]);
+
+  const total = contribs.reduce((n, r) => n + r.credits, 0);
+  const included = ALLOWANCE[platform][tier];
   const overage = Math.max(0, total - included);
   const cost = overage * CREDIT_PRICE;
   const max = Math.max(total, included, 1);
+  const dsShare = overage > 0 ? Math.min(dsCredits, overage) / overage : 0;
 
   return (
     <figure className="credit-calc" aria-label="Interactive HubSpot Credit estimator">
       <figcaption>
         <span className="cc-kicker">Interactive · Estimate a month</span>
-        <span className="cc-note">Companion to the rate sheet above. Rates as of July 2026 — confirm before quoting.</span>
+        <span className="cc-note">Drag or type. Rates as of July 2026 — confirm against HubSpot before quoting.</span>
       </figcaption>
+
+      <div className="cc-presets">
+        <span className="cc-presets-label">Start from</span>
+        {PRESETS.map((p) => (
+          <button key={p.key} type="button" onClick={() => apply(p.s)}>{p.label}</button>
+        ))}
+        <button type="button" className="cc-reset" onClick={() => apply(EMPTY)}>Reset</button>
+      </div>
 
       <div className="cc-grid">
         <div className="cc-inputs">
           <div className="cc-field cc-plan">
-            <label>Account tier <span>(sets the included allowance)</span></label>
+            <span className="cc-plan-label">Account tier <span>sets the included allowance</span></span>
             <div className="cc-segs">
               {(['core', 'data'] as const).map((p) => (
                 <button key={p} type="button" aria-pressed={platform === p} onClick={() => setPlatform(p)}>
@@ -98,35 +188,44 @@ function Calculator() {
           </div>
 
           {LINES.map((l) => (
-            <div className="cc-field" key={l.key}>
-              <label htmlFor={`cc-${l.key}`}>
-                {l.label} <span>{fmt(l.rate)} credits / {l.unit.replace(/s$/, '')}</span>
-              </label>
-              <div className="cc-num">
-                <input
-                  id={`cc-${l.key}`}
-                  type="number"
-                  min={0}
-                  inputMode="numeric"
-                  value={vol[l.key] || ''}
-                  placeholder="0"
-                  onChange={(e) => setVol((v) => ({ ...v, [l.key]: Math.max(0, Number(e.target.value) || 0) }))}
-                />
-                <span className="cc-unit">{l.unit} / mo</span>
-              </div>
-            </div>
+            <SliderRow
+              key={l.key}
+              label={l.label}
+              hint={`${fmt(l.rate)} cr / ${l.one}`}
+              value={vol[l.key] || 0}
+              max={l.max}
+              unit={l.unit}
+              credits={(vol[l.key] || 0) * l.rate}
+              onChange={(v) => setVol((s) => ({ ...s, [l.key]: v }))}
+            />
           ))}
 
-          <div className="cc-field cc-plan">
-            <label>Data Studio <span>the usual credit surprise</span></label>
-            <div className="cc-segs">
-              {([['small', '< 500K rows'], ['mid', '500K–5M'], ['large', '> 5M']] as const).map(([k, lab]) => (
-                <button key={k} type="button" aria-pressed={dsSize === k} onClick={() => setDsSize(k)}>{lab}</button>
+          <div className="cc-field cc-ds">
+            <div className="cc-row-head">
+              <span className="cc-row-label">Data Studio <span className="cc-row-hint">the usual credit surprise · {fmt(DS_SIZE[dsSize].rate)} cr / sync</span></span>
+              <span className="cc-row-cr" style={{ color: dsCredits > 0 ? 'var(--clay)' : undefined }}>
+                {dsCredits > 0 ? `${fmt(dsCredits)} cr` : '—'}
+              </span>
+            </div>
+            <div className="cc-segs cc-segs-sm">
+              {DS_SIZE.map((s, i) => (
+                <button key={s.key} type="button" aria-pressed={dsSize === i} onClick={() => setDsSize(i)}>{s.label}</button>
               ))}
             </div>
-            <div className="cc-segs">
-              {([['none', 'No sync'], ['daily', 'Daily'], ['hourly', 'Hourly'], ['q15', 'Every 15 min']] as const).map(([k, lab]) => (
-                <button key={k} type="button" aria-pressed={dsFreq === k} onClick={() => setDsFreq(k)}>{lab}</button>
+            <input
+              className="cc-slider cc-slider-ticks"
+              type="range"
+              min={0}
+              max={DS_FREQ.length - 1}
+              step={1}
+              value={dsFreq}
+              onChange={(e) => setDsFreq(Number(e.target.value))}
+              style={{ ['--pct' as string]: `${(dsFreq / (DS_FREQ.length - 1)) * 100}%`, ['--fill' as string]: 'var(--clay)' }}
+              aria-label="Data Studio sync frequency"
+            />
+            <div className="cc-ticks">
+              {DS_FREQ.map((f, i) => (
+                <span key={f.key} className={i === dsFreq ? 'on' : ''}>{f.label}</span>
               ))}
             </div>
           </div>
@@ -135,9 +234,7 @@ function Calculator() {
         <div className="cc-out">
           <div className="cc-bar" role="img" aria-label={`${fmt(total)} credits used against ${fmt(included)} included`}>
             <div className="cc-bar-included" style={{ width: `${(Math.min(total, included) / max) * 100}%` }} />
-            {overage > 0 && (
-              <div className="cc-bar-over" style={{ width: `${(overage / max) * 100}%` }} />
-            )}
+            {overage > 0 && <div className="cc-bar-over" style={{ width: `${(overage / max) * 100}%` }} />}
             <div className="cc-bar-mark" style={{ left: `${(included / max) * 100}%` }} title="Included allowance" />
           </div>
           <div className="cc-legend">
@@ -157,9 +254,15 @@ function Calculator() {
             <span className="cc-cost-sub">at $0.01 / credit{overage === 0 ? ' — within allowance' : ''}</span>
           </div>
 
-          {rows.some((r) => r.credits > 0) && (
+          {overage > 0 && dsShare >= 0.4 && (
+            <p className="cc-insight">
+              Data Studio alone is <b>{Math.round(dsShare * 100)}%</b> of your overage — the single lever worth pre-empting on a call.
+            </p>
+          )}
+
+          {contribs.some((r) => r.credits > 0) && (
             <ul className="cc-break">
-              {rows.filter((r) => r.credits > 0).sort((a, b) => b.credits - a.credits).map((r) => (
+              {contribs.filter((r) => r.credits > 0).sort((a, b) => b.credits - a.credits).map((r) => (
                 <li key={r.label}>
                   <span>{r.label}</span>
                   <span className="cc-break-n">{fmt(r.credits)}</span>
