@@ -17,6 +17,7 @@ export type Paper = {
   number: string; // e.g. "01" — the "No." on the card
   series: string; // series slug — see content/series.ts
   type: ArticleType; // article format label
+  category: string; // shown on the card
   title: string;
   deck: string; // one-line subtitle
   abstract: string; // 2–3 sentence card summary
@@ -34,6 +35,7 @@ export const papers: Paper[] = [
     number: '01',
     series: 'revenue-systems-architecture',
     type: 'White Paper',
+    category: 'Revenue Systems Architecture',
     title: 'Integration Modeling for HubSpot Data Hub',
     deck:
       "What Data Hub's two integration paths actually do, where each one stops, and how to choose an architecture that survives production volume.",

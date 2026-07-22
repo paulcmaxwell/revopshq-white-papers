@@ -8,9 +8,7 @@ export default function Nav() {
         <Wordmark />
         <nav>
           <div className="nav-links">
-            <a href="/#papers">White Papers</a>
-            <a href="/#series">Series</a>
-            <a href="/#tools">Tools</a>
+            <a href="/#library">Library</a>
             <a href="https://revopshq.com" target="_blank" rel="noopener noreferrer">
               RevOps HQ
             </a>

@@ -5,15 +5,15 @@
    ============================================================ */
 
 :root {
-  --paper: #FFFFFF;
+  --paper: #F7F8F6;
   --paper-2: #FFFFFF;
-  --rule: #E6E6E4;
-  --ink: #1A1A1A;
-  --ink-2: #575757;
-  --ink-3: #8C8C8C;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
   --accent: #0E6B4E;
   --accent-2: #0B5A41;
-  --accent-soft: #E9F1EC;
+  --accent-soft: #E4F1EA;
   --mint: #8FD3B6;
   --clay: #A8603C;
   --clay-soft: #F5E9E2;
@@ -21,7 +21,7 @@
 
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Source Serif 4", "Charter", Georgia, serif;
   --sans: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --measure: 34rem;
   --wide: 54rem;
@@ -31,8 +31,25 @@
   --shadow-lg: 0 2px 6px rgba(20, 32, 28, 0.05), 0 24px 60px -28px rgba(20, 32, 28, 0.30);
 }
 
-/* Dark is opt-in only (the toggle sets data-theme="dark"). The journal defaults
-   to light regardless of OS preference — no prefers-color-scheme override. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #101613;
+    --paper-2: #161E1A;
+    --rule: #2A3630;
+    --ink: #E8EEEA;
+    --ink-2: #A9B8B0;
+    --ink-3: #7E8E86;
+    --accent: #57C79A;
+    --accent-2: #6FD3AB;
+    --accent-soft: #1A2E26;
+    --mint: #2F6E55;
+    --clay: #D2916C;
+    --clay-soft: #2E211A;
+    --amber: #D6AC4A;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -18px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.45), 0 28px 64px -28px rgba(0, 0, 0, 0.8);
+  }
+}
 :root[data-theme="dark"] {
   --paper: #101613;
   --paper-2: #161E1A;
@@ -51,15 +68,15 @@
   --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.45), 0 28px 64px -28px rgba(0, 0, 0, 0.8);
 }
 :root[data-theme="light"] {
-  --paper: #FFFFFF;
+  --paper: #F7F8F6;
   --paper-2: #FFFFFF;
-  --rule: #E6E6E4;
-  --ink: #1A1A1A;
-  --ink-2: #575757;
-  --ink-3: #8C8C8C;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
   --accent: #0E6B4E;
   --accent-2: #0B5A41;
-  --accent-soft: #E9F1EC;
+  --accent-soft: #E4F1EA;
   --mint: #8FD3B6;
   --clay: #A8603C;
   --clay-soft: #F5E9E2;
@@ -94,34 +111,19 @@ a { color: inherit; text-decoration: none; }
 .wm {
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.55rem;
+  font-weight: 650;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
   color: var(--ink);
 }
 .wm .mark {
-  width: 1.1rem; height: 1.1rem;
-  border-radius: 3px;
+  width: 0.8rem; height: 0.8rem;
+  border-radius: 2px;
   background: var(--accent);
-  box-shadow: 0.32rem 0.32rem 0 0 var(--mint);
+  box-shadow: 0.3rem 0.3rem 0 0 var(--mint);
   flex: none;
-  margin-right: 0.2rem;
-}
-.wm-name {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.04;
-  font-family: var(--serif);
-  font-weight: 600;
-  font-size: 1.02rem;
-  letter-spacing: -0.012em;
-}
-.wm-sub {
-  font-family: var(--sans);
-  font-size: 0.56rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  font-weight: 650;
-  margin-top: 0.22rem;
 }
 
 .eyebrow {
@@ -138,29 +140,27 @@ a { color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   z-index: 40;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: saturate(1.3) blur(10px);
-  border-bottom: 1px solid var(--ink);
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--rule);
 }
 .site-header .bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  height: 3.6rem;
+  height: 4rem;
 }
 .site-header nav {
   display: flex;
   align-items: center;
-  gap: 1.4rem;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.01em;
+  gap: 1.6rem;
+  font-size: 0.82rem;
   color: var(--ink-2);
 }
 .site-header nav a { transition: color 0.15s; }
 .site-header nav a:hover { color: var(--ink); }
-.nav-links { display: flex; align-items: center; gap: 1.4rem; }
+.nav-links { display: flex; align-items: center; gap: 1.6rem; }
 @media (max-width: 640px) { .nav-links { display: none; } }
 
 .theme-toggle {
@@ -307,14 +307,16 @@ a { color: inherit; text-decoration: none; }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.card-topics {
-  margin-top: 1rem;
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.02em;
-  color: var(--ink-3);
+.card .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+.tag {
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.16rem 0.55rem;
 }
-.meta-type { color: var(--ink-2); font-weight: 600; }
 .card .meta {
   display: flex;
   align-items: center;
@@ -521,82 +523,6 @@ a { color: inherit; text-decoration: none; }
 
 .page { display: flex; flex-direction: column; min-height: 100dvh; }
 main { flex: 1 0 auto; }
-
-/* ============================================================
-   Home — warm research publication (Works in Progress / Asterisk lineage).
-   Cream paper, serif headlines, monospace labels/bylines, small refined type,
-   green only as a whisper. Cover art is a contained WebGL gradient.
-   ============================================================ */
-
-.intro {
-  padding: clamp(1.6rem, 3vw, 2.4rem) 0 0;
-  font-family: var(--serif); font-size: 1.08rem; line-height: 1.55;
-  color: var(--ink-2); max-width: 56ch;
-}
-.intro a { color: var(--accent); }
-.intro a:hover { text-decoration: underline; }
-
-/* ---------- feature ---------- */
-.feature { padding: clamp(1.5rem, 3vw, 2.4rem) 0; border-bottom: 1px solid var(--ink); }
-.fgrid { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(1.5rem, 4vw, 2.75rem); align-items: start; }
-.art { border: 1px solid var(--ink); background: var(--paper-2); overflow: hidden; }
-.art .capbar {
-  display: flex; justify-content: space-between; gap: 1rem;
-  border-bottom: 1px solid var(--rule); padding: 0.5rem 0.85rem;
-  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--ink-3);
-}
-.canvas-wrap { width: 100%; aspect-ratio: 16 / 10; }
-.canvas-wrap canvas { display: block; width: 100%; height: 100%; }
-.fcap { padding-top: 0.15rem; }
-.kick { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.8rem; }
-.kick .tag {
-  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--accent); border: 1px solid var(--accent); border-radius: 2px; padding: 0.1rem 0.4rem;
-}
-.kick .kseries { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
-.ftitle { font-family: var(--serif); font-weight: 600; font-size: clamp(1.35rem, 2.1vw, 1.7rem); line-height: 1.16; letter-spacing: -0.008em; }
-.ftitle a { color: var(--ink); }
-.ftitle a:hover { color: var(--accent); }
-.byline { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3); margin-top: 0.7rem; }
-.byline a { color: var(--ink-2); }
-.byline a:hover { color: var(--accent); }
-.dek { font-family: var(--serif); font-size: 1rem; line-height: 1.6; color: var(--ink-2); margin-top: 0.85rem; max-width: 46ch; }
-.readmore { display: inline-block; margin-top: 1.05rem; font-family: var(--mono); font-size: 0.72rem; color: var(--ink); border-bottom: 1px solid var(--accent); padding-bottom: 2px; }
-.readmore:hover { color: var(--accent); }
-@media (max-width: 720px) { .fgrid { grid-template-columns: 1fr; gap: 1.25rem; } }
-
-/* ---------- two-column index ---------- */
-.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3rem; padding: 2rem 0; }
-@media (max-width: 720px) { .cols { grid-template-columns: 1fr; gap: 2.25rem 0; } }
-.col-head {
-  display: flex; justify-content: space-between; gap: 1rem;
-  font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 0.5rem; margin-bottom: 0.2rem;
-}
-.item { display: block; padding: 0.95rem 0; border-bottom: 1px solid var(--rule); }
-.item .it-t { font-family: var(--serif); font-size: 1.08rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.004em; color: var(--ink); }
-.item:hover .it-t { color: var(--accent); }
-.item .it-b { font-family: var(--mono); font-size: 0.64rem; color: var(--ink-3); margin-top: 0.35rem; }
-.item .it-d { font-family: var(--serif); font-size: 0.95rem; color: var(--ink-2); line-height: 1.5; margin-top: 0.35rem; }
-.srow { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: 0.9rem; align-items: baseline; padding: 0.8rem 0; border-bottom: 1px solid var(--rule); }
-.srow .rn { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); }
-.srow .sn { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink); }
-.srow .sg { font-family: var(--serif); font-style: italic; color: var(--ink-2); font-size: 0.92rem; }
-.srow .sc { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
-
-/* ---------- tools / colophon ---------- */
-.tools-note { font-family: var(--serif); font-size: 1.02rem; line-height: 1.55; color: var(--ink-2); max-width: 58ch; padding-top: 0.4rem; }
-.tools-note strong { color: var(--ink); font-weight: 600; }
-.colophon-section { padding: clamp(2rem, 4vw, 3rem) 0; }
-.colophon-line { font-family: var(--serif); font-size: 1rem; line-height: 1.6; color: var(--ink-2); max-width: 62ch; border-top: 1px solid var(--ink); padding-top: 1.3rem; }
-.colophon-line strong { color: var(--ink); font-weight: 600; }
-.colophon-line a { color: var(--accent); }
-.colophon-line a:hover { text-decoration: underline; }
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
-}
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }

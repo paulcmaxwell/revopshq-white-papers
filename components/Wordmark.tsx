@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
-export default function Wordmark({ compact = false }: { compact?: boolean }) {
+export default function Wordmark() {
   return (
-    <Link href="/" className="wm" aria-label="Revenue Foundations — home">
+    <Link href="/" className="wm" aria-label="RevOps HQ — home">
       <span className="mark" aria-hidden="true" />
-      <span className="wm-name">Revenue&nbsp;Foundations</span>
+      RevOps&nbsp;HQ
     </Link>
   );
 }
