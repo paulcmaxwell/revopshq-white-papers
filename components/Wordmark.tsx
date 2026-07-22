@@ -6,7 +6,7 @@ export default function Wordmark({ compact = false }: { compact?: boolean }) {
       <span className="mark" aria-hidden="true" />
       <span className="wm-name">
         Revenue&nbsp;Foundations
-        {!compact && <span className="wm-sub">A Journal of Revenue Systems</span>}
+        {!compact && <span className="wm-sub">Research · RevOps HQ</span>}
       </span>
     </Link>
   );

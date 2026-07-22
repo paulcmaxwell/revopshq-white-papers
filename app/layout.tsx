@@ -7,15 +7,15 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   metadataBase: new URL('https://revenuefoundations.com'),
   title: {
-    default: 'Revenue Foundations — A Journal of Revenue Systems & Operations',
+    default: 'Revenue Foundations — White papers & research for revenue operators',
     template: '%s — Revenue Foundations',
   },
   description:
-    'Field research and applied analysis for revenue operators: revenue systems architecture, attribution and measurement, and the trade-offs behind how modern revenue teams actually run. An independent research project funded by RevOps HQ.',
+    'Field research and applied analysis for the people who build and run revenue systems: revenue systems architecture, attribution and measurement, and the trade-offs behind how modern revenue teams actually run. An independent research project from RevOps HQ.',
   openGraph: {
-    title: 'Revenue Foundations — A Journal of Revenue Systems & Operations',
+    title: 'Revenue Foundations — White papers & research for revenue operators',
     description:
-      'Field research and applied analysis for revenue operators. An independent research project funded by RevOps HQ.',
+      'Field research and applied analysis for the people who build and run revenue systems. An independent research project from RevOps HQ.',
     type: 'website',
   },
 };

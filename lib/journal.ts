@@ -9,7 +9,7 @@
 
 export const JOURNAL = {
   name: 'Revenue Foundations',
-  subtitle: 'A Journal of Revenue Systems & Operations',
+  subtitle: 'White papers & research for revenue operators',
   blurb: 'Field research and applied analysis for revenue operators.',
   publisher: 'RevOps HQ',
   issn: 'RF', // identifier prefix, not a registered ISSN

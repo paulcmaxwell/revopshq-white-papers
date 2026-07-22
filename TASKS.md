@@ -1,50 +1,43 @@
-# RevOps HQ White Papers — Backlog
+# Revenue Foundations — Backlog
 
-Status legend: `[ ]` todo · `[~]` in progress · `[x]` done
+Brand/website (white papers primary; articles + tools/products alongside; the
+journal Vol./No. is a citation detail, not the identity). Design bar:
+`DESIGN_PHILOSOPHY.md`. Deploy: push `main` → Vercel → www.revenuefoundations.com.
 
-## Shipped
-- [x] Next.js library site with the RevOps HQ design system
-- [x] Email-gated PDF downloads (first/last/work email/company/HubSpot-user)
-- [x] Lead capture via unauthenticated HubSpot Forms API (portal 21204085)
-- [x] HubSpot tracking pixel site-wide
-- [x] Paper No. 01 — Integration Modeling for HubSpot Data Hub
-- [x] Live on Vercel, auto-deploy on push
-- [x] Brand assets: green-squares favicon + OG image
-- [x] `CLAUDE.md`, skills, this backlog
+Status: `[ ]` todo · `[~]` in progress · `[x]` done
 
-## Content
-- [ ] Paper No. 02 — pick the next topic (candidate: "Deduplication & data
-      quality in HubSpot", spun from the same meeting)
-- [ ] Per-paper OG images (dynamic, title on the card) via `opengraph-image.tsx`
-- [ ] Case study companion to Paper 01 (from the Fathom transcript + Miro)
-- [ ] "Where DataHub plays best" one-pager for sales enablement
+## Live / shipped
+- [x] Next.js site, gated PDF downloads, HubSpot Forms API lead capture
+- [x] Lead fields fixed (company + HubSpot-user + paper → Message field)
+- [x] White paper No. 01 — Integration Modeling for HubSpot Data Hub (+ PDF)
+- [x] SEO/AEO/GEO: sitemap.xml, robots.txt, dynamic llms.txt
+- [x] Brand mark (green squares) — favicon, OG, apple icon
+- [x] Live on revenuefoundations.com (apex → www)
 
-## Product / platform
-- [ ] Author's guide page (internal) documenting the design system in-situ
-- [ ] Search / tag filtering on the library once >6 papers
-- [ ] RSS / email-notify on new paper
-- [ ] Analytics: dashboard of downloads by paper (HubSpot list + a `/admin` view)
-- [ ] Custom domain (papers.revopshq.com) — add in Vercel + DNS
+## NOW — make it a genuinely good site (not patches)
+- [~] Homepage rebuild to DESIGN_PHILOSOPHY: editorial publication front page,
+      near-monochrome (green = punctuation), NO clipped decoration, real grid +
+      featured lead item + typeset index. Verify against the live render.
+- [~] Kill the "journal" over-branding in copy (brand-first; white papers primary)
+- [~] Motion: full-bleed fixed neutral ambient field (cannot clip) OR none
+- [ ] White paper No. 02 — Attribution & Channel Economics (from new-content.md:
+      CPA + HubSpot multi-touch attribution + platform comparison matrix) + PDF
+- [ ] Article page: clickable TOC that collapses on scroll + citation / Cite-this
 
-## Revenue Foundations (net-new site — separate track)
-- [ ] Firecrawl agency-habits + PE/WebGL reference sites; extract motion, color,
-      type language
-- [ ] Design-system spec artifact: palette, type scale, the volumetric shader
-      concept (subtle, slow, "private-equity crisp")
-- [ ] Build the site shell with the WebGL volumetric background
-- [ ] PDF template system (academic + modern, slow volumetric bg) that shares
-      ONE design system across the whole product line — matched to the
-      screenshots in the repo root
-- [ ] Roll the shared system back into this white-paper site so both feel like
-      one brand
+## Next
+- [ ] Brand-first IA sections: White Papers → Tools & Downloads → Articles
+- [ ] Tools & Downloads product system (calculators + downloadable assets,
+      AgencyHabits-style) with cover images
+- [ ] Search / filter across resources; optional table view
+- [ ] CONTENT_IDEAS.md + daily publishing workflow (assign issue/vol/series/authors)
+- [ ] Per-paper OG images
 
-## Design system → product system
-- [ ] Extract tokens into a shared package/file both sites import
-- [ ] Cover + section-divider PDF templates
-- [ ] Slide/one-pager templates from the same tokens
+## Content ideas (seed — move to CONTENT_IDEAS.md)
+- Deduplication & data quality in HubSpot (from the Data Hub session)
+- Lifecycle stage architecture; lead routing SLAs; forecasting hygiene
+- Tools: CAC payback calculator, attribution-readiness checklist, RevOps maturity
 
-## Hygiene
-- [ ] Keep `next` on a patched release (Vercel blocks CVE versions)
-- [ ] Add `npm run lint` to CI intent; wire a GitHub Action for typecheck+build
-- [ ] Optional: set `HUBSPOT_PORTAL_ID` / `HUBSPOT_FORM_GUID` as env vars if the
-      form GUID changes (defaults are baked in)
+## Hygiene / gotchas
+- Keep `next` on a patched release (Vercel blocks CVE versions)
+- Repo lives in Google Drive: `White Papers/revopshq-white-papers/`
+- Verify the LIVE render (screenshot) before claiming a design is done
