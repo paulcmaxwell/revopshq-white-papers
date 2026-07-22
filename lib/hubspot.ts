@@ -10,69 +10,68 @@ export type Lead = {
   paperTitle: string;
 };
 
-type SyncResult = { synced: boolean; reason?: string };
+export type SubmitContext = {
+  hutk?: string; // hubspotutk cookie, associates the submission with the visitor
+  pageUri?: string;
+  pageName?: string;
+};
 
-const API = 'https://api.hubapi.com/crm/v3/objects/contacts';
+type SubmitResult = { submitted: boolean; reason?: string };
+
+// HubSpot Forms Submission API — unauthenticated, no private-app token needed.
+const PORTAL_ID = process.env.HUBSPOT_PORTAL_ID ?? '21204085';
+const FORM_GUID = process.env.HUBSPOT_FORM_GUID ?? 'e79ed75a-3f79-43cd-b1e4-6648c332a828';
+const ENDPOINT = `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_GUID}`;
 
 /**
- * Best-effort push of a captured lead into HubSpot as a contact.
+ * Post a captured lead to the RevOps HQ HubSpot form. email / first / last /
+ * company map to their own contact fields; everything else (HubSpot-user
+ * answer + which paper) is compiled into the single standard `message` field
+ * rather than becoming its own form field.
  *
- * Never throws — a CRM hiccup must not block a download. Sends only standard
- * contact properties by default; if HUBSPOT_EXTRA_PROPERTIES lists custom
- * property names that exist in the portal, they are attempted and the call
- * retries with standard props only on a 400 (unknown property).
+ * Best-effort: never throws, so a HubSpot hiccup can't block the download.
  */
-export async function syncLeadToHubSpot(lead: Lead): Promise<SyncResult> {
-  const token = process.env.HUBSPOT_PRIVATE_APP_TOKEN;
-
-  // Always leave a durable trace in the function logs regardless of CRM state.
+export async function submitLeadToHubSpotForm(
+  lead: Lead,
+  ctx: SubmitContext = {},
+): Promise<SubmitResult> {
   console.log('[lead]', JSON.stringify({ ...lead, at: new Date().toISOString() }));
 
-  if (!token) return { synced: false, reason: 'no-token' };
+  const message = [
+    `White paper: ${lead.paperTitle} (${lead.paperSlug})`,
+    `Currently a HubSpot user: ${lead.hubspotUser ? 'Yes' : 'No'}`,
+    ctx.pageUri ? `Source: ${ctx.pageUri}` : null,
+  ]
+    .filter(Boolean)
+    .join('\n');
 
-  const standard: Record<string, string> = {
-    email: lead.email,
-    firstname: lead.firstName,
-    lastname: lead.lastName,
-    company: lead.company,
+  const payload = {
+    fields: [
+      { name: 'email', value: lead.email },
+      { name: 'firstname', value: lead.firstName },
+      { name: 'lastname', value: lead.lastName },
+      { name: 'company', value: lead.company },
+      { name: 'message', value: message },
+    ],
+    context: {
+      ...(ctx.hutk ? { hutk: ctx.hutk } : {}),
+      pageUri: ctx.pageUri ?? 'https://revopshq-white-papers.vercel.app',
+      pageName: ctx.pageName ?? `RevOps HQ White Paper — ${lead.paperTitle}`,
+    },
   };
 
-  // Optional custom properties, only if the operator opted in.
-  const extra: Record<string, string> = {};
-  const userProp = process.env.HUBSPOT_HUBSPOT_USER_PROPERTY;
-  const paperProp = process.env.HUBSPOT_PAPER_PROPERTY;
-  if (userProp) extra[userProp] = lead.hubspotUser ? 'true' : 'false';
-  if (paperProp) extra[paperProp] = lead.paperSlug;
-
-  async function post(properties: Record<string, string>) {
-    return fetch(API, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ properties }),
-    });
-  }
-
   try {
-    let res = await post({ ...standard, ...extra });
-
-    // Unknown custom property -> retry with standard fields only.
-    if (res.status === 400 && Object.keys(extra).length) {
-      res = await post(standard);
-    }
-
-    // Already a contact — the lead is known; count it as captured.
-    if (res.status === 409) return { synced: true, reason: 'existing' };
-
-    if (res.ok) return { synced: true };
-
+    const res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) return { submitted: true };
     const text = await res.text().catch(() => '');
-    console.error('[hubspot] create failed', res.status, text.slice(0, 300));
-    return { synced: false, reason: `http-${res.status}` };
+    console.error('[hubspot] form submit failed', res.status, text.slice(0, 400));
+    return { submitted: false, reason: `http-${res.status}` };
   } catch (err) {
     console.error('[hubspot] network error', err);
-    return { synced: false, reason: 'network' };
+    return { submitted: false, reason: 'network' };
   }
 }

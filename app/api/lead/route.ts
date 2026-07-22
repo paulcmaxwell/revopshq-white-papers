@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { bySlug } from '@/content/papers';
-import { syncLeadToHubSpot } from '@/lib/hubspot';
+import { submitLeadToHubSpotForm } from '@/lib/hubspot';
 import { unlockCookie, UNLOCK_MAX_AGE, validateEmail } from '@/lib/gate';
 
 export const runtime = 'nodejs';
@@ -48,18 +48,29 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, download: `/api/download?slug=${paper.slug}` });
   }
 
-  const sync = await syncLeadToHubSpot({
-    email: email.toLowerCase(),
-    firstName,
-    lastName,
-    company,
-    hubspotUser,
-    paperSlug: paper.slug,
-    paperTitle: paper.title,
-  });
+  const jar = await cookies();
+  const hdrs = await headers();
+  const referer = hdrs.get('referer') ?? undefined;
+  const origin = hdrs.get('origin') ?? '';
+
+  const sync = await submitLeadToHubSpotForm(
+    {
+      email: email.toLowerCase(),
+      firstName,
+      lastName,
+      company,
+      hubspotUser,
+      paperSlug: paper.slug,
+      paperTitle: paper.title,
+    },
+    {
+      hutk: jar.get('hubspotutk')?.value,
+      pageUri: referer ?? `${origin}/papers/${paper.slug}`,
+      pageName: `RevOps HQ White Paper — ${paper.title}`,
+    },
+  );
 
   // Unlock the download regardless of CRM outcome — the lead is already logged.
-  const jar = await cookies();
   jar.set(unlockCookie(paper.slug), '1', {
     httpOnly: true,
     sameSite: 'lax',
@@ -70,7 +81,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     ok: true,
-    synced: sync.synced,
+    synced: sync.submitted,
     download: `/api/download?slug=${paper.slug}`,
   });
 }
