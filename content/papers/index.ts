@@ -124,6 +124,23 @@ export const caseStudies: Paper[] = [
     readingMinutes: 8,
     pages: 7,
   },
+  {
+    slug: 'case-dealer-channel-manufacturer',
+    number: 'C3',
+    series: 'revenue-systems-architecture',
+    type: 'Case Study',
+    category: 'Revenue Systems Architecture',
+    title: 'When the buyer isn’t the user: modeling a dealer channel in HubSpot',
+    deck:
+      'A manufacturer sold through dealers but marketed to the operators who ran the machines. At the moment of sale the end customer vanished. Fixing it meant modeling the channel — not mapping more fields.',
+    abstract:
+      'An equipment manufacturer sells serial-numbered machines through independent dealers while marketing to the operators who use them. HubSpot’s contact–company–deal default assumes you sell to the buyer, so at the point of sale the end customer disappears. A first-principles look at modeling a channel: dealer/employee/customer on one account via association labels, the install base as an Equipment custom object, a warranty-capture loop to recover the operator, and the Orders object as the ERP bridge.',
+    tags: ['HubSpot', 'Custom Objects', 'Channel', 'Manufacturing', 'NetSuite'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 8,
+    pages: 7,
+  },
 ];
 
 export const bySlug = (slug: string): Paper | undefined =>

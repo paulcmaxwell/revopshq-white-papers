@@ -150,6 +150,11 @@ looked at the screenshot.
 - **Educational** (white papers, calculators): first-principles, information-forward,
   illustrative examples only — no client-attributed results. Not click-baity.
 - Only the **PDF download** is email-gated; web content and tools read free.
+- **Always compose with visuals.** Every paper/case study must include original
+  `<figure>` diagrams that illustrate the actual work (object models, data flows,
+  pipelines) — use the design-system SVG classes (`.frame`, `.s-cap/.s-title/.s-small/
+  .s-label`), neutral fills (`--rule`/`--ink-3`) with an accent outline only on the key
+  element. Visuals are part of composing, not an afterthought.
 
 ## Adding a white paper
 

@@ -1,0 +1,143 @@
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C3</span>
+      <span>Revenue Systems Architecture</span>
+    </div>
+    <h1>When the buyer isn&rsquo;t the user: modeling a dealer channel in HubSpot</h1>
+    <p class="deck">A manufacturer sold through dealers but marketed to the operators who ran the machines. At the moment of sale the end customer vanished. Fixing it meant modeling the channel &mdash; not mapping more fields.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>An equipment manufacturer sells serial-numbered machines through a network of independent dealers, while its marketing speaks to the operators who actually use them. HubSpot&rsquo;s default contact&ndash;company&ndash;deal model assumes you sell to the buyer &mdash; but here the buyer (the dealer) and the customer (the operator) are different entities, and at the point of sale the end customer disappears. This is a first-principles look at modeling a channel business: representing dealer, employee, and end customer on one account without the association model collapsing; putting the install base in a custom object instead of a deal; recovering the end user through a warranty-capture loop; and using the Orders object as the bridge to the ERP.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> CRMs are built for direct sales</h2>
+    <p class="lede">A CRM assumes the buyer is the customer: the company you sell to is the company you serve. Channel businesses break that assumption on contact one. The manufacturer&rsquo;s revenue flows through dealers, but the value &mdash; and the marketing &mdash; is aimed at the operator running the machine. Two different entities, and the default data model can only hold one.</p>
+    <p>The symptom shows up the instant a deal closes: HubSpot knows which dealer bought the unit and nothing about who runs it. Direct marketing, product-update outreach, and service all have nowhere to land, because the person they&rsquo;re for was never a record.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>Model the channel before you map fields.</b> Decide who the buyer is, who the customer is, and how one account can hold a dealer, its employees, and its customers at once. Field mapping on top of the wrong entity model just moves the confusion faster.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Where the end customer disappears</h2>
+    <p>Follow one machine. The manufacturer sells it to a dealer; the dealer sells it to an operator. HubSpot records the dealer as the company and the sale as a deal &mdash; and stops there. The operator, the unit&rsquo;s location, its service history, and every future upsell live nowhere. Worse, when an operator does come in as a lead, associating them to the dealer makes them look like a dealer <em>employee</em>, not the dealer&rsquo;s <em>customer</em>. The relationship model quietly encodes the wrong thing.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 190" role="img" aria-label="A machine flows manufacturer to dealer to operator; the CRM loses the operator at the point of sale.">
+          <text x="0" y="14" class="s-cap">THE DATA GAP IN A CHANNEL SALE</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="46" width="150" height="48" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="70" class="s-label">Manufacturer</text>
+            <text x="16" y="86" class="s-small">builds the unit</text>
+
+            <rect x="230" y="46" width="150" height="48" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="246" y="70" class="s-label">Dealer</text>
+            <text x="246" y="86" class="s-small">the buyer</text>
+
+            <rect x="470" y="46" width="180" height="48" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="486" y="70" class="s-label">Operator</text>
+            <text x="486" y="86" class="s-small">the customer &mdash; not recorded</text>
+          </g>
+          <path d="M150 70 H224" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M224 70 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <path d="M380 70 H464" stroke="var(--ink-3)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+          <path d="M464 70 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <text x="230" y="128" class="s-small" font-family="var(--sans)">HubSpot records the dealer + the deal &hellip;</text>
+          <text x="470" y="128" class="s-small" font-family="var(--sans)">&hellip; and loses the operator here (dashed = no record).</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> In a channel sale the CRM captures the dealer and the deal, but the operator &mdash; the person marketing and service actually care about &mdash; is never created. That gap is the whole problem.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> One account, three roles</h2>
+    <p>The fix starts with associations. A single company legitimately holds three kinds of people at once, and HubSpot can say so with <b>association labels</b>: <em>Dealer</em> (the channel relationship), <em>Employee</em> (the dealer&rsquo;s staff), and <em>Customer</em> (the operator the dealer sold to). A role property &mdash; owner, parts, sales, billing &mdash; adds the second dimension. Now a contact&rsquo;s place in the channel is data a workflow can read, not an assumption baked into a generic link.</p>
+    <div class="note">
+      <span class="label">Why this matters</span>
+      <p>Without labeled associations, every channel contact is an undifferentiated link and the model can&rsquo;t tell a dealer&rsquo;s employee from a dealer&rsquo;s customer. Labels are what let one account represent a real channel relationship.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> The install base is an object, not a deal</h2>
+    <p>A sold machine is not a closed deal; it is a physical thing with a serial number, a location, an owner, and a service life. Modeled as a deal it disappears into the past the moment it&rsquo;s won. Modeled as an <b>Equipment custom object</b> &mdash; one record per unit &mdash; it becomes the spine of everything after the sale: which operator runs it, where, since when, and what service it&rsquo;s due. The unit associates to the selling dealer and, once known, to the operator.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 210" role="img" aria-label="A company holds dealer, employee, and customer roles via association labels; an Equipment custom object links each unit to its operator.">
+          <text x="0" y="14" class="s-cap">CHANNEL-AWARE MODEL</text>
+          <rect x="0" y="40" width="230" height="150" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+          <text x="16" y="66" class="s-title">Company</text>
+          <g font-family="var(--sans)">
+            <text x="16" y="94" class="s-label" fill="var(--accent)">Dealer</text><text x="86" y="94" class="s-small">channel relationship</text>
+            <text x="16" y="120" class="s-label">Employee</text><text x="110" y="120" class="s-small">dealer staff</text>
+            <text x="16" y="146" class="s-label">Customer</text><text x="110" y="146" class="s-small">the operator</text>
+            <text x="16" y="172" class="s-small">+ role: owner / parts / sales / billing</text>
+          </g>
+          <path d="M230 115 H300" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M300 115 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <rect x="312" y="70" width="200" height="90" rx="4" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="328" y="96" class="s-title">Equipment</text>
+          <text x="328" y="118" class="s-small" font-family="var(--sans)">custom object &mdash; one</text>
+          <text x="328" y="134" class="s-small" font-family="var(--sans)">record per serial-numbered</text>
+          <text x="328" y="150" class="s-small" font-family="var(--sans)">unit; links unit &rarr; operator</text>
+          <path d="M512 115 H582" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M582 115 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <rect x="594" y="90" width="126" height="50" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+          <text x="610" y="112" class="s-label">Orders</text>
+          <text x="610" y="128" class="s-small" font-family="var(--sans)">bridge to the ERP</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> Association labels let one company hold dealer, employee, and customer roles; an Equipment custom object carries the install base and links each unit to its operator; the Orders object bridges to the ERP.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Recovering the operator: a capture loop</h2>
+    <p>Modeling the operator only helps if you can actually collect them. The recovery mechanism is a <b>warranty-registration loop</b>: a QR code or short URL on the paperwork that ships with every unit feeds a HubSpot form &mdash; operator, dealer, unit, serial number. Submitting it ties the operator to the machine and closes the data gap the channel opened. From that point the manufacturer can market to, update, and service the person who runs the equipment, not just the dealer who sold it.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> The ERP catalog isn&rsquo;t a sales catalog</h2>
+    <p>The manufacturer&rsquo;s products live in an ERP (NetSuite) &mdash; thousands of items, most of which a rep will never quote. Syncing them raw makes the HubSpot product picker unusable. The fix is a <em>quotable</em> flag on the ERP item, synced to a product property, so reps quote from a curated subset via native filtered product views. The <b>Orders</b> object maps one-to-one to ERP sales orders, and a light script pushes fulfillment and tracking back onto the order &mdash; so post-sale status lives on the record without HubSpot becoming the system of record for inventory.</p>
+    <div class="note good">
+      <span class="label">Transferable pattern</span>
+      <p>An ERP catalog is an inventory list, not a sales catalog. Sync a &ldquo;quotable&rdquo; flag and filter the product library on it, rather than dumping every SKU into HubSpot. Use the Orders object as the ERP bridge and keep inventory where it belongs.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> What changed</h2>
+    <p>The manufacturer can finally see past the dealer. The install base is a queryable set of records &mdash; which units are in the field, run by whom, due for what &mdash; instead of a pile of closed deals. Operators enter the system through warranty capture, so marketing and service reach the people who use the product. Reps quote from a clean, curated catalog, and orders carry their fulfillment status from the ERP. The channel is now something the CRM represents, not something it hides.</p>
+    <p class="micro">Details are generalized and figures are representative of the engagement; specifics vary by manufacturer.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">8</span> The model, generalized</h2>
+    <p>Any channel or install-base business faces the same exercise:</p>
+    <ul>
+      <li><b>Separate buyer from customer.</b> If you don&rsquo;t sell to the end user, the CRM won&rsquo;t hold them unless you model it.</li>
+      <li><b>Use association labels</b> so one account can be dealer, employer, and seller-to-customer at once.</li>
+      <li><b>Put the install base in a custom object</b> &mdash; a sold unit is a thing with a life, not a closed deal.</li>
+      <li><b>Build a capture loop</b> (warranty, registration, activation) to recover the end user the channel hides.</li>
+      <li><b>Treat the ERP catalog as inventory,</b> not a sales catalog; filter to what&rsquo;s quotable and bridge orders.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same &ldquo;model before software&rdquo; discipline runs through migrating an <em>advisory firm off a legacy CRM</em>, resolving <em>identity</em> where a native sync multiplies records, and modeling <em>project-based revenue</em> when the deal isn&rsquo;t the work.</p>
+    </div>
+  </section>
+
+  </article>

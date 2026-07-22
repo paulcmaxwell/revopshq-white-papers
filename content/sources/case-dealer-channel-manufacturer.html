@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>When the buyer isn’t the user — RevOps HQ</title>
+</head>
+<body>
+<!-- ARTIFACT-BODY-START -->
+<style>
+:root {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Source Serif 4", "Charter", Georgia, serif;
+  --sans: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --measure: 34rem;
+  --wide: 54rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #101613;
+    --paper-2: #161E1A;
+    --rule: #2A3630;
+    --ink: #E8EEEA;
+    --ink-2: #A9B8B0;
+    --ink-3: #7E8E86;
+    --accent: #57C79A;
+    --accent-soft: #1A2E26;
+    --mint: #2F6E55;
+    --clay: #D2916C;
+    --clay-soft: #2E211A;
+    --amber: #D6AC4A;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101613;
+  --paper-2: #161E1A;
+  --rule: #2A3630;
+  --ink: #E8EEEA;
+  --ink-2: #A9B8B0;
+  --ink-3: #7E8E86;
+  --accent: #57C79A;
+  --accent-soft: #1A2E26;
+  --mint: #2F6E55;
+  --clay: #D2916C;
+  --clay-soft: #2E211A;
+  --amber: #D6AC4A;
+}
+:root[data-theme="light"] {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 2px solid var(--ink);
+}
+.brandbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+.wordmark .mark {
+  width: 0.72rem; height: 0.72rem;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0.28rem 0.28rem 0 0 var(--mint);
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.deck {
+  font-size: 1.12rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 48ch;
+  text-wrap: balance;
+}
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.byline strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- abstract ---------- */
+
+.abstract {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.25rem;
+  max-width: 46rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.abstract p { font-size: 1rem; color: var(--ink-2); }
+
+/* ---------- sections ---------- */
+
+section { display: flex; flex-direction: column; gap: 0.85rem; }
+
+h2 {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 0.9rem;
+}
+h2 .num {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  min-width: 1.6rem;
+}
+h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin-top: 0.45rem;
+  text-wrap: balance;
+}
+p { max-width: var(--measure); }
+
+.lede::first-letter {
+  float: left;
+  font-size: 3.1rem;
+  line-height: 0.84;
+  padding: 0.16rem 0.5rem 0 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+ul, ol { max-width: var(--measure); padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.35rem; }
+li::marker { color: var(--accent); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.06em 0.34em;
+}
+
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, .doc :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ---------- callouts ---------- */
+
+.note {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--clay);
+  border-radius: 3px;
+  padding: 0.95rem 1.1rem;
+  max-width: var(--wide);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.note.good { border-left-color: var(--accent); }
+.note .label {
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 650;
+  color: var(--clay);
+}
+.note.good .label { color: var(--accent); }
+.note p { font-size: 0.94rem; color: var(--ink-2); max-width: 62ch; }
+
+/* ---------- figures ---------- */
+
+figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.6rem 0;
+  max-width: var(--wide);
+}
+.frame {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.15rem;
+  overflow-x: auto;
+}
+.frame svg { display: block; min-width: 500px; width: 100%; height: auto; }
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 64ch;
+}
+figcaption b { color: var(--ink); font-weight: 650; letter-spacing: 0.04em; }
+
+/* ---------- tables ---------- */
+
+.tablewrap { overflow-x: auto; max-width: var(--wide); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 620px;
+  font-size: 0.86rem;
+  font-family: var(--sans);
+  line-height: 1.45;
+}
+caption {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  color: var(--ink-2);
+  padding-bottom: 0.55rem;
+  max-width: 64ch;
+}
+th, td {
+  text-align: left;
+  padding: 0.7rem 0.9rem 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th:last-child, td:last-child { padding-right: 0; }
+thead th {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border-bottom: 1.5px solid var(--ink);
+  font-weight: 650;
+}
+tbody th { font-weight: 650; color: var(--ink); font-size: 0.9rem; }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 0.82rem; }
+tbody tr:last-child td, tbody tr:last-child th { border-bottom: none; }
+td small { display: block; color: var(--ink-3); font-size: 0.94em; }
+
+.rating {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.42rem;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.rating::before {
+  content: "";
+  width: 0.48rem; height: 0.48rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+  transform: translateY(-0.05rem);
+}
+.r-ok { color: var(--accent); }
+.r-mid { color: var(--amber); }
+.r-bad { color: var(--clay); }
+.rating + small { padding-left: 0.9rem; }
+
+/* ---------- SVG tokens ---------- */
+
+svg text { font-family: var(--sans); fill: var(--ink); }
+.s-label { font-size: 12px; }
+.s-small { font-size: 10.5px; fill: var(--ink-2); }
+.s-cap { font-size: 9.5px; letter-spacing: 0.11em; fill: var(--ink-3); font-weight: 650; }
+.s-title { font-size: 12.5px; font-weight: 650; }
+.s-mono { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); }
+.box { fill: var(--paper); stroke: var(--rule); stroke-width: 1.2; }
+.box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.3; }
+.box-limit { fill: none; stroke: var(--clay); stroke-width: 1.3; stroke-dasharray: 5 4; }
+.flow { stroke: var(--ink-2); stroke-width: 1.3; fill: none; }
+.flow-accent { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+.flow-limit { stroke: var(--clay); stroke-width: 1.4; fill: none; }
+.fill-accent { fill: var(--accent); }
+.fill-clay { fill: var(--clay); }
+.fill-ink2 { fill: var(--ink-2); }
+.fill-paper { fill: var(--paper-2); }
+
+/* ---------- footer ---------- */
+
+footer {
+  border-top: 2px solid var(--ink);
+  padding-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+footer .row { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content: space-between; }
+.glossary { max-width: var(--wide); display: flex; flex-direction: column; gap: 0.5rem; }
+.glossary div { font-size: 0.9rem; color: var(--ink-2); }
+.glossary b { color: var(--ink); }
+
+@media print {
+  body { background: #fff; font-size: 15.5px; }
+  .doc { max-width: none; gap: 1.5rem; padding: 0; }
+  .tablewrap { overflow: visible; }
+  table { min-width: 0; font-size: 0.78rem; }
+  .frame svg { min-width: 0; }
+  section, figure, .note, table { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+</style>
+
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C3</span>
+      <span>Revenue Systems Architecture</span>
+    </div>
+    <h1>When the buyer isn&rsquo;t the user: modeling a dealer channel in HubSpot</h1>
+    <p class="deck">A manufacturer sold through dealers but marketed to the operators who ran the machines. At the moment of sale the end customer vanished. Fixing it meant modeling the channel &mdash; not mapping more fields.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>An equipment manufacturer sells serial-numbered machines through a network of independent dealers, while its marketing speaks to the operators who actually use them. HubSpot&rsquo;s default contact&ndash;company&ndash;deal model assumes you sell to the buyer &mdash; but here the buyer (the dealer) and the customer (the operator) are different entities, and at the point of sale the end customer disappears. This is a first-principles look at modeling a channel business: representing dealer, employee, and end customer on one account without the association model collapsing; putting the install base in a custom object instead of a deal; recovering the end user through a warranty-capture loop; and using the Orders object as the bridge to the ERP.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> CRMs are built for direct sales</h2>
+    <p class="lede">A CRM assumes the buyer is the customer: the company you sell to is the company you serve. Channel businesses break that assumption on contact one. The manufacturer&rsquo;s revenue flows through dealers, but the value &mdash; and the marketing &mdash; is aimed at the operator running the machine. Two different entities, and the default data model can only hold one.</p>
+    <p>The symptom shows up the instant a deal closes: HubSpot knows which dealer bought the unit and nothing about who runs it. Direct marketing, product-update outreach, and service all have nowhere to land, because the person they&rsquo;re for was never a record.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>Model the channel before you map fields.</b> Decide who the buyer is, who the customer is, and how one account can hold a dealer, its employees, and its customers at once. Field mapping on top of the wrong entity model just moves the confusion faster.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Where the end customer disappears</h2>
+    <p>Follow one machine. The manufacturer sells it to a dealer; the dealer sells it to an operator. HubSpot records the dealer as the company and the sale as a deal &mdash; and stops there. The operator, the unit&rsquo;s location, its service history, and every future upsell live nowhere. Worse, when an operator does come in as a lead, associating them to the dealer makes them look like a dealer <em>employee</em>, not the dealer&rsquo;s <em>customer</em>. The relationship model quietly encodes the wrong thing.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 190" role="img" aria-label="A machine flows manufacturer to dealer to operator; the CRM loses the operator at the point of sale.">
+          <text x="0" y="14" class="s-cap">THE DATA GAP IN A CHANNEL SALE</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="46" width="150" height="48" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="70" class="s-label">Manufacturer</text>
+            <text x="16" y="86" class="s-small">builds the unit</text>
+
+            <rect x="230" y="46" width="150" height="48" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="246" y="70" class="s-label">Dealer</text>
+            <text x="246" y="86" class="s-small">the buyer</text>
+
+            <rect x="470" y="46" width="180" height="48" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="486" y="70" class="s-label">Operator</text>
+            <text x="486" y="86" class="s-small">the customer &mdash; not recorded</text>
+          </g>
+          <path d="M150 70 H224" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M224 70 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <path d="M380 70 H464" stroke="var(--ink-3)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+          <path d="M464 70 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <text x="230" y="128" class="s-small" font-family="var(--sans)">HubSpot records the dealer + the deal &hellip;</text>
+          <text x="470" y="128" class="s-small" font-family="var(--sans)">&hellip; and loses the operator here (dashed = no record).</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> In a channel sale the CRM captures the dealer and the deal, but the operator &mdash; the person marketing and service actually care about &mdash; is never created. That gap is the whole problem.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> One account, three roles</h2>
+    <p>The fix starts with associations. A single company legitimately holds three kinds of people at once, and HubSpot can say so with <b>association labels</b>: <em>Dealer</em> (the channel relationship), <em>Employee</em> (the dealer&rsquo;s staff), and <em>Customer</em> (the operator the dealer sold to). A role property &mdash; owner, parts, sales, billing &mdash; adds the second dimension. Now a contact&rsquo;s place in the channel is data a workflow can read, not an assumption baked into a generic link.</p>
+    <div class="note">
+      <span class="label">Why this matters</span>
+      <p>Without labeled associations, every channel contact is an undifferentiated link and the model can&rsquo;t tell a dealer&rsquo;s employee from a dealer&rsquo;s customer. Labels are what let one account represent a real channel relationship.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> The install base is an object, not a deal</h2>
+    <p>A sold machine is not a closed deal; it is a physical thing with a serial number, a location, an owner, and a service life. Modeled as a deal it disappears into the past the moment it&rsquo;s won. Modeled as an <b>Equipment custom object</b> &mdash; one record per unit &mdash; it becomes the spine of everything after the sale: which operator runs it, where, since when, and what service it&rsquo;s due. The unit associates to the selling dealer and, once known, to the operator.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 210" role="img" aria-label="A company holds dealer, employee, and customer roles via association labels; an Equipment custom object links each unit to its operator.">
+          <text x="0" y="14" class="s-cap">CHANNEL-AWARE MODEL</text>
+          <rect x="0" y="40" width="230" height="150" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+          <text x="16" y="66" class="s-title">Company</text>
+          <g font-family="var(--sans)">
+            <text x="16" y="94" class="s-label" fill="var(--accent)">Dealer</text><text x="86" y="94" class="s-small">channel relationship</text>
+            <text x="16" y="120" class="s-label">Employee</text><text x="110" y="120" class="s-small">dealer staff</text>
+            <text x="16" y="146" class="s-label">Customer</text><text x="110" y="146" class="s-small">the operator</text>
+            <text x="16" y="172" class="s-small">+ role: owner / parts / sales / billing</text>
+          </g>
+          <path d="M230 115 H300" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M300 115 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <rect x="312" y="70" width="200" height="90" rx="4" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="328" y="96" class="s-title">Equipment</text>
+          <text x="328" y="118" class="s-small" font-family="var(--sans)">custom object &mdash; one</text>
+          <text x="328" y="134" class="s-small" font-family="var(--sans)">record per serial-numbered</text>
+          <text x="328" y="150" class="s-small" font-family="var(--sans)">unit; links unit &rarr; operator</text>
+          <path d="M512 115 H582" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M582 115 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <rect x="594" y="90" width="126" height="50" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+          <text x="610" y="112" class="s-label">Orders</text>
+          <text x="610" y="128" class="s-small" font-family="var(--sans)">bridge to the ERP</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> Association labels let one company hold dealer, employee, and customer roles; an Equipment custom object carries the install base and links each unit to its operator; the Orders object bridges to the ERP.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Recovering the operator: a capture loop</h2>
+    <p>Modeling the operator only helps if you can actually collect them. The recovery mechanism is a <b>warranty-registration loop</b>: a QR code or short URL on the paperwork that ships with every unit feeds a HubSpot form &mdash; operator, dealer, unit, serial number. Submitting it ties the operator to the machine and closes the data gap the channel opened. From that point the manufacturer can market to, update, and service the person who runs the equipment, not just the dealer who sold it.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> The ERP catalog isn&rsquo;t a sales catalog</h2>
+    <p>The manufacturer&rsquo;s products live in an ERP (NetSuite) &mdash; thousands of items, most of which a rep will never quote. Syncing them raw makes the HubSpot product picker unusable. The fix is a <em>quotable</em> flag on the ERP item, synced to a product property, so reps quote from a curated subset via native filtered product views. The <b>Orders</b> object maps one-to-one to ERP sales orders, and a light script pushes fulfillment and tracking back onto the order &mdash; so post-sale status lives on the record without HubSpot becoming the system of record for inventory.</p>
+    <div class="note good">
+      <span class="label">Transferable pattern</span>
+      <p>An ERP catalog is an inventory list, not a sales catalog. Sync a &ldquo;quotable&rdquo; flag and filter the product library on it, rather than dumping every SKU into HubSpot. Use the Orders object as the ERP bridge and keep inventory where it belongs.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> What changed</h2>
+    <p>The manufacturer can finally see past the dealer. The install base is a queryable set of records &mdash; which units are in the field, run by whom, due for what &mdash; instead of a pile of closed deals. Operators enter the system through warranty capture, so marketing and service reach the people who use the product. Reps quote from a clean, curated catalog, and orders carry their fulfillment status from the ERP. The channel is now something the CRM represents, not something it hides.</p>
+    <p class="micro">Details are generalized and figures are representative of the engagement; specifics vary by manufacturer.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">8</span> The model, generalized</h2>
+    <p>Any channel or install-base business faces the same exercise:</p>
+    <ul>
+      <li><b>Separate buyer from customer.</b> If you don&rsquo;t sell to the end user, the CRM won&rsquo;t hold them unless you model it.</li>
+      <li><b>Use association labels</b> so one account can be dealer, employer, and seller-to-customer at once.</li>
+      <li><b>Put the install base in a custom object</b> &mdash; a sold unit is a thing with a life, not a closed deal.</li>
+      <li><b>Build a capture loop</b> (warranty, registration, activation) to recover the end user the channel hides.</li>
+      <li><b>Treat the ERP catalog as inventory,</b> not a sales catalog; filter to what&rsquo;s quotable and bridge orders.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same &ldquo;model before software&rdquo; discipline runs through migrating an <em>advisory firm off a legacy CRM</em>, resolving <em>identity</em> where a native sync multiplies records, and modeling <em>project-based revenue</em> when the deal isn&rsquo;t the work.</p>
+    </div>
+  </section>
+
+  </article>
+
+<!-- ARTIFACT-BODY-END -->
+</body>
+</html>
