@@ -158,6 +158,40 @@ export const caseStudies: Paper[] = [
     readingMinutes: 8,
     pages: 7,
   },
+  {
+    slug: 'case-legal-intake-data-contract',
+    number: 'C5',
+    series: 'gtm-operations',
+    type: 'Case Study',
+    category: 'GTM Operations',
+    title: 'The intake layer is a data contract: rebuilding high-volume legal intake in HubSpot',
+    deck:
+      'A multi-office consumer law firm booked consultations at scale — but the scheduler was a data dead-end between the lead and the CRM. If the booking layer doesn’t write structured data back, the whole funnel goes dark.',
+    abstract:
+      'A high-volume, multi-office consumer law firm ran on speed-to-lead and consult booking, but its scheduler didn’t write meeting outcomes or associations back to HubSpot — so intake lived in spreadsheets. A first-principles account of treating the intake layer as a data contract: what a booking system must return, the post-sale lifecycle as a ticket pipeline, scoring on case economics not engagement, and activity-based recycling to enforce follow-up at scale.',
+    tags: ['HubSpot', 'Intake', 'Routing', 'Tickets', 'Legal'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 8,
+    pages: 7,
+  },
+  {
+    slug: 'case-b2b-lease-d2c-one-portal',
+    number: 'C6',
+    series: 'commercial-strategy',
+    type: 'Case Study',
+    category: 'Commercial Strategy',
+    title: 'Two revenue motions, one portal: untangling B2B leasing and D2C in HubSpot',
+    deck:
+      'A hardware company ran high-touch institutional leases and a transactional web store in the same HubSpot portal. The two motions collided — blank invoices, orders multiplied by lease term. The fix was separating them, not restarting.',
+    abstract:
+      'A hardware company leases devices to institutions on multi-year contracts and sells kits through a D2C web store — two motions in one Commerce Hub portal. Invoices generated blank, e-commerce orders duplicated by lease term and shipped wrong quantities, web-only products leaked into institutional quotes. A first-principles account of separating transactional and contractual sales: custom-coded workflow actions to reshape order data, validation as an integrity gate, catalog visibility, and fulfillment-aware stages.',
+    tags: ['HubSpot', 'Commerce Hub', 'CPQ', 'E-commerce', 'Custom Code'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 8,
+    pages: 7,
+  },
 ];
 
 export const bySlug = (slug: string): Paper | undefined =>

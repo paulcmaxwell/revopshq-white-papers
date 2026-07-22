@@ -1,0 +1,125 @@
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C6</span>
+      <span>Commercial Strategy</span>
+    </div>
+    <h1>Two revenue motions, one portal: untangling B2B leasing and D2C in HubSpot</h1>
+    <p class="deck">A hardware company ran high-touch institutional leases and a transactional web store in the same HubSpot portal. The two motions collided &mdash; blank invoices, orders multiplied by lease term. The fix was separating them, not restarting.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>A hardware company leases devices to institutions on multi-year contracts and also sells prepackaged kits through a direct-to-consumer web store &mdash; two fundamentally different revenue motions running through one HubSpot portal on Commerce Hub. The tool bent the wrong way: invoices generated blank, e-commerce orders duplicated by lease term and shipped the wrong quantities, and web-only products leaked into institutional quotes. This is a first-principles account of separating transactional and contractual sales in the same portal: custom-coded workflow actions to reshape inbound order data, validation as an integrity gate, catalog visibility to keep the motions apart, and fulfillment-aware deal stages.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> Two motions obey different rules</h2>
+    <p class="lede">A transactional D2C sale and a high-touch B2B lease are not two flavors of the same pipeline; they obey different rules. One is instant, self-serve, and shipped from a catalog. The other is a negotiated multi-year contract with an obligated party, a billing schedule, and a legal document. Run both through one portal without separating them and the system applies one motion&rsquo;s rules to the other &mdash; and the data integrity breaks in ways that look like random bugs.</p>
+    <p>The breakages here were concrete: invoices generated with no customer and no line items; web-store orders duplicated once per lease year, with ship quantities multiplied by the term, so a four-year lease of six units tried to ship twenty-four; and web-only kit programs selectable inside the institutional quoting flow. None of these is a mysterious defect &mdash; each is one motion&rsquo;s logic misfiring on the other.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>Separate the motions before you fix the symptoms.</b> Decide where transactional and contractual sales diverge &mdash; catalog, quoting, invoicing, fulfillment &mdash; and isolate each. The blank invoices and multiplied orders are downstream of one un-separated model.</p>
+    </div>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 200" role="img" aria-label="Two revenue motions collide in one portal until they are isolated by catalog, quoting, invoicing, and fulfillment.">
+          <text x="0" y="14" class="s-cap">ONE PORTAL, TWO MOTIONS &mdash; ISOLATED</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="40" width="330" height="60" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="64" class="s-label">B2B lease <tspan fill="var(--ink-3)">&mdash; contractual</tspan></text>
+            <text x="16" y="84" class="s-small">multi-year, obligated party, billing schedule, legal doc</text>
+
+            <rect x="0" y="118" width="330" height="60" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="142" class="s-label">D2C store <tspan fill="var(--ink-3)">&mdash; transactional</tspan></text>
+            <text x="16" y="162" class="s-small">instant, self-serve, shipped from a catalog</text>
+
+            <rect x="410" y="72" width="310" height="74" rx="4" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="426" y="96" class="s-label">Isolate on:</text>
+            <text x="426" y="116" class="s-small">catalog &middot; quoting &middot; invoicing &middot; fulfillment</text>
+            <text x="426" y="134" class="s-small">&mdash; each motion keeps its own rules</text>
+          </g>
+          <path d="M330 88 C380 88 380 100 404 104" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M330 148 C380 148 380 116 404 112" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> The two motions share a portal but must be isolated where they diverge &mdash; catalog, quoting, invoicing, fulfillment &mdash; so one motion&rsquo;s rules stop misfiring on the other.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Custom-coded actions are the escape hatch</h2>
+    <p>The native e-commerce connector mapped the web store into HubSpot with the wrong shape &mdash; duplicating orders by lease term, multiplying quantities, dropping addresses. When a native connector maps wrong, the escape hatch is a <b>custom-coded workflow action</b>: a small piece of code inside a HubSpot workflow that reshapes the inbound data before it lands &mdash; de-duplicating by term, preserving shipping and billing addresses, and correcting base-kit quantities. It&rsquo;s the difference between accepting a connector&rsquo;s defaults and controlling the data model.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 160" role="img" aria-label="A custom-coded workflow action reshapes inbound web-store order data before it is written to HubSpot.">
+          <text x="0" y="14" class="s-cap">RESHAPE INBOUND ORDER DATA</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="48" width="170" height="56" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="72" class="s-label">Web-store order</text>
+            <text x="16" y="90" class="s-small">wrong shape</text>
+
+            <rect x="250" y="40" width="220" height="72" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="266" y="62" class="s-label">Custom-coded action</text>
+            <text x="266" y="82" class="s-small">dedupe by term &middot; keep</text>
+            <text x="266" y="98" class="s-small">addresses &middot; fix quantity</text>
+
+            <rect x="550" y="48" width="170" height="56" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="566" y="72" class="s-label">Clean order</text>
+            <text x="566" y="90" class="s-small">correct in HubSpot</text>
+          </g>
+          <path d="M170 76 H244" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M244 76 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <path d="M470 76 H544" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M544 76 l-9 -5 v10 z" fill="var(--ink-3)"/>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> When the native connector maps wrong, a custom-coded workflow action reshapes the inbound order &mdash; deduping by term, preserving addresses, fixing quantities &mdash; before it&rsquo;s written to HubSpot.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> Validation is an integrity gate</h2>
+    <p>Blank invoices &mdash; no customer, no line items &mdash; are a data-integrity failure, and the cure is prevention, not cleanup. <b>Required-field validation</b> on the deal (billing address, obligated party, term) is a gate: a record can&rsquo;t reach the stage that generates a document until the fields that document needs exist. The orphaned, half-built deals that produced empty invoices simply can&rsquo;t form.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Keep the catalogs apart</h2>
+    <p>Web-only kit programs were selectable inside institutional quotes, so a rep could put a D2C product on a B2B lease. <b>Product-catalog visibility</b> keeps the motions from contaminating each other: the transactional catalog and the contractual catalog are curated so each quoting flow only sees what belongs to it. It&rsquo;s the same discipline as filtering an ERP catalog &mdash; the picker should show what&rsquo;s valid here, not everything that exists.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Stages that know about shipping</h2>
+    <p>A hardware sale isn&rsquo;t done at &ldquo;closed won&rdquo; &mdash; a physical unit still has to ship and be paid. The deal pipeline needs <b>fulfillment-aware stages</b> (&ldquo;shipped,&rdquo; &ldquo;paid&rdquo;) that a pure software funnel never has, plus a simple <em>first-order</em> flag so new-customer versus expansion revenue becomes reportable. Cheap properties, high analytical payoff: without them, the business can&rsquo;t tell growth from repeat.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> What changed</h2>
+    <p>Invoices populate because the deals that generate them can&rsquo;t form without their required fields. Web-store orders arrive in HubSpot correctly shaped, with the right quantities and addresses. The two catalogs stay apart, so quotes only contain valid products. And fulfillment-aware stages plus a first-order flag make the physical, mixed-motion business reportable. Two motions now coexist in one portal without corrupting each other &mdash; no restart required.</p>
+    <p class="micro">Details are generalized and figures are representative of the engagement; specifics vary by business.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> The model, generalized</h2>
+    <p>Any business running two motions in one system faces the same exercise:</p>
+    <ul>
+      <li><b>Separate the motions</b> where they diverge &mdash; catalog, quoting, invoicing, fulfillment.</li>
+      <li><b>Reshape bad connector data with custom-coded actions</b> instead of accepting the defaults.</li>
+      <li><b>Gate with required-field validation</b> so incomplete records can&rsquo;t generate documents.</li>
+      <li><b>Control catalog visibility</b> so one motion&rsquo;s products can&rsquo;t leak into the other&rsquo;s quotes.</li>
+      <li><b>Model fulfillment-aware stages</b> and a first-order flag for a physical, mixed-motion business.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same &ldquo;model before software&rdquo; discipline runs through migrating an <em>advisory firm off a legacy CRM</em>, modeling a <em>dealer channel</em>, and separating sales from delivery in a <em>project-based</em> business.</p>
+    </div>
+  </section>
+
+  </article>

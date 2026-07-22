@@ -1,0 +1,130 @@
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C5</span>
+      <span>GTM Operations</span>
+    </div>
+    <h1>The intake layer is a data contract: rebuilding high-volume legal intake in HubSpot</h1>
+    <p class="deck">A multi-office consumer law firm booked consultations at scale &mdash; but the scheduler was a data dead-end between the lead and the CRM. If the booking layer doesn&rsquo;t write structured data back, the whole funnel goes dark.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>A high-volume, multi-office consumer law firm ran its revenue on speed-to-lead and consult booking. Its scheduling tool booked appointments but didn&rsquo;t write the results back to HubSpot &mdash; no meeting outcome, no auto-association of meeting to contact to deal &mdash; so intake performance lived in spreadsheets and the funnel was invisible. This is a first-principles account of treating the intake layer as a <em>data contract</em>: what a booking system must return to the CRM, modeling the post-sale lifecycle as a ticket pipeline, scoring on case economics rather than engagement, and using activity-based automation to enforce follow-up across a large, distributed intake team.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> The booking layer is a data contract</h2>
+    <p class="lede">In a high-velocity services funnel, the booking step is not a convenience bolted onto the CRM &mdash; it is the CRM&rsquo;s primary data source. Every consult booked is the moment structured truth should enter the system: who, for what, where, and what happened. If the scheduler doesn&rsquo;t return that, the funnel below it is unmeasurable, and no amount of dashboard work downstream can recover data that was never written.</p>
+    <p>Here the scheduler booked appointments and stopped. It didn&rsquo;t sync meeting outcome, type, or location; it didn&rsquo;t associate the meeting to the contact or the deal. So intake conversion &mdash; leads to appointments to shows to signed &mdash; was tracked in a master spreadsheet, by hand, and the firm was flying on numbers it couldn&rsquo;t trust.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>Treat the intake system as a data contract.</b> Define what it must write back &mdash; associations and outcome properties &mdash; before anything else. A booking tool that doesn&rsquo;t return structured data isn&rsquo;t an integration; it&rsquo;s a leak.</p>
+    </div>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 180" role="img" aria-label="A booking must write meeting-to-contact-to-deal associations and outcome properties back to the CRM or the funnel is invisible.">
+          <text x="0" y="14" class="s-cap">WHAT THE BOOKING LAYER OWES THE CRM</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="44" width="150" height="46" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="66" class="s-label">Booking</text>
+            <text x="16" y="82" class="s-small">consult scheduled</text>
+
+            <rect x="250" y="34" width="220" height="112" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="266" y="58" class="s-label">Must write back</text>
+            <text x="266" y="80" class="s-small">&bull; meeting &harr; contact &harr; deal</text>
+            <text x="266" y="100" class="s-small">&bull; outcome, type, location</text>
+            <text x="266" y="120" class="s-small">&bull; owner = deal owner</text>
+
+            <rect x="570" y="44" width="150" height="46" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="586" y="66" class="s-label">Dashboards</text>
+            <text x="586" y="82" class="s-small">native, trustworthy</text>
+          </g>
+          <path d="M150 67 H244" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M244 67 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <path d="M470 90 H564" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M564 90 l-9 -5 v10 z" fill="var(--ink-3)"/>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> The booking layer must return associations and outcome properties to the CRM. Without that write-back, intake reporting falls back to spreadsheets and the funnel is dark.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Routing is an allocation problem, not availability</h2>
+    <p>The scheduler assigned by raw availability &mdash; whoever had an open slot. For a distributed intake team that is the wrong model: it ignores tier, office, and practice area, leaves no travel buffer between in-person consults, and doesn&rsquo;t sync to per-office calendars. Routing is a <b>weighted allocation</b> problem: distribute leads by intake-rep tier and office and motion, with caps, so the queue is fair and covered &mdash; the same modeling discipline a mature sales org applies to territory.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> The post-sale lifecycle is a ticket pipeline</h2>
+    <p>Signing a client isn&rsquo;t the end; it starts a year-long service relationship the firm needs to run and measure. That lifecycle is a <b>Ticket pipeline</b> &mdash; a client-engagement center with stages, SLAs, scheduled lifecycle touches, and dashboards &mdash; running in parallel to the deal pipeline. Tickets, again, are not just for support; they are the right object for any owned, staged, post-sale process.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Score on case economics, not clicks</h2>
+    <p>Out-of-the-box lead scoring rewards engagement &mdash; opens, clicks, visits. For consumer legal that is close to noise; what predicts value is <em>case economics</em>: asset level, matter type, timeline. The model scores on those properties instead, which means the qualifying questions from the intake playbook have to become structured HubSpot properties, not free text buried in a note. Scoring is only as good as the data model beneath it.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Enforce follow-up with automation</h2>
+    <p>At volume, the failure mode isn&rsquo;t bad leads &mdash; it&rsquo;s good leads sitting untouched. Reps were holding hundreds of stale opportunities. The fix is an <b>activity-based recycle</b>: a deal with no activity for a set period and a close date well past due is automatically reverted to a lead, round-robined to a new owner, and the prior owner notified. It&rsquo;s not cleanup &mdash; it&rsquo;s an accountability mechanism the system enforces, so no lead dies in one person&rsquo;s inbox.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 160" role="img" aria-label="A stale deal is automatically reverted to a lead and reassigned by round-robin.">
+          <text x="0" y="14" class="s-cap">ACTIVITY-BASED DEAL RECYCLE</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="46" width="210" height="60" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="70" class="s-label">Stale deal</text>
+            <text x="16" y="88" class="s-small">no activity 30d +</text>
+            <text x="16" y="102" class="s-small">close date 90d past</text>
+
+            <rect x="270" y="46" width="180" height="60" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="286" y="70" class="s-label">Revert to Lead</text>
+            <text x="286" y="88" class="s-small">round-robin to a new</text>
+            <text x="286" y="102" class="s-small">owner; notify the old one</text>
+
+            <rect x="510" y="46" width="210" height="60" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="526" y="70" class="s-label">Back in play</text>
+            <text x="526" y="88" class="s-small">picked up, not dead in</text>
+            <text x="526" y="102" class="s-small">an inbox</text>
+          </g>
+          <path d="M210 76 H264" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M264 76 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <path d="M450 76 H504" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M504 76 l-9 -5 v10 z" fill="var(--ink-3)"/>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> Activity-based recycle: an idle, overdue deal is automatically reverted to a lead and reassigned, so stalled opportunities re-enter the queue instead of dying with one owner.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> What changed</h2>
+    <p>Intake performance moved out of spreadsheets and into native dashboards, because the booking layer finally wrote structured data back. Routing distributes by rules that reflect the business, not raw availability. The post-sale relationship runs on its own measurable lifecycle, scoring reflects case value, and stalled deals are recycled automatically instead of accumulating. The firm can see and steer its funnel &mdash; the thing a generic vertical tool never gave it.</p>
+    <p class="micro">Details are generalized and figures are representative of the engagement; specifics vary by firm.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> The model, generalized</h2>
+    <p>Any high-velocity services funnel faces the same exercise:</p>
+    <ul>
+      <li><b>Make the intake layer a data contract</b> &mdash; associations and outcomes written back, or the funnel is dark.</li>
+      <li><b>Route by weighted allocation,</b> not availability.</li>
+      <li><b>Run the post-sale relationship as a ticket pipeline</b> with SLAs.</li>
+      <li><b>Score on economics, not engagement</b> &mdash; and turn qualifying questions into properties.</li>
+      <li><b>Enforce follow-up with activity-based recycling,</b> so no lead dies in an inbox.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same discipline runs through migrating an <em>advisory firm off a legacy CRM</em>, modeling a <em>dealer channel</em> where the buyer isn&rsquo;t the user, and separating sales from delivery in a <em>project-based</em> business.</p>
+    </div>
+  </section>
+
+  </article>
