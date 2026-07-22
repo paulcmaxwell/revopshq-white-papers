@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>When the deal isn’t the work — RevOps HQ</title>
+</head>
+<body>
+<!-- ARTIFACT-BODY-START -->
+<style>
+:root {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Source Serif 4", "Charter", Georgia, serif;
+  --sans: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --measure: 34rem;
+  --wide: 54rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #101613;
+    --paper-2: #161E1A;
+    --rule: #2A3630;
+    --ink: #E8EEEA;
+    --ink-2: #A9B8B0;
+    --ink-3: #7E8E86;
+    --accent: #57C79A;
+    --accent-soft: #1A2E26;
+    --mint: #2F6E55;
+    --clay: #D2916C;
+    --clay-soft: #2E211A;
+    --amber: #D6AC4A;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101613;
+  --paper-2: #161E1A;
+  --rule: #2A3630;
+  --ink: #E8EEEA;
+  --ink-2: #A9B8B0;
+  --ink-3: #7E8E86;
+  --accent: #57C79A;
+  --accent-soft: #1A2E26;
+  --mint: #2F6E55;
+  --clay: #D2916C;
+  --clay-soft: #2E211A;
+  --amber: #D6AC4A;
+}
+:root[data-theme="light"] {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 2px solid var(--ink);
+}
+.brandbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+.wordmark .mark {
+  width: 0.72rem; height: 0.72rem;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0.28rem 0.28rem 0 0 var(--mint);
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.deck {
+  font-size: 1.12rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 48ch;
+  text-wrap: balance;
+}
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.byline strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- abstract ---------- */
+
+.abstract {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.25rem;
+  max-width: 46rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.abstract p { font-size: 1rem; color: var(--ink-2); }
+
+/* ---------- sections ---------- */
+
+section { display: flex; flex-direction: column; gap: 0.85rem; }
+
+h2 {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 0.9rem;
+}
+h2 .num {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  min-width: 1.6rem;
+}
+h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin-top: 0.45rem;
+  text-wrap: balance;
+}
+p { max-width: var(--measure); }
+
+.lede::first-letter {
+  float: left;
+  font-size: 3.1rem;
+  line-height: 0.84;
+  padding: 0.16rem 0.5rem 0 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+ul, ol { max-width: var(--measure); padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.35rem; }
+li::marker { color: var(--accent); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.06em 0.34em;
+}
+
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, .doc :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ---------- callouts ---------- */
+
+.note {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--clay);
+  border-radius: 3px;
+  padding: 0.95rem 1.1rem;
+  max-width: var(--wide);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.note.good { border-left-color: var(--accent); }
+.note .label {
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 650;
+  color: var(--clay);
+}
+.note.good .label { color: var(--accent); }
+.note p { font-size: 0.94rem; color: var(--ink-2); max-width: 62ch; }
+
+/* ---------- figures ---------- */
+
+figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.6rem 0;
+  max-width: var(--wide);
+}
+.frame {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.15rem;
+  overflow-x: auto;
+}
+.frame svg { display: block; min-width: 500px; width: 100%; height: auto; }
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 64ch;
+}
+figcaption b { color: var(--ink); font-weight: 650; letter-spacing: 0.04em; }
+
+/* ---------- tables ---------- */
+
+.tablewrap { overflow-x: auto; max-width: var(--wide); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 620px;
+  font-size: 0.86rem;
+  font-family: var(--sans);
+  line-height: 1.45;
+}
+caption {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  color: var(--ink-2);
+  padding-bottom: 0.55rem;
+  max-width: 64ch;
+}
+th, td {
+  text-align: left;
+  padding: 0.7rem 0.9rem 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th:last-child, td:last-child { padding-right: 0; }
+thead th {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border-bottom: 1.5px solid var(--ink);
+  font-weight: 650;
+}
+tbody th { font-weight: 650; color: var(--ink); font-size: 0.9rem; }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 0.82rem; }
+tbody tr:last-child td, tbody tr:last-child th { border-bottom: none; }
+td small { display: block; color: var(--ink-3); font-size: 0.94em; }
+
+.rating {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.42rem;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.rating::before {
+  content: "";
+  width: 0.48rem; height: 0.48rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+  transform: translateY(-0.05rem);
+}
+.r-ok { color: var(--accent); }
+.r-mid { color: var(--amber); }
+.r-bad { color: var(--clay); }
+.rating + small { padding-left: 0.9rem; }
+
+/* ---------- SVG tokens ---------- */
+
+svg text { font-family: var(--sans); fill: var(--ink); }
+.s-label { font-size: 12px; }
+.s-small { font-size: 10.5px; fill: var(--ink-2); }
+.s-cap { font-size: 9.5px; letter-spacing: 0.11em; fill: var(--ink-3); font-weight: 650; }
+.s-title { font-size: 12.5px; font-weight: 650; }
+.s-mono { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); }
+.box { fill: var(--paper); stroke: var(--rule); stroke-width: 1.2; }
+.box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.3; }
+.box-limit { fill: none; stroke: var(--clay); stroke-width: 1.3; stroke-dasharray: 5 4; }
+.flow { stroke: var(--ink-2); stroke-width: 1.3; fill: none; }
+.flow-accent { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+.flow-limit { stroke: var(--clay); stroke-width: 1.4; fill: none; }
+.fill-accent { fill: var(--accent); }
+.fill-clay { fill: var(--clay); }
+.fill-ink2 { fill: var(--ink-2); }
+.fill-paper { fill: var(--paper-2); }
+
+/* ---------- footer ---------- */
+
+footer {
+  border-top: 2px solid var(--ink);
+  padding-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+footer .row { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content: space-between; }
+.glossary { max-width: var(--wide); display: flex; flex-direction: column; gap: 0.5rem; }
+.glossary div { font-size: 0.9rem; color: var(--ink-2); }
+.glossary b { color: var(--ink); }
+
+@media print {
+  body { background: #fff; font-size: 15.5px; }
+  .doc { max-width: none; gap: 1.5rem; padding: 0; }
+  .tablewrap { overflow: visible; }
+  table { min-width: 0; font-size: 0.78rem; }
+  .frame svg { min-width: 0; }
+  section, figure, .note, table { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+</style>
+
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C4</span>
+      <span>GTM Operations</span>
+    </div>
+    <h1>When the deal isn&rsquo;t the work: a project-based pipeline in HubSpot, without a Project object</h1>
+    <p class="deck">A custom fabricator ran a bid-driven business through a pipeline inherited from its old tool &mdash; sales and production stages tangled together. The rebuild separated winning the work from doing the work, and used the objects HubSpot already had.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>A custom fabrication studio &mdash; bid-driven, long cycles, every job a one-off &mdash; migrated to HubSpot from a legacy project tool and carried its pipeline across one-to-one: dozens of stages that mixed <em>sales</em> progression with <em>production</em> approvals, so forecasting meant nothing. A project business has two lifecycles: winning the work and doing the work. This is a first-principles account of separating them in HubSpot without minting a Project custom object &mdash; a streamlined deal pipeline for sales, the native Ticket object repurposed as the project record, a separate change-order pipeline, and stage requirements as hard gates.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> A project business has two lifecycles</h2>
+    <p class="lede">The mistake a project business makes in any CRM is treating the pipeline as one thing. There are two: the <em>sales</em> lifecycle that ends when a bid is won, and the <em>production</em> lifecycle that begins there &mdash; fabrication, change orders, delivery. Collapse them into one pipeline and every report lies, because &ldquo;stage&rdquo; means both &ldquo;how likely is this to close&rdquo; and &ldquo;where is it on the shop floor.&rdquo;</p>
+    <p>That is exactly what a one-to-one migration produced here: the old tool&rsquo;s pipeline, carried across intact, with sales stages and production-approval stages and change-order stages and half a dozen lost/cancel variants all in one funnel. Forecasting was impossible, because the pipeline wasn&rsquo;t a forecast &mdash; it was a work log wearing a forecast&rsquo;s clothes.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>Separate the sales pipeline from the production lifecycle.</b> The deal ends at won; the work starts at won. Two records, two lifecycles &mdash; and the object for the second one is a decision, not a reflex.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> The deal isn&rsquo;t the work</h2>
+    <p>One sold project spawns production tracking, work orders, and change orders. The reflex is a <b>Project custom object</b> &mdash; but custom objects spend a limited Enterprise budget and get weaker native pipeline and reporting support than the standard objects. Before minting one, ask what standard object already behaves like the thing you need. Here two did.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 210" role="img" aria-label="A won deal hands off to a Ticket used as the project record, with a separate change-order deal pipeline.">
+          <text x="0" y="14" class="s-cap">TWO LIFECYCLES, STANDARD OBJECTS</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="42" width="300" height="52" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="66" class="s-label">Deal pipeline <tspan fill="var(--ink-3)">&mdash; SALES</tspan></text>
+            <text x="16" y="84" class="s-small">RFE &rarr; proposal &rarr; won (production stages removed)</text>
+
+            <rect x="0" y="128" width="300" height="62" rx="4" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="16" y="152" class="s-label">Ticket pipeline <tspan fill="var(--accent)">&mdash; PROJECT</tspan></text>
+            <text x="16" y="170" class="s-small">handoff &rarr; scheduling &rarr;</text>
+            <text x="16" y="184" class="s-small">production &rarr; closeout</text>
+
+            <rect x="420" y="86" width="300" height="52" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="436" y="110" class="s-label">Change-order pipeline</text>
+            <text x="436" y="128" class="s-small">child deals on the parent project deal</text>
+          </g>
+          <path d="M150 94 V124" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M150 124 l-5 -9 h10 z" fill="var(--ink-3)"/>
+          <text x="158" y="116" class="s-small" font-family="var(--sans)">won &rarr; hand off</text>
+          <path d="M300 68 H414" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M414 68 l-9 -5 v10 z" fill="var(--ink-3)"/>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> The sold deal (sales) hands off at won to a Ticket pipeline used as the project record (production), with a separate change-order pipeline of child deals &mdash; all standard objects, no Project custom object.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> The Ticket is the project</h2>
+    <p>The native <b>Ticket</b> object &mdash; usually thought of as support &mdash; is a pipeline with stages, ownership, and permissions. That is exactly a project record. Repurposed, it runs the production lifecycle (handoff &rarr; scheduling &rarr; production &rarr; closeout) with full native reporting and no custom-object cost. A single discriminator property on the Company (customer / vendor / partner) replaced several other proposed custom objects; only one genuinely spatial concept &mdash; a delivery Location, many-to-many to deals and tickets &mdash; earned an object of its own.</p>
+    <div class="note">
+      <span class="label">The reflex to resist</span>
+      <p>Not everything that is a &ldquo;thing&rdquo; needs a custom object. A discriminator property, a repurposed standard object, or a parent/child association often models it with better native support and no budget cost. Custom objects are a last resort, not a first move.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Change orders, and a real HubSpot limit</h2>
+    <p>A change order is a mid-project scope change, so it&rsquo;s modeled as a separate pipeline of <b>child deals</b> associated to the parent project deal. Adding scope is straightforward. <em>Deducting</em> scope hits a genuine platform limit: HubSpot rejects negative line items, so a reduction can&rsquo;t be a quote revision. The workaround is honest and explicit &mdash; adjust a contracted-value property, issue the credit in the accounting system, and let a one-way sync surface the net &mdash; rather than faking it with a &ldquo;void and duplicate&rdquo; that wrecks the client&rsquo;s paper trail.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Stage requirements are the gates</h2>
+    <p>A bid can&rsquo;t reach a client until it clears internal gates &mdash; production buy-in, a margin check, a shop-capacity check. In HubSpot those are <b>stage requirements</b>: a deal can&rsquo;t advance past &ldquo;capacity approved&rdquo; until production confirms capacity; a ticket can&rsquo;t enter production until every work order is staged. Required properties &mdash; including required <em>file</em> uploads &mdash; enforce that the document exists before the stage moves. The gate is enforced by the system, not remembered by a person.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 150" role="img" aria-label="Pipeline stage requirements act as gates that block advancement until conditions are met.">
+          <text x="0" y="14" class="s-cap">STAGE REQUIREMENTS AS GATES</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="46" width="150" height="44" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="72" class="s-label">Estimate</text>
+            <rect x="210" y="46" width="170" height="44" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="226" y="66" class="s-label">Capacity approved</text>
+            <text x="226" y="82" class="s-small">gate: production confirms</text>
+            <rect x="440" y="46" width="150" height="44" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="456" y="72" class="s-label">To client</text>
+          </g>
+          <path d="M150 68 H204" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M204 68 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <path d="M380 68 H434" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M434 68 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <text x="0" y="126" class="s-small" font-family="var(--sans)">Required properties &mdash; including a required file upload &mdash; block the move until the condition is met.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> Stage requirements turn a pipeline into a controlled process: the deal cannot advance until the gate&rsquo;s conditions (a confirmation, a required file) are satisfied.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> What changed</h2>
+    <p>The sales pipeline forecasts again, because it only holds sales stages. Production runs on its own Ticket lifecycle with real reporting. Change orders are tracked as child deals against the project, with an honest path for deductions. And the gates that used to live in people&rsquo;s heads &mdash; capacity, margin, documentation &mdash; are enforced by the system. The firm got a platform that matches how projects actually move, built almost entirely from standard objects.</p>
+    <p class="micro">Details are generalized and figures are representative of the engagement; specifics vary by shop.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> The model, generalized</h2>
+    <p>Any project- or job-based business faces the same exercise:</p>
+    <ul>
+      <li><b>Split sales from delivery.</b> The deal ends at won; the work is a separate lifecycle.</li>
+      <li><b>Repurpose a standard object before minting a custom one.</b> A Ticket pipeline is a project record; a discriminator property replaces parallel objects.</li>
+      <li><b>Model change orders as child deals</b> &mdash; and handle the negative-line-item limit honestly.</li>
+      <li><b>Use stage requirements as gates</b> &mdash; required fields and files &mdash; so process is enforced, not remembered.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same &ldquo;model before software&rdquo; discipline runs through migrating an <em>advisory firm off a legacy CRM</em>, resolving <em>identity</em> at an integration boundary, and representing a <em>dealer channel</em> where the buyer isn&rsquo;t the user.</p>
+    </div>
+  </section>
+
+  </article>
+
+<!-- ARTIFACT-BODY-END -->
+</body>
+</html>

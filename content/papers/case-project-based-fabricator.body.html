@@ -1,0 +1,127 @@
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C4</span>
+      <span>GTM Operations</span>
+    </div>
+    <h1>When the deal isn&rsquo;t the work: a project-based pipeline in HubSpot, without a Project object</h1>
+    <p class="deck">A custom fabricator ran a bid-driven business through a pipeline inherited from its old tool &mdash; sales and production stages tangled together. The rebuild separated winning the work from doing the work, and used the objects HubSpot already had.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>A custom fabrication studio &mdash; bid-driven, long cycles, every job a one-off &mdash; migrated to HubSpot from a legacy project tool and carried its pipeline across one-to-one: dozens of stages that mixed <em>sales</em> progression with <em>production</em> approvals, so forecasting meant nothing. A project business has two lifecycles: winning the work and doing the work. This is a first-principles account of separating them in HubSpot without minting a Project custom object &mdash; a streamlined deal pipeline for sales, the native Ticket object repurposed as the project record, a separate change-order pipeline, and stage requirements as hard gates.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> A project business has two lifecycles</h2>
+    <p class="lede">The mistake a project business makes in any CRM is treating the pipeline as one thing. There are two: the <em>sales</em> lifecycle that ends when a bid is won, and the <em>production</em> lifecycle that begins there &mdash; fabrication, change orders, delivery. Collapse them into one pipeline and every report lies, because &ldquo;stage&rdquo; means both &ldquo;how likely is this to close&rdquo; and &ldquo;where is it on the shop floor.&rdquo;</p>
+    <p>That is exactly what a one-to-one migration produced here: the old tool&rsquo;s pipeline, carried across intact, with sales stages and production-approval stages and change-order stages and half a dozen lost/cancel variants all in one funnel. Forecasting was impossible, because the pipeline wasn&rsquo;t a forecast &mdash; it was a work log wearing a forecast&rsquo;s clothes.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>Separate the sales pipeline from the production lifecycle.</b> The deal ends at won; the work starts at won. Two records, two lifecycles &mdash; and the object for the second one is a decision, not a reflex.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> The deal isn&rsquo;t the work</h2>
+    <p>One sold project spawns production tracking, work orders, and change orders. The reflex is a <b>Project custom object</b> &mdash; but custom objects spend a limited Enterprise budget and get weaker native pipeline and reporting support than the standard objects. Before minting one, ask what standard object already behaves like the thing you need. Here two did.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 210" role="img" aria-label="A won deal hands off to a Ticket used as the project record, with a separate change-order deal pipeline.">
+          <text x="0" y="14" class="s-cap">TWO LIFECYCLES, STANDARD OBJECTS</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="42" width="300" height="52" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="66" class="s-label">Deal pipeline <tspan fill="var(--ink-3)">&mdash; SALES</tspan></text>
+            <text x="16" y="84" class="s-small">RFE &rarr; proposal &rarr; won (production stages removed)</text>
+
+            <rect x="0" y="128" width="300" height="62" rx="4" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="16" y="152" class="s-label">Ticket pipeline <tspan fill="var(--accent)">&mdash; PROJECT</tspan></text>
+            <text x="16" y="170" class="s-small">handoff &rarr; scheduling &rarr;</text>
+            <text x="16" y="184" class="s-small">production &rarr; closeout</text>
+
+            <rect x="420" y="86" width="300" height="52" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="436" y="110" class="s-label">Change-order pipeline</text>
+            <text x="436" y="128" class="s-small">child deals on the parent project deal</text>
+          </g>
+          <path d="M150 94 V124" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M150 124 l-5 -9 h10 z" fill="var(--ink-3)"/>
+          <text x="158" y="116" class="s-small" font-family="var(--sans)">won &rarr; hand off</text>
+          <path d="M300 68 H414" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M414 68 l-9 -5 v10 z" fill="var(--ink-3)"/>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> The sold deal (sales) hands off at won to a Ticket pipeline used as the project record (production), with a separate change-order pipeline of child deals &mdash; all standard objects, no Project custom object.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> The Ticket is the project</h2>
+    <p>The native <b>Ticket</b> object &mdash; usually thought of as support &mdash; is a pipeline with stages, ownership, and permissions. That is exactly a project record. Repurposed, it runs the production lifecycle (handoff &rarr; scheduling &rarr; production &rarr; closeout) with full native reporting and no custom-object cost. A single discriminator property on the Company (customer / vendor / partner) replaced several other proposed custom objects; only one genuinely spatial concept &mdash; a delivery Location, many-to-many to deals and tickets &mdash; earned an object of its own.</p>
+    <div class="note">
+      <span class="label">The reflex to resist</span>
+      <p>Not everything that is a &ldquo;thing&rdquo; needs a custom object. A discriminator property, a repurposed standard object, or a parent/child association often models it with better native support and no budget cost. Custom objects are a last resort, not a first move.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Change orders, and a real HubSpot limit</h2>
+    <p>A change order is a mid-project scope change, so it&rsquo;s modeled as a separate pipeline of <b>child deals</b> associated to the parent project deal. Adding scope is straightforward. <em>Deducting</em> scope hits a genuine platform limit: HubSpot rejects negative line items, so a reduction can&rsquo;t be a quote revision. The workaround is honest and explicit &mdash; adjust a contracted-value property, issue the credit in the accounting system, and let a one-way sync surface the net &mdash; rather than faking it with a &ldquo;void and duplicate&rdquo; that wrecks the client&rsquo;s paper trail.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Stage requirements are the gates</h2>
+    <p>A bid can&rsquo;t reach a client until it clears internal gates &mdash; production buy-in, a margin check, a shop-capacity check. In HubSpot those are <b>stage requirements</b>: a deal can&rsquo;t advance past &ldquo;capacity approved&rdquo; until production confirms capacity; a ticket can&rsquo;t enter production until every work order is staged. Required properties &mdash; including required <em>file</em> uploads &mdash; enforce that the document exists before the stage moves. The gate is enforced by the system, not remembered by a person.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 150" role="img" aria-label="Pipeline stage requirements act as gates that block advancement until conditions are met.">
+          <text x="0" y="14" class="s-cap">STAGE REQUIREMENTS AS GATES</text>
+          <g font-family="var(--sans)">
+            <rect x="0" y="46" width="150" height="44" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="16" y="72" class="s-label">Estimate</text>
+            <rect x="210" y="46" width="170" height="44" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="226" y="66" class="s-label">Capacity approved</text>
+            <text x="226" y="82" class="s-small">gate: production confirms</text>
+            <rect x="440" y="46" width="150" height="44" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="456" y="72" class="s-label">To client</text>
+          </g>
+          <path d="M150 68 H204" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M204 68 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <path d="M380 68 H434" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M434 68 l-9 -5 v10 z" fill="var(--ink-3)"/>
+          <text x="0" y="126" class="s-small" font-family="var(--sans)">Required properties &mdash; including a required file upload &mdash; block the move until the condition is met.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> Stage requirements turn a pipeline into a controlled process: the deal cannot advance until the gate&rsquo;s conditions (a confirmation, a required file) are satisfied.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> What changed</h2>
+    <p>The sales pipeline forecasts again, because it only holds sales stages. Production runs on its own Ticket lifecycle with real reporting. Change orders are tracked as child deals against the project, with an honest path for deductions. And the gates that used to live in people&rsquo;s heads &mdash; capacity, margin, documentation &mdash; are enforced by the system. The firm got a platform that matches how projects actually move, built almost entirely from standard objects.</p>
+    <p class="micro">Details are generalized and figures are representative of the engagement; specifics vary by shop.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> The model, generalized</h2>
+    <p>Any project- or job-based business faces the same exercise:</p>
+    <ul>
+      <li><b>Split sales from delivery.</b> The deal ends at won; the work is a separate lifecycle.</li>
+      <li><b>Repurpose a standard object before minting a custom one.</b> A Ticket pipeline is a project record; a discriminator property replaces parallel objects.</li>
+      <li><b>Model change orders as child deals</b> &mdash; and handle the negative-line-item limit honestly.</li>
+      <li><b>Use stage requirements as gates</b> &mdash; required fields and files &mdash; so process is enforced, not remembered.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same &ldquo;model before software&rdquo; discipline runs through migrating an <em>advisory firm off a legacy CRM</em>, resolving <em>identity</em> at an integration boundary, and representing a <em>dealer channel</em> where the buyer isn&rsquo;t the user.</p>
+    </div>
+  </section>
+
+  </article>

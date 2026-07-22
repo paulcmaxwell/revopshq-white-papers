@@ -141,6 +141,23 @@ export const caseStudies: Paper[] = [
     readingMinutes: 8,
     pages: 7,
   },
+  {
+    slug: 'case-project-based-fabricator',
+    number: 'C4',
+    series: 'gtm-operations',
+    type: 'Case Study',
+    category: 'GTM Operations',
+    title: 'When the deal isn’t the work: a project-based pipeline in HubSpot, without a Project object',
+    deck:
+      'A custom fabricator ran a bid-driven business through a pipeline inherited from its old tool — sales and production stages tangled together. The rebuild separated winning the work from doing the work, using the objects HubSpot already had.',
+    abstract:
+      'A bid-driven fabrication studio migrated to HubSpot and carried its pipeline across one-to-one — dozens of stages mixing sales progression with production approvals, so forecasting meant nothing. A project business has two lifecycles: winning the work and doing it. A first-principles account of separating them without a Project custom object: a streamlined deal pipeline, the native Ticket object as the project record, a change-order pipeline of child deals, and stage requirements as hard gates.',
+    tags: ['HubSpot', 'Tickets', 'Pipelines', 'Project-based', 'CPQ'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 8,
+    pages: 7,
+  },
 ];
 
 export const bySlug = (slug: string): Paper | undefined =>
