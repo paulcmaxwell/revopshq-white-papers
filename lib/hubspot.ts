@@ -37,9 +37,14 @@ export async function submitLeadToHubSpotForm(
 ): Promise<SubmitResult> {
   console.log('[lead]', JSON.stringify({ ...lead, at: new Date().toISOString() }));
 
+  // The HubSpot form (e79ed75a) exposes only First name / Last name / Email /
+  // Message. Everything else — company, the HubSpot-user answer, which paper —
+  // is compiled into the single Message field rather than sent as its own field
+  // (extra fields are dropped by the form).
   const message = [
-    `White paper: ${lead.paperTitle} (${lead.paperSlug})`,
+    `Company: ${lead.company}`,
     `Currently a HubSpot user: ${lead.hubspotUser ? 'Yes' : 'No'}`,
+    `White paper: ${lead.paperTitle} (${lead.paperSlug})`,
     ctx.pageUri ? `Source: ${ctx.pageUri}` : null,
   ]
     .filter(Boolean)
@@ -50,7 +55,6 @@ export async function submitLeadToHubSpotForm(
       { name: 'email', value: lead.email },
       { name: 'firstname', value: lead.firstName },
       { name: 'lastname', value: lead.lastName },
-      { name: 'company', value: lead.company },
       { name: 'message', value: message },
     ],
     context: {

@@ -13,11 +13,10 @@
   .og{
     width:1200px;height:630px;background:var(--paper);color:var(--ink);
     position:relative;overflow:hidden;box-sizing:border-box;
-    padding:72px 80px;display:flex;flex-direction:column;justify-content:space-between;
+    padding:70px 80px;display:flex;flex-direction:column;justify-content:space-between;
     font-family:var(--sans);
   }
-  /* faint oversized mark, bled off the right edge */
-  .ghost{position:absolute;right:-120px;top:-90px;opacity:.06}
+  .ghost{position:absolute;right:-140px;top:-110px;opacity:.07}
   .ghost .a{fill:var(--accent)}
   .ghost .b{fill:var(--mint)}
   .top{display:flex;align-items:center;gap:16px;position:relative;z-index:2}
@@ -25,15 +24,15 @@
   .mark i{position:absolute;border-radius:6px}
   .mark .m1{inset:8px 0 0 8px;background:var(--mint)}
   .mark .m2{inset:0 8px 8px 0;background:var(--accent)}
-  .wm{font-weight:650;letter-spacing:.22em;text-transform:uppercase;font-size:19px}
+  .wm{font-weight:650;letter-spacing:.06em;font-size:20px;font-family:var(--serif)}
   .eyebrow{font-weight:650;letter-spacing:.2em;text-transform:uppercase;
-    font-size:15px;color:var(--accent);margin-bottom:26px}
-  h1{font-family:var(--serif);font-weight:600;letter-spacing:-.02em;
-    font-size:82px;line-height:1.02;margin:0;max-width:16ch;color:var(--ink)}
-  .dek{font-family:var(--serif);font-size:26px;line-height:1.4;color:var(--ink2);
-    margin-top:26px;max-width:34ch}
+    font-size:15px;color:var(--accent);margin-bottom:22px}
+  h1{font-family:var(--serif);font-weight:600;letter-spacing:-.03em;
+    font-size:104px;line-height:.96;margin:0;color:var(--ink)}
+  .dek{font-family:var(--serif);font-size:25px;line-height:1.4;color:var(--ink2);
+    margin-top:24px;max-width:32ch}
   .foot{display:flex;align-items:center;justify-content:space-between;
-    position:relative;z-index:2;border-top:1px solid var(--rule);padding-top:22px}
+    position:relative;z-index:2;border-top:1px solid var(--rule);padding-top:20px}
   .foot .u{font-size:17px;color:var(--ink2)}
   .foot .t{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
   .rule{position:absolute;left:0;top:0;bottom:0;width:8px;
@@ -43,26 +42,25 @@
 <body>
   <div class="og">
     <div class="rule"></div>
-    <svg class="ghost" width="620" height="620" viewBox="0 0 100 100">
+    <svg class="ghost" width="660" height="660" viewBox="0 0 100 100">
       <rect class="b" x="33" y="33" width="52" height="52" rx="11"/>
       <rect class="a" x="15" y="15" width="52" height="52" rx="11"/>
     </svg>
 
     <div class="top">
       <span class="mark"><i class="m1"></i><i class="m2"></i></span>
-      <span class="wm">RevOps&nbsp;HQ</span>
+      <span class="wm">Revenue&nbsp;Foundations</span>
     </div>
 
     <div>
-      <div class="eyebrow">Research · Revenue Systems Architecture</div>
-      <h1>White papers on revenue systems that ship.</h1>
-      <div class="dek">Field research on HubSpot, integration design, and the
-        trade-offs that only show up at production volume.</div>
+      <div class="eyebrow">A Journal of Revenue Systems &amp; Operations</div>
+      <h1>Revenue Foundations</h1>
+      <div class="dek">Field research and applied analysis for revenue operators.</div>
     </div>
 
     <div class="foot">
-      <span class="u">revopshq-white-papers.vercel.app</span>
-      <span class="t">Free PDF downloads</span>
+      <span class="u">revenuefoundations.com</span>
+      <span class="t">An independent research project · RevOps HQ</span>
     </div>
   </div>
 </body>

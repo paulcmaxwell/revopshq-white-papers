@@ -10,13 +10,16 @@
 // The homepage, reader page and gated download route all read from here.
 // ============================================================
 
+import type { ArticleType } from '@/lib/journal';
+
 export type Paper = {
   slug: string;
   number: string; // e.g. "01" — the "No." on the card
+  series: string; // series slug — see content/series.ts
+  type: ArticleType; // article format label
   title: string;
   deck: string; // one-line subtitle
   abstract: string; // 2–3 sentence card summary
-  category: string;
   tags: string[];
   authors: string[];
   date: string; // ISO
@@ -29,12 +32,13 @@ export const papers: Paper[] = [
   {
     slug: 'datahub-integration',
     number: '01',
+    series: 'revenue-systems-architecture',
+    type: 'White Paper',
     title: 'Integration Modeling for HubSpot Data Hub',
     deck:
       "What Data Hub's two integration paths actually do, where each one stops, and how to choose an architecture that survives production volume.",
     abstract:
       'HubSpot Data Hub offers two ways to move data across a system boundary — custom code workflow actions and Data Studio — each with a hard constraint. This paper scores both native paths, and every external alternative, against a cost / centralization / complexity taxonomy, and gives a five-question qualification framework for discovery.',
-    category: 'Revenue Systems Architecture',
     tags: ['HubSpot', 'Data Hub', 'Integrations', 'RevOps'],
     authors: ['Paul Maxwell', 'James Bond'],
     date: '2026-07-21',

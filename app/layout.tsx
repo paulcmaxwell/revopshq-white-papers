@@ -5,23 +5,25 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://revopshq-white-papers.vercel.app'),
+  metadataBase: new URL('https://revenuefoundations.com'),
   title: {
-    default: 'RevOps HQ — White Papers',
-    template: '%s — RevOps HQ',
+    default: 'Revenue Foundations — A Journal of Revenue Systems & Operations',
+    template: '%s — Revenue Foundations',
   },
   description:
-    'Field-tested research on revenue systems architecture, HubSpot, and integration design from RevOps HQ.',
+    'Field research and applied analysis for revenue operators: revenue systems architecture, attribution and measurement, and the trade-offs behind how modern revenue teams actually run. An independent research project funded by RevOps HQ.',
   openGraph: {
-    title: 'RevOps HQ — White Papers',
+    title: 'Revenue Foundations — A Journal of Revenue Systems & Operations',
     description:
-      'Field-tested research on revenue systems architecture, HubSpot, and integration design.',
+      'Field research and applied analysis for revenue operators. An independent research project funded by RevOps HQ.',
     type: 'website',
   },
 };
 
 // Set the theme before paint to avoid a flash of the wrong palette.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`;
+// Default to light unless the visitor explicitly chose dark. Do not follow the
+// OS preference — the journal reads as a light publication by default.
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -31,25 +31,8 @@
   --shadow-lg: 0 2px 6px rgba(20, 32, 28, 0.05), 0 24px 60px -28px rgba(20, 32, 28, 0.30);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #101613;
-    --paper-2: #161E1A;
-    --rule: #2A3630;
-    --ink: #E8EEEA;
-    --ink-2: #A9B8B0;
-    --ink-3: #7E8E86;
-    --accent: #57C79A;
-    --accent-2: #6FD3AB;
-    --accent-soft: #1A2E26;
-    --mint: #2F6E55;
-    --clay: #D2916C;
-    --clay-soft: #2E211A;
-    --amber: #D6AC4A;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -18px rgba(0, 0, 0, 0.7);
-    --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.45), 0 28px 64px -28px rgba(0, 0, 0, 0.8);
-  }
-}
+/* Dark is opt-in only (the toggle sets data-theme="dark"). The journal defaults
+   to light regardless of OS preference — no prefers-color-scheme override. */
 :root[data-theme="dark"] {
   --paper: #101613;
   --paper-2: #161E1A;
@@ -111,19 +94,34 @@ a { color: inherit; text-decoration: none; }
 .wm {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  font-weight: 650;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-size: 0.78rem;
+  gap: 0.7rem;
   color: var(--ink);
 }
 .wm .mark {
-  width: 0.8rem; height: 0.8rem;
-  border-radius: 2px;
+  width: 1.1rem; height: 1.1rem;
+  border-radius: 3px;
   background: var(--accent);
-  box-shadow: 0.3rem 0.3rem 0 0 var(--mint);
+  box-shadow: 0.32rem 0.32rem 0 0 var(--mint);
   flex: none;
+  margin-right: 0.2rem;
+}
+.wm-name {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.04;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: -0.012em;
+}
+.wm-sub {
+  font-family: var(--sans);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 650;
+  margin-top: 0.22rem;
 }
 
 .eyebrow {
@@ -523,6 +521,154 @@ a { color: inherit; text-decoration: none; }
 
 .page { display: flex; flex-direction: column; min-height: 100dvh; }
 main { flex: 1 0 auto; }
+
+/* ---------- masthead hero (volumetric) ---------- */
+
+.masthead-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid var(--rule);
+  padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+.vbg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* CSS fallback if the canvas is hidden (no WebGL) */
+  background:
+    radial-gradient(60% 80% at 78% 30%, color-mix(in srgb, var(--mint) 40%, transparent), transparent 70%),
+    radial-gradient(50% 70% at 90% 80%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
+    var(--paper);
+}
+.mh-inner { position: relative; }
+.mh-eyebrow {
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); font-weight: 650; margin-bottom: 1.1rem;
+}
+.mh-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  font-size: clamp(3rem, 10vw, 7rem);
+  color: var(--ink);
+  text-wrap: balance;
+}
+.mh-blurb {
+  font-family: var(--serif);
+  margin-top: 1.4rem;
+  font-size: clamp(1.08rem, 2.2vw, 1.4rem);
+  line-height: 1.45;
+  color: var(--ink-2);
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+.mh-flag {
+  display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.6rem;
+  margin-top: 2rem;
+  font-family: var(--sans);
+  font-size: 0.8rem; letter-spacing: 0.04em;
+  color: var(--ink-2);
+  background: color-mix(in srgb, var(--paper-2) 80%, transparent);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  backdrop-filter: blur(6px);
+}
+.mh-flag-vol { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
+.mh-flag-dot { color: var(--ink-3); }
+.mh-flag-count { color: var(--accent); font-weight: 600; }
+
+/* ---------- departments / series ---------- */
+
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 4rem;
+}
+.dept {
+  background: var(--paper-2);
+  padding: 1.4rem 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.dept-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.4rem; }
+.dept-roman {
+  font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--accent);
+  line-height: 1; font-variant-numeric: normal;
+}
+.dept-count { font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); font-weight: 650; }
+.dept h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1.12; text-wrap: balance; }
+.dept-tag { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--ink-2); }
+.dept-desc { font-size: 0.85rem; line-height: 1.5; color: var(--ink-3); margin-top: 0.2rem; }
+
+/* ---------- archive ---------- */
+
+.archive-list { list-style: none; padding: 0; margin: 0 0 4rem; border-top: 1px solid var(--rule); }
+.archive-row {
+  display: grid;
+  grid-template-columns: 7rem 8rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+.archive-vol { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); font-weight: 600; letter-spacing: 0.04em; }
+.archive-month { color: var(--ink-3); font-size: 0.82rem; letter-spacing: 0.02em; }
+.archive-titles { font-family: var(--serif); color: var(--ink); }
+.archive-titles a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.archive-sep { color: var(--ink-3); }
+@media (max-width: 620px) {
+  .archive-row { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+/* ---------- colophon ---------- */
+
+.colophon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 4.5rem;
+  padding: 2rem 2rem 2.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--paper-2);
+}
+.colophon-body {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 58ch;
+  margin-top: 0.5rem;
+}
+.colophon-body strong { color: var(--ink); font-weight: 600; }
+.colophon-body a { color: var(--accent); text-underline-offset: 2px; }
+.colophon-body a:hover { text-decoration: underline; }
+.colophon-mark { flex: none; }
+.mark-lg {
+  display: block;
+  width: 3.4rem; height: 3.4rem;
+  border-radius: 9px;
+  background: var(--accent);
+  box-shadow: 1rem 1rem 0 0 var(--mint);
+}
+@media (max-width: 640px) {
+  .colophon { flex-direction: column; align-items: flex-start; }
+  .colophon-mark { display: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
