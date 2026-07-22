@@ -8,6 +8,8 @@ import { unlockCookie } from '@/lib/gate';
 import DownloadGate from '@/components/DownloadGate';
 import CreditCalculator from '@/components/CreditCalculator';
 import AttributionSimulator from '@/components/AttributionSimulator';
+import ArticleTOC from '@/components/ArticleTOC';
+import CiteThis from '@/components/CiteThis';
 import '@/content/paper.css';
 
 export const dynamicParams = false;
@@ -55,11 +57,23 @@ export default async function PaperPage({
         <span aria-hidden="true">←</span> All white papers
       </Link>
 
-      <div className="paper">
-        {/* Rendered from the RevOps HQ design-system markup in content/papers/<slug>.body.html */}
-        <div dangerouslySetInnerHTML={{ __html: body }} />
-        {slug === 'hubspot-credit-reference' && <CreditCalculator />}
-        {slug === 'attribution-channel-economics' && <AttributionSimulator />}
+      <div className="reader-grid">
+        <ArticleTOC />
+        <div className="reader-main">
+          <div className="paper">
+            {/* Rendered from the RevOps HQ design-system markup in content/papers/<slug>.body.html */}
+            <div dangerouslySetInnerHTML={{ __html: body }} />
+            {slug === 'hubspot-credit-reference' && <CreditCalculator />}
+            {slug === 'attribution-channel-economics' && <AttributionSimulator />}
+          </div>
+          <CiteThis
+            slug={paper.slug}
+            title={paper.title}
+            authors={paper.authors}
+            date={paper.date}
+            number={paper.number}
+          />
+        </div>
       </div>
 
       <DownloadGate
