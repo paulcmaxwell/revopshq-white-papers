@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -34,6 +35,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <Footer />
         </div>
+        {/* HubSpot tracking (portal 21204085) */}
+        <Script
+          id="hs-script-loader"
+          strategy="afterInteractive"
+          src="//js.hs-scripts.com/21204085.js"
+        />
       </body>
     </html>
   );
