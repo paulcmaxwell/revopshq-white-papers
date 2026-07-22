@@ -522,3 +522,84 @@ main { flex: 1 0 auto; }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
+
+/* ============================================================
+   Credit calculator — interactive companion, White Paper No. 03.
+   Mounts inside .paper; uses the shared token block. Print-hidden.
+   ============================================================ */
+.credit-calc {
+  margin: 2rem 0 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent);
+  background: var(--paper-2);
+  font-family: var(--sans);
+}
+.credit-calc figcaption { display: flex; flex-direction: column; gap: 0.2rem; margin-bottom: 1.25rem; }
+.cc-kicker {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent);
+}
+.cc-note { font-size: 0.8rem; color: var(--ink-3); }
+
+.cc-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; }
+@media (max-width: 720px) { .cc-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+.cc-inputs { display: flex; flex-direction: column; gap: 0.85rem; }
+.cc-field { display: flex; flex-direction: column; gap: 0.3rem; }
+.cc-field > label { font-size: 0.82rem; color: var(--ink); font-weight: 600; }
+.cc-field > label span { font-weight: 400; color: var(--ink-3); font-family: var(--mono); font-size: 0.72rem; }
+
+.cc-num { display: flex; align-items: center; gap: 0.5rem; }
+.cc-num input {
+  width: 6.5rem; padding: 0.4rem 0.55rem; font-family: var(--mono); font-size: 0.9rem;
+  color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px;
+}
+.cc-num input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.cc-unit { font-size: 0.76rem; color: var(--ink-3); }
+
+.cc-plan { gap: 0.4rem; }
+.cc-segs { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.cc-segs button {
+  padding: 0.32rem 0.6rem; font-family: var(--sans); font-size: 0.78rem; color: var(--ink-2);
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.cc-segs button:hover { border-color: var(--ink-3); }
+.cc-segs button[aria-pressed="true"] {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+
+.cc-out { display: flex; flex-direction: column; gap: 0.9rem; }
+.cc-bar {
+  position: relative; height: 14px; background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 3px; overflow: hidden; display: flex;
+}
+.cc-bar-included { background: var(--mint); height: 100%; }
+.cc-bar-over { background: var(--clay); height: 100%; }
+.cc-bar-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: 0.55; }
+.cc-legend { display: flex; gap: 1rem; font-size: 0.74rem; color: var(--ink-2); font-family: var(--mono); }
+.cc-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 0.3rem; vertical-align: middle; }
+.cc-sw-inc { background: var(--mint); }
+.cc-sw-over { background: var(--clay); }
+
+.cc-totals { margin: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.cc-totals > div { display: flex; justify-content: space-between; font-size: 0.85rem; }
+.cc-totals dt { color: var(--ink-2); }
+.cc-totals dd { margin: 0; font-family: var(--mono); color: var(--ink); }
+.cc-over-row { padding-top: 0.35rem; border-top: 1px solid var(--rule); font-weight: 600; }
+.cc-over-row dt, .cc-over-row dd { color: var(--ink); font-weight: 600; }
+
+.cc-cost {
+  display: flex; flex-direction: column; gap: 0.1rem; padding: 0.85rem 1rem;
+  background: var(--accent-soft); border-radius: 4px;
+}
+.cc-cost-label { font-size: 0.74rem; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-2); }
+.cc-cost-val { font-family: var(--serif); font-size: 2rem; line-height: 1; color: var(--ink); font-weight: 600; }
+.cc-cost-sub { font-size: 0.76rem; color: var(--ink-3); }
+
+.cc-break { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.cc-break li { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-2); }
+.cc-break-n { font-family: var(--mono); color: var(--ink); }
+
+@media print { .credit-calc { display: none !important; } }

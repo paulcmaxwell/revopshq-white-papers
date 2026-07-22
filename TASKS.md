@@ -1,43 +1,81 @@
 # Revenue Foundations — Backlog
 
-Brand/website (white papers primary; articles + tools/products alongside; the
-journal Vol./No. is a citation detail, not the identity). Design bar:
-`DESIGN_PHILOSOPHY.md`. Deploy: push `main` → Vercel → www.revenuefoundations.com.
+Brand/website. **White papers primary**; case studies, articles, and tools/downloads
+alongside. Journal apparatus (Vol./No./series/issue) is a **citation detail, a
+credibility signal — it must NOT dominate the branding.** Brand-first everywhere.
+Design bar: `DESIGN_PHILOSOPHY.md`. Deploy: push `main` → Vercel → www.revenuefoundations.com.
 
 Status: `[ ]` todo · `[~]` in progress · `[x]` done
 
 ## Live / shipped
 - [x] Next.js site, gated PDF downloads, HubSpot Forms API lead capture
 - [x] Lead fields fixed (company + HubSpot-user + paper → Message field)
-- [x] White paper No. 01 — Integration Modeling for HubSpot Data Hub (+ PDF)
 - [x] SEO/AEO/GEO: sitemap.xml, robots.txt, dynamic llms.txt
 - [x] Brand mark (green squares) — favicon, OG, apple icon
 - [x] Live on revenuefoundations.com (apex → www)
+- [x] Journal apparatus in code (`lib/journal.ts`, `content/series.ts`) — Vol/No/series
+- [x] White Paper No. 01 — Integration Modeling for HubSpot Data Hub (+ PDF)
+- [x] White Paper No. 02 — Attribution & Channel Economics (+ PDF)
+- [x] White Paper No. 03 — HubSpot Credit Consumption Reference (+ PDF)
 
-## NOW — make it a genuinely good site (not patches)
-- [~] Homepage rebuild to DESIGN_PHILOSOPHY: editorial publication front page,
-      near-monochrome (green = punctuation), NO clipped decoration, real grid +
-      featured lead item + typeset index. Verify against the live render.
-- [~] Kill the "journal" over-branding in copy (brand-first; white papers primary)
-- [~] Motion: full-bleed fixed neutral ambient field (cannot clip) OR none
-- [ ] White paper No. 02 — Attribution & Channel Economics (from new-content.md:
-      CPA + HubSpot multi-touch attribution + platform comparison matrix) + PDF
-- [ ] Article page: clickable TOC that collapses on scroll + citation / Cite-this
+## NOW (this session)
+- [~] **Interactive credit calculator on No. 03** — `components/CreditCalculator.tsx`,
+      portals into `#credit-calculator` marker after §5 (web-only, hidden in print).
+      Inputs: tier/allowance, per-agent volumes, Data Studio size×frequency →
+      credits/mo, overage bar, $ at $0.01/credit. VERIFY the live render + build.
+- [ ] **Attribution model charts + simulator (No. 02)** — a set of "model charts"
+      that visually explain each attribution model (first-touch, last-touch, linear,
+      time-decay, U/W-shaped, data-driven): what credit each touch gets, shown as a
+      chart. Add a **model switcher** and an interactive **simulator with fake data**
+      (a sample journey → live credit split per model). Same design language.
+- [ ] **Case Studies content type** — new format alongside white papers, same design
+      + voice. See "Case study backlog" below. Numbered, series-tagged, gated PDF.
+- [ ] **AgencyHabits-style packaging** — downloadable assets shown as **3D ebook /
+      journal-issue cover images** in a grid; email-gated download. Repurpose the
+      orphaned `components/CoverArt.tsx` (WebGL cover) as the cover-image generator.
+      Applies to white papers, case studies, and tools/downloads.
+
+## Bugs
+- [ ] **No. 02 attribution** — "the number on the board" (section `.num` badge)
+      OVERLAPS the box/figure. Fix the overlap (z-index / positioning / margin).
+
+## Homepage / design
+- [~] Homepage to DESIGN_PHILOSOPHY: editorial front page — dominant featured item +
+      typeset index, green as punctuation only, no clipped decoration. NOTE: current
+      `app/page.tsx` was reverted to a simpler hero+grid+series that arguably UNDER-
+      shoots the philosophy; the earlier editorial build (featured lead + CoverArt +
+      two-column recent/series — see 7.01am screenshot) matched it better. Decide.
+- [x] Kill "journal" over-branding in copy (brand-first; white papers primary)
+- [ ] Article page: clickable TOC that collapses on scroll + Cite-this line
+
+## Case study backlog (draft — same design/voice, gated ebook download)
+Map each to a series; ground in real archetypes (the Forge $25M example in
+`new-content.md` is a ready anchor for the attribution one).
+- [ ] CS · Attribution — "Killing $9,200-CPA events spend with multi-touch" (Forge)
+- [ ] CS · Attribution — first-touch → multi-touch migration, 24% CAC drop
+- [ ] CS · Revenue Systems Arch — rebuilding a broken HubSpot↔Salesforce sync at scale
+- [ ] CS · Revenue Systems Arch — dedup / data-quality remediation on a dirty CRM
+- [ ] CS · GTM Ops — lead-routing SLA overhaul (speed-to-lead 19h → minutes)
+- [ ] CS · GTM Ops — lifecycle-stage rearchitecture that unblocked reporting
+- [ ] CS · Revenue Intelligence — forecast hygiene, accuracy 60% → 90%
+- [ ] CS · Revenue Intelligence — buyer-intent signals wired into the SDR queue
+- [ ] CS · Commercial Strategy — repackaging pricing tiers to lift ASP
 
 ## Next
-- [ ] Brand-first IA sections: White Papers → Tools & Downloads → Articles
-- [ ] Tools & Downloads product system (calculators + downloadable assets,
-      AgencyHabits-style) with cover images
+- [ ] Brand-first IA: White Papers → Case Studies → Tools & Downloads → Articles
+- [ ] Tools & Downloads product system (calculators + downloadable assets) w/ covers
 - [ ] Search / filter across resources; optional table view
 - [ ] CONTENT_IDEAS.md + daily publishing workflow (assign issue/vol/series/authors)
 - [ ] Per-paper OG images
 
 ## Content ideas (seed — move to CONTENT_IDEAS.md)
-- Deduplication & data quality in HubSpot (from the Data Hub session)
-- Lifecycle stage architecture; lead routing SLAs; forecasting hygiene
+- Deduplication & data quality in HubSpot; lifecycle architecture; routing SLAs
 - Tools: CAC payback calculator, attribution-readiness checklist, RevOps maturity
 
 ## Hygiene / gotchas
 - Keep `next` on a patched release (Vercel blocks CVE versions)
 - Repo lives in Google Drive: `White Papers/revopshq-white-papers/`
 - Verify the LIVE render (screenshot) before claiming a design is done
+- Local dev :3000 was a DIFFERENT app this session — don't trust it blindly
+- Orphaned components (from reverted editorial homepage): `CoverArt.tsx`,
+  `VolumetricBackground.tsx` — reuse `CoverArt` for ebook covers; else delete
