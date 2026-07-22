@@ -1,53 +1,94 @@
-import PaperCard from '@/components/PaperCard';
+import Link from 'next/link';
 import { papers } from '@/content/papers';
 import { series as allSeries } from '@/content/series';
+import { volIssue } from '@/lib/journal';
+
+const fmtDate = (iso: string) =>
+  new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 export default function Home() {
-  const sorted = [...papers].sort((a, b) => b.date.localeCompare(a.date));
-  const totalPages = papers.reduce((n, p) => n + p.pages, 0);
+  const sorted = [...papers].sort((a, b) => b.date.localeCompare(a.date) || b.number.localeCompare(a.number));
+  const lead =
+    sorted.find((p) => p.featured) ?? sorted[0];
 
   return (
     <>
-      <section className="hero">
-        <div className="container">
-          <p className="eyebrow">Revenue Foundations · Research</p>
-          <h1>Applied research on revenue systems and operations.</h1>
-          <p>
-            Field notes from the work — HubSpot architecture, integration design, and the trade-offs
-            that only show up at production volume. Written for the people who have to build it, and
-            the people who have to sell it.
-          </p>
-          <div className="stats">
-            <div className="stat">
-              <b>{papers.length}</b>
-              <span>{papers.length === 1 ? 'Paper' : 'Papers'}</span>
-            </div>
-            <div className="stat">
-              <b>{totalPages}</b>
-              <span>Pages</span>
-            </div>
-            <div className="stat">
-              <b>Free</b>
-              <span>PDF downloads</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ---- masthead ---- */}
+      <header className="masthead container">
+        <p className="eyebrow">Revenue Foundations</p>
+        <h1>Applied research on the systems that move revenue.</h1>
+        <p className="masthead-lede">
+          Field notes from the work — HubSpot architecture, integration design, attribution, and the
+          trade-offs that only surface at production volume. An independent research project from{' '}
+          <a href="https://revopshq.com" target="_blank" rel="noopener noreferrer">RevOps&nbsp;HQ</a> —
+          free to read, cite, and share.
+        </p>
+        <p className="masthead-meta">
+          <span>{volIssue(sorted[0].date)}</span>
+          <span aria-hidden="true">·</span>
+          <span>{papers.length} {papers.length === 1 ? 'paper' : 'papers'}</span>
+          <span aria-hidden="true">·</span>
+          <span>Published by RevOps&nbsp;HQ</span>
+        </p>
+      </header>
 
+      {/* ---- featured lead ---- */}
+      {lead && (
+        <section className="container lead" aria-labelledby="lead-title">
+          <Link href={`/papers/${lead.slug}`} className="lead-cover" aria-hidden="true" tabIndex={-1}>
+            <span className="lc-top">
+              <span className="lc-no">No.&nbsp;{lead.number}</span>
+              <span className="lc-mark" />
+            </span>
+            <span className="lc-series">{lead.category}</span>
+            <span className="lc-title">{lead.title}</span>
+            <span className="lc-foot">{volIssue(lead.date)}</span>
+          </Link>
+
+          <div className="lead-body">
+            <p className="eyebrow">Featured · {lead.type}</p>
+            <h2 id="lead-title">
+              <Link href={`/papers/${lead.slug}`}>{lead.title}</Link>
+            </h2>
+            <p className="lead-deck">{lead.abstract}</p>
+            <p className="lead-byline">
+              Words by {lead.authors.join(' & ')} <span aria-hidden="true">—</span> {lead.readingMinutes} min
+              read <span aria-hidden="true">—</span> {fmtDate(lead.date)}
+            </p>
+            <Link href={`/papers/${lead.slug}`} className="lead-read">
+              Read the paper <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* ---- contents index ---- */}
       <section className="container" id="library">
         <div className="section-head">
-          <h2>The Library</h2>
-          <span className="count">
-            {papers.length} {papers.length === 1 ? 'title' : 'titles'}
-          </span>
+          <h2>Contents</h2>
+          <span className="count">{papers.length} {papers.length === 1 ? 'title' : 'titles'}</span>
         </div>
-        <div className="lib-grid">
+        <ol className="contents">
           {sorted.map((p) => (
-            <PaperCard paper={p} key={p.slug} />
+            <li key={p.slug}>
+              <Link href={`/papers/${p.slug}`}>
+                <span className="ct-no">No.&nbsp;{p.number}</span>
+                <span className="ct-main">
+                  <span className="ct-title">{p.title}</span>
+                  <span className="ct-deck">{p.deck}</span>
+                  <span className="ct-meta">
+                    {p.category} <span aria-hidden="true">·</span> {fmtDate(p.date)}{' '}
+                    <span aria-hidden="true">·</span> {p.readingMinutes} min
+                  </span>
+                </span>
+                <span className="ct-arr" aria-hidden="true">→</span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
+      {/* ---- series index ---- */}
       <section className="container" id="series">
         <div className="section-head">
           <h2>Series</h2>
