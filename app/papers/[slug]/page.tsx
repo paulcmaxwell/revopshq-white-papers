@@ -7,6 +7,7 @@ import { loadBody } from '@/lib/papers';
 import { unlockCookie } from '@/lib/gate';
 import DownloadGate from '@/components/DownloadGate';
 import CreditCalculator from '@/components/CreditCalculator';
+import AttributionSimulator from '@/components/AttributionSimulator';
 import '@/content/paper.css';
 
 export const dynamicParams = false;
@@ -58,6 +59,7 @@ export default async function PaperPage({
         {/* Rendered from the RevOps HQ design-system markup in content/papers/<slug>.body.html */}
         <div dangerouslySetInnerHTML={{ __html: body }} />
         {slug === 'hubspot-credit-reference' && <CreditCalculator />}
+        {slug === 'attribution-channel-economics' && <AttributionSimulator />}
       </div>
 
       <DownloadGate

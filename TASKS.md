@@ -19,11 +19,10 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] White Paper No. 03 — HubSpot Credit Consumption Reference (+ PDF)
 
 ## NOW (this session)
-- [~] **Interactive credit calculator on No. 03** — `components/CreditCalculator.tsx`,
-      portals into `#credit-calculator` marker after §5 (web-only, hidden in print).
-      Inputs: tier/allowance, per-agent volumes, Data Studio size×frequency →
-      credits/mo, overage bar, $ at $0.01/credit. VERIFY the live render + build.
-- [ ] **Attribution model charts + simulator (No. 02)** — a set of "model charts"
+- [x] **Interactive credit calculator on No. 03** — `components/CreditCalculator.tsx`.
+      Log-scale sliders + click-to-type, live per-line credits, Data Studio block,
+      scenario presets, slide-out drawer + persistent launcher. Shipped.
+- [~] **Attribution model charts + simulator (No. 02)** — a set of "model charts"
       that visually explain each attribution model (first-touch, last-touch, linear,
       time-decay, U/W-shaped, data-driven): what credit each touch gets, shown as a
       chart. Add a **model switcher** and an interactive **simulator with fake data**
@@ -36,15 +35,14 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done
       Applies to white papers, case studies, and tools/downloads.
 
 ## Bugs
-- [ ] **No. 02 attribution** — "the number on the board" (section `.num` badge)
-      OVERLAPS the box/figure. Fix the overlap (z-index / positioning / margin).
+- [x] **No. 02 attribution** — "the number on the board slide" SVG label overflowed
+      the 150px blended-CAC box; wrapped into stacked tspans. Fixed (source + body).
 
 ## Homepage / design
-- [~] Homepage to DESIGN_PHILOSOPHY: editorial front page — dominant featured item +
-      typeset index, green as punctuation only, no clipped decoration. NOTE: current
-      `app/page.tsx` was reverted to a simpler hero+grid+series that arguably UNDER-
-      shoots the philosophy; the earlier editorial build (featured lead + CoverArt +
-      two-column recent/series — see 7.01am screenshot) matched it better. Decide.
+- [x] Homepage rebuilt as editorial front page — masthead + featured lead (monochrome
+      typeset cover plate, green = mark only) + typeset Contents index + Series index.
+      Card grid retired on homepage (`PaperCard` now unused there). VERIFY live render.
+- [ ] Nav IA: update `Nav.tsx` links to match (White Papers / Series) — still Library
 - [x] Kill "journal" over-branding in copy (brand-first; white papers primary)
 - [ ] Article page: clickable TOC that collapses on scroll + Cite-this line
 
