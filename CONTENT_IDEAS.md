@@ -43,9 +43,12 @@ Status: `[ ]` idea · `[~]` drafting · `[x]` shipped
 - [ ] Pricing & packaging architecture: tiers, add-ons, and the ASP ceiling
 - [ ] Segmentation models that actually change CS coverage and routing
 
-## Case Studies (need real engagement detail from Paul — do NOT fabricate)
-See TASKS.md "Case study backlog." Each: company archetype, problem, intervention,
-measured result. Same design, gated PDF, appears on /downloads shelf.
+## Case Studies (anonymized, from real engagements) → see CASE_STUDIES.md
+Six extracted + anonymized case studies ready to author (RIA/Redtail migration,
+dealer-channel manufacturer, project-based fabricator, membership-behind-middleware,
+high-volume legal intake, hardware B2B-lease + D2C). Each is a HARD HubSpot problem
+written for reps. **No ROI numbers are in source — architecture stories, not results
+stories; confirm any metric before publishing.** Author strongest first (RIA, middleware).
 
 ## Tools & Downloads (interactive + downloadable)
 - [x] HubSpot Credit calculator (on No. 03)

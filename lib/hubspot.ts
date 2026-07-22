@@ -6,8 +6,12 @@ export type Lead = {
   lastName: string;
   company: string;
   hubspotUser: boolean;
-  paperSlug: string;
-  paperTitle: string;
+  // The resource that captured the lead — a white paper, a tool, etc.
+  resourceKind: string; // e.g. 'White paper', 'Tool'
+  resourceTitle: string;
+  resourceSlug: string;
+  // Optional extra lines compiled into the message (e.g. a tool's inputs/result).
+  summaryLines?: string[];
 };
 
 export type SubmitContext = {
@@ -44,7 +48,8 @@ export async function submitLeadToHubSpotForm(
   const message = [
     `Company: ${lead.company}`,
     `Currently a HubSpot user: ${lead.hubspotUser ? 'Yes' : 'No'}`,
-    `White paper: ${lead.paperTitle} (${lead.paperSlug})`,
+    `${lead.resourceKind}: ${lead.resourceTitle} (${lead.resourceSlug})`,
+    ...(lead.summaryLines ?? []),
     ctx.pageUri ? `Source: ${ctx.pageUri}` : null,
   ]
     .filter(Boolean)
@@ -60,7 +65,7 @@ export async function submitLeadToHubSpotForm(
     context: {
       ...(ctx.hutk ? { hutk: ctx.hutk } : {}),
       pageUri: ctx.pageUri ?? 'https://revopshq-white-papers.vercel.app',
-      pageName: ctx.pageName ?? `RevOps HQ White Paper — ${lead.paperTitle}`,
+      pageName: ctx.pageName ?? `Revenue Foundations — ${lead.resourceTitle}`,
     },
   };
 

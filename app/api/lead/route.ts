@@ -60,8 +60,9 @@ export async function POST(req: Request) {
       lastName,
       company,
       hubspotUser,
-      paperSlug: paper.slug,
-      paperTitle: paper.title,
+      resourceKind: 'White paper',
+      resourceTitle: paper.title,
+      resourceSlug: paper.slug,
     },
     {
       hutk: jar.get('hubspotutk')?.value,
