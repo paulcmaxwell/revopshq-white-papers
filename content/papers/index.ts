@@ -48,6 +48,24 @@ export const papers: Paper[] = [
     pages: 21,
     featured: true,
   },
+  {
+    slug: 'attribution-channel-economics',
+    number: '02',
+    series: 'attribution-measurement',
+    type: 'Comparative Review',
+    category: 'Attribution & Measurement',
+    title: 'Attribution & Channel Economics',
+    deck:
+      'Why cost-per-acquisition means nothing without multi-touch attribution — and how HubSpot compares with Salesforce, Adobe, and GA4.',
+    abstract:
+      'Blended CAC hides a 5–15× efficiency gap between a company’s best and worst channels. This paper connects channel-level CPA to the multi-touch attribution it depends on, integrates CPA with LTV and channel saturation, and scores HubSpot’s attribution against Salesforce, Adobe Marketo Measure, and GA4 on a capability-to-complexity basis.',
+    tags: ['Attribution', 'CPA', 'HubSpot', 'Marketing Analytics'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 22,
+    pages: 15,
+    featured: true,
+  },
 ];
 
 export const bySlug = (slug: string): Paper | undefined =>

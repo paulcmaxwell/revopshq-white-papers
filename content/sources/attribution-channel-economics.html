@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Attribution & Channel Economics — RevOps HQ</title>
+</head>
+<body>
+<!-- ARTIFACT-BODY-START -->
+<style>
+:root {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Source Serif 4", "Charter", Georgia, serif;
+  --sans: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --measure: 34rem;
+  --wide: 54rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #101613;
+    --paper-2: #161E1A;
+    --rule: #2A3630;
+    --ink: #E8EEEA;
+    --ink-2: #A9B8B0;
+    --ink-3: #7E8E86;
+    --accent: #57C79A;
+    --accent-soft: #1A2E26;
+    --mint: #2F6E55;
+    --clay: #D2916C;
+    --clay-soft: #2E211A;
+    --amber: #D6AC4A;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101613;
+  --paper-2: #161E1A;
+  --rule: #2A3630;
+  --ink: #E8EEEA;
+  --ink-2: #A9B8B0;
+  --ink-3: #7E8E86;
+  --accent: #57C79A;
+  --accent-soft: #1A2E26;
+  --mint: #2F6E55;
+  --clay: #D2916C;
+  --clay-soft: #2E211A;
+  --amber: #D6AC4A;
+}
+:root[data-theme="light"] {
+  --paper: #F7F8F6;
+  --paper-2: #FFFFFF;
+  --rule: #D8DED8;
+  --ink: #14201C;
+  --ink-2: #4A5A53;
+  --ink-3: #74847C;
+  --accent: #0E6B4E;
+  --accent-soft: #E4F1EA;
+  --mint: #8FD3B6;
+  --clay: #A8603C;
+  --clay-soft: #F5E9E2;
+  --amber: #B08419;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 2px solid var(--ink);
+}
+.brandbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+.wordmark .mark {
+  width: 0.72rem; height: 0.72rem;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0.28rem 0.28rem 0 0 var(--mint);
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.deck {
+  font-size: 1.12rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 48ch;
+  text-wrap: balance;
+}
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.byline strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- abstract ---------- */
+
+.abstract {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.25rem;
+  max-width: 46rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.abstract p { font-size: 1rem; color: var(--ink-2); }
+
+/* ---------- sections ---------- */
+
+section { display: flex; flex-direction: column; gap: 0.85rem; }
+
+h2 {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 0.9rem;
+}
+h2 .num {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  min-width: 1.6rem;
+}
+h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin-top: 0.45rem;
+  text-wrap: balance;
+}
+p { max-width: var(--measure); }
+
+.lede::first-letter {
+  float: left;
+  font-size: 3.1rem;
+  line-height: 0.84;
+  padding: 0.16rem 0.5rem 0 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+ul, ol { max-width: var(--measure); padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.35rem; }
+li::marker { color: var(--accent); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.06em 0.34em;
+}
+
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, .doc :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ---------- callouts ---------- */
+
+.note {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--clay);
+  border-radius: 3px;
+  padding: 0.95rem 1.1rem;
+  max-width: var(--wide);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.note.good { border-left-color: var(--accent); }
+.note .label {
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 650;
+  color: var(--clay);
+}
+.note.good .label { color: var(--accent); }
+.note p { font-size: 0.94rem; color: var(--ink-2); max-width: 62ch; }
+
+/* ---------- figures ---------- */
+
+figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.6rem 0;
+  max-width: var(--wide);
+}
+.frame {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.15rem;
+  overflow-x: auto;
+}
+.frame svg { display: block; min-width: 500px; width: 100%; height: auto; }
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 64ch;
+}
+figcaption b { color: var(--ink); font-weight: 650; letter-spacing: 0.04em; }
+
+/* ---------- tables ---------- */
+
+.tablewrap { overflow-x: auto; max-width: var(--wide); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 620px;
+  font-size: 0.86rem;
+  font-family: var(--sans);
+  line-height: 1.45;
+}
+caption {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 0.77rem;
+  color: var(--ink-2);
+  padding-bottom: 0.55rem;
+  max-width: 64ch;
+}
+th, td {
+  text-align: left;
+  padding: 0.7rem 0.9rem 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th:last-child, td:last-child { padding-right: 0; }
+thead th {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border-bottom: 1.5px solid var(--ink);
+  font-weight: 650;
+}
+tbody th { font-weight: 650; color: var(--ink); font-size: 0.9rem; }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 0.82rem; }
+tbody tr:last-child td, tbody tr:last-child th { border-bottom: none; }
+td small { display: block; color: var(--ink-3); font-size: 0.94em; }
+
+.rating {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.42rem;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.rating::before {
+  content: "";
+  width: 0.48rem; height: 0.48rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+  transform: translateY(-0.05rem);
+}
+.r-ok { color: var(--accent); }
+.r-mid { color: var(--amber); }
+.r-bad { color: var(--clay); }
+.rating + small { padding-left: 0.9rem; }
+
+/* ---------- SVG tokens ---------- */
+
+svg text { font-family: var(--sans); fill: var(--ink); }
+.s-label { font-size: 12px; }
+.s-small { font-size: 10.5px; fill: var(--ink-2); }
+.s-cap { font-size: 9.5px; letter-spacing: 0.11em; fill: var(--ink-3); font-weight: 650; }
+.s-title { font-size: 12.5px; font-weight: 650; }
+.s-mono { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); }
+.box { fill: var(--paper); stroke: var(--rule); stroke-width: 1.2; }
+.box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.3; }
+.box-limit { fill: none; stroke: var(--clay); stroke-width: 1.3; stroke-dasharray: 5 4; }
+.flow { stroke: var(--ink-2); stroke-width: 1.3; fill: none; }
+.flow-accent { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+.flow-limit { stroke: var(--clay); stroke-width: 1.4; fill: none; }
+.fill-accent { fill: var(--accent); }
+.fill-clay { fill: var(--clay); }
+.fill-ink2 { fill: var(--ink-2); }
+.fill-paper { fill: var(--paper-2); }
+
+/* ---------- footer ---------- */
+
+footer {
+  border-top: 2px solid var(--ink);
+  padding-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+footer .row { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content: space-between; }
+.glossary { max-width: var(--wide); display: flex; flex-direction: column; gap: 0.5rem; }
+.glossary div { font-size: 0.9rem; color: var(--ink-2); }
+.glossary b { color: var(--ink); }
+
+@media print {
+  body { background: #fff; font-size: 15.5px; }
+  .doc { max-width: none; gap: 1.5rem; padding: 0; }
+  .tablewrap { overflow: visible; }
+  table { min-width: 0; font-size: 0.78rem; }
+  .frame svg { min-width: 0; }
+  section, figure, .note, table { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+</style>
+
+<article class="doc">
+
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Technical White Paper &middot; No. 02</span>
+      <span>Attribution &amp; Measurement</span>
+    </div>
+    <h1>Attribution &amp; Channel Economics</h1>
+    <p class="deck">Why cost-per-acquisition means nothing without multi-touch attribution &mdash; and how HubSpot&rsquo;s attribution compares with Salesforce, Adobe, and Google&nbsp;Analytics&nbsp;4.</p>
+    <div class="byline">
+      <span><strong>Paul Maxwell</strong>, Solutions Architecture</span>
+      <span>July 22, 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>A blended customer-acquisition cost is an average, and averages hide the thing that actually drives marketing decisions: the 5&ndash;15&times; efficiency gap between a company&rsquo;s best and worst channels. Cost-per-acquisition (CPA) closes that gap &mdash; but only when it is measured per channel, over a realistic window, and paired with lifetime value. And channel-level CPA is only trustworthy on top of multi-touch attribution, because single-touch models systematically misprice the channels that create demand versus the ones that close it. This paper connects CPA to the attribution infrastructure it depends on, integrates CPA with LTV and channel saturation, and scores HubSpot&rsquo;s attribution against Salesforce, Adobe Marketo Measure, and GA4 on a capability-to-complexity basis.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> The blended-average trap</h2>
+    <p class="lede">Most marketing teams report one acquisition-cost number to the board every month, and that number is a lie of omission. Customer-acquisition cost (CAC) aggregates all spend across all channels into a single figure; cost-per-acquisition (CPA) is the same idea measured <em>per channel or per campaign</em>. The distinction is small on a slide and enormous in practice, because the blended average is the one view from which no investment decision can be made.</p>
+    <p>A company reporting a $4,000 blended CAC might be running one channel at $1,500 and another at $8,000. The average tells you nothing about which to scale and which to cut; the disaggregation tells you almost everything. Companies that have never done the split routinely discover that 60&ndash;70% of their marketing spend produces 30&ndash;40% of their closed-won revenue, with the waste concentrated in two or three specific channels. Acting on the disaggregation typically improves aggregate CAC by 20&ndash;35% within two quarters.</p>
+    <p>The formula is deliberately simple:</p>
+    <div class="note good">
+      <span class="label">Cost per acquisition</span>
+      <p><b>CPA = spend on a channel &divide; acquisitions attributed to that channel.</b> The analytical variants only change the numerator or the denominator: <em>campaign-level</em> CPA narrows the scope; <em>fully-loaded</em> CPA adds team cost and overhead to program spend; <em>cohort</em> CPA holds the acquisition window fixed so efficiency can be tracked over time. Every one of them lives or dies on how acquisitions are attributed &mdash; the subject of Section 5.</p>
+    </div>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 700 250" role="img" aria-label="A single blended CAC number splitting into five channels with very different CPAs.">
+          <text x="0" y="12" class="s-cap">ONE BLENDED CAC &middot; FIVE VERY DIFFERENT CHANNELS</text>
+          <line x1="0" y1="26" x2="700" y2="26" class="flow" opacity="0.3" />
+
+          <rect x="0" y="44" width="150" height="150" rx="4" class="box-accent" />
+          <text x="18" y="70" class="s-title">Blended CAC</text>
+          <text x="18" y="98" class="s-title" style="font-size:22px">$4,000</text>
+          <text x="18" y="120" class="s-small">the number on the board slide</text>
+          <text x="18" y="176" class="s-small">tells you nothing actionable</text>
+
+          <path d="M150 119 H214" class="flow" />
+          <path d="M214 119 l-9 -5 v10 z" class="fill-ink2" />
+
+          <g font-family="var(--sans)">
+            <rect x="224" y="48" width="476" height="24" rx="3" class="box" />
+            <rect x="224" y="48" width="48" height="24" rx="3" class="box-accent" />
+            <text x="284" y="64" class="s-label">Customer referrals &mdash; <tspan font-family="var(--mono)">$400</tspan></text>
+            <rect x="224" y="78" width="476" height="24" rx="3" class="box" />
+            <rect x="224" y="78" width="214" height="24" rx="3" class="box-accent" />
+            <text x="448" y="94" class="s-label">Content marketing &mdash; <tspan font-family="var(--mono)">$1,800</tspan></text>
+            <rect x="224" y="108" width="476" height="24" rx="3" class="box" />
+            <rect x="224" y="108" width="250" height="24" rx="3" class="box-accent" />
+            <text x="484" y="124" class="s-label">Paid search &mdash; <tspan font-family="var(--mono)">$2,100</tspan></text>
+            <rect x="224" y="138" width="476" height="24" rx="3" class="box" />
+            <rect x="224" y="138" width="322" height="24" rx="3" class="box-limit" />
+            <text x="224" y="154" class="s-label" dx="336" fill="var(--clay)">Outbound sales &mdash; <tspan font-family="var(--mono)">$5,400</tspan></text>
+            <rect x="224" y="168" width="476" height="24" rx="3" class="box" />
+            <rect x="224" y="168" width="476" height="24" rx="3" class="box-limit" />
+            <text x="440" y="184" class="s-label" fill="var(--clay)">Events &mdash; <tspan font-family="var(--mono)">$9,200</tspan></text>
+          </g>
+          <text x="0" y="242" class="s-small">Bar width is proportional to CPA. The two most expensive channels cost 3&ndash;23&times; the cheapest &mdash; invisible in the average.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> The same spend, disaggregated. The blended figure is an accounting artifact; the channel view is a decision.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Measuring CPA without fooling yourself</h2>
+    <p>Because CPA drives reallocation, the methodology behind it has to be explicit, or the number quietly encodes a bias and the reallocation compounds it. Three choices matter most.</p>
+    <ul>
+      <li><b>Attribution model.</b> First-touch, last-touch, linear, and time-decay produce different CPAs from identical data. First-touch flatters awareness channels; last-touch flatters closers; linear underweights the peak-influence touch; time-decay is usually the most defensible. Pick one, document it, and keep it constant across periods.</li>
+      <li><b>Attribution window.</b> Too short and you miss the long B2B conversion cycle; too long and you mix acquisitions across campaign generations. Match the window to the motion: ~90 days for SMB, 180&ndash;365 for enterprise.</li>
+      <li><b>Cost inclusion.</b> Program spend only, or fully loaded with team cost and allocated overhead? Both are legitimate; mixing them across channels is not.</li>
+    </ul>
+    <p>Three edge cases recur often enough to name. <b>Long-conversion channels</b> (organic, brand) look inefficient on short windows even when their true contribution is large &mdash; short-window bias systematically underrates them. <b>Multi-touch supporters</b> that rarely originate a journey look weak on first-touch and strong on multi-touch, and the model choice flips the investment conclusion. <b>High-fixed-cost channels</b> (events, conferences) swing wildly period to period, so single-period CPA is unreliable and multi-period averages are mandatory.</p>
+    <div class="note">
+      <span class="label">The rule</span>
+      <p>Publish the methodology next to the numbers. A CPA trend line that silently changed attribution model halfway through is not a trend line &mdash; it is two incompatible measurements plotted as one, and it is worse than no chart at all.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> CPA is only half the equation</h2>
+    <p>Lower CPA is not automatically better, and treating it as the optimization target is the most common way sophisticated teams still get channel strategy wrong. Cheap channels frequently produce cheap customers. Self-serve trial signups have the lowest CPA and the highest churn; enterprise events have the highest CPA and the strongest five-year value. Optimizing on CPA alone systematically starves the strategic channels to feed the transactional ones.</p>
+    <p>The correction is to evaluate every channel on <b>LTV&nbsp;:&nbsp;CAC</b>, not CPA. A channel at $1,500 CPA on $4,500 LTV returns 3&nbsp;:&nbsp;1 &mdash; acceptable. A channel at $4,500 CPA on $22,000 LTV returns 4.9&nbsp;:&nbsp;1 &mdash; materially better, despite costing three times as much to acquire. Read on CPA, the second channel looks like the one to cut. Read on value, it is the one to scale.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 700 330" role="img" aria-label="A CPA-by-LTV quadrant plotting channels; the decision is the ratio, not the cost.">
+          <text x="0" y="12" class="s-cap">EVALUATE ON THE RATIO, NOT THE COST</text>
+
+          <line x1="60" y1="40" x2="60" y2="288" class="flow" />
+          <line x1="60" y1="288" x2="676" y2="288" class="flow" />
+          <text x="52" y="48" class="s-cap" text-anchor="end">HIGH</text>
+          <text x="52" y="286" class="s-cap" text-anchor="end">LOW</text>
+          <text x="14" y="164" class="s-cap" transform="rotate(-90 14 164)" text-anchor="middle">LIFETIME VALUE</text>
+          <text x="68" y="306" class="s-cap">LOW &mdash; COST PER ACQUISITION</text>
+          <text x="676" y="306" class="s-cap" text-anchor="end">HIGH</text>
+
+          <line x1="368" y1="40" x2="368" y2="288" class="flow" stroke-dasharray="3 3" opacity="0.5" />
+          <line x1="60" y1="164" x2="676" y2="164" class="flow" stroke-dasharray="3 3" opacity="0.5" />
+          <text x="120" y="60" class="s-cap" fill="var(--accent)">SCALE</text>
+          <text x="600" y="60" class="s-cap" text-anchor="end">INVEST SELECTIVELY</text>
+          <text x="120" y="280" class="s-cap" fill="var(--ink-3)">LOW VALUE</text>
+          <text x="600" y="280" class="s-cap" text-anchor="end" fill="var(--clay)">REDUCE</text>
+
+          <circle cx="120" cy="120" r="5" class="fill-accent" /><text x="132" y="124" class="s-label">Customer referrals</text>
+          <circle cx="210" cy="150" r="5" class="fill-accent" /><text x="222" y="154" class="s-label">Content marketing</text>
+          <circle cx="300" cy="175" r="5" class="fill-ink2" /><text x="312" y="179" class="s-label">Paid search</text>
+          <circle cx="600" cy="95" r="5" class="fill-accent" /><text x="588" y="99" class="s-label" text-anchor="end">Events (enterprise)</text>
+          <circle cx="560" cy="205" r="5" class="fill-clay" /><text x="548" y="209" class="s-label" text-anchor="end">Outbound sales</text>
+          <circle cx="150" cy="240" r="5" class="fill-ink2" /><text x="162" y="244" class="s-label">Self-serve trials</text>
+
+          <text x="0" y="322" class="s-small">Events sit top-right: expensive per acquisition, but the value justifies it. Outbound sits bottom-right: expensive and only average value &mdash; the reallocation target.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> The CPA&times;LTV quadrant. Channels below ~3&nbsp;:&nbsp;1 are candidates to reduce; above ~5&nbsp;:&nbsp;1, to scale; in between, judged on strategic fit.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Channel saturation</h2>
+    <p>A channel&rsquo;s CPA is not a constant &mdash; it rises as you spend more into it. Paid search saturates predictably: a channel running $1,800 CPA at $50K/month often hits $3,200 at $150K/month, because the <em>marginal</em> CPA on incremental spend runs far above the average. The average stays comfortable while the next dollar quietly stops paying for itself.</p>
+    <p>The diagnostic is to plot marginal CPA against total channel spend and watch for the knee &mdash; the point where incremental cost crosses the target. Below it, the channel warrants scaling; above it, incremental budget should move to another channel or to creative and audience refresh. Tracking only average CPA is how teams double down on a previously-efficient channel until it breaks.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 700 260" role="img" aria-label="Marginal CPA rising with channel spend, crossing the target at the saturation point.">
+          <text x="0" y="12" class="s-cap">MARGINAL CPA RISES WITH SPEND</text>
+          <line x1="60" y1="30" x2="60" y2="210" class="flow" />
+          <line x1="60" y1="210" x2="676" y2="210" class="flow" />
+          <text x="14" y="120" class="s-cap" transform="rotate(-90 14 120)" text-anchor="middle">CPA</text>
+          <text x="60" y="230" class="s-cap">MONTHLY CHANNEL SPEND &rarr;</text>
+
+          <path d="M60 190 Q 300 178 430 150 T 660 46" class="flow-limit" />
+          <path d="M60 178 L676 178" class="flow" stroke-dasharray="5 4" />
+          <text x="676" y="172" class="s-small" text-anchor="end">target CPA</text>
+
+          <line x1="452" y1="30" x2="452" y2="210" class="flow-limit" stroke-dasharray="3 3" />
+          <circle cx="452" cy="141" r="5" class="fill-clay" />
+          <text x="460" y="60" class="s-cap" fill="var(--clay)">SATURATION</text>
+
+          <text x="150" y="200" class="s-small" fill="var(--accent)">below &mdash; scale</text>
+          <text x="560" y="200" class="s-small" fill="var(--clay)" text-anchor="middle">above &mdash; reallocate</text>
+          <text x="0" y="252" class="s-small">Average CPA can look healthy long after the marginal dollar has stopped paying for itself. The knee is the signal.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 3.</b> Channel saturation. Budget decisions should follow marginal, not average, CPA.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Why single-touch attribution breaks CPA</h2>
+    <p>Everything above assumes acquisitions can be assigned to channels honestly. They usually cannot &mdash; because the default measurement, last-touch in a web-analytics tool, gives 100% of the credit to whatever happened immediately before the form fill and zero to the four-to-twelve touches that typically precede an enterprise close. On last-touch, a demo-request page looks like your best channel and the content and events that created the demand look like waste. Reallocating on that signal defunds exactly what fills the pipeline.</p>
+    <p>Multi-touch attribution distributes credit across the journey. The model chosen changes the distribution, and therefore the CPA:</p>
+    <ul>
+      <li><b>First-touch</b> credits demand creation; <b>last-touch</b> credits conversion. Both are single-point and both distort.</li>
+      <li><b>Linear</b> splits credit evenly; <b>time-decay</b> weights toward the touches nearest the close.</li>
+      <li><b>U-shaped</b> (first + lead creation) and <b>W-shaped</b> (first + lead + deal creation) emphasize the milestones; <b>full-path</b> spreads credit across the entire journey.</li>
+    </ul>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 700 250" role="img" aria-label="How five attribution models assign credit across the same five-touch journey.">
+          <text x="0" y="12" class="s-cap">SAME JOURNEY, FIVE VERDICTS</text>
+          <g font-family="var(--mono)" font-size="9" fill="var(--ink-3)">
+            <text x="150" y="40" text-anchor="middle">Ad</text>
+            <text x="260" y="40" text-anchor="middle">Content</text>
+            <text x="370" y="40" text-anchor="middle">Webinar</text>
+            <text x="480" y="40" text-anchor="middle">Email</text>
+            <text x="590" y="40" text-anchor="middle">Demo</text>
+          </g>
+          <g>
+            <text x="0" y="70" class="s-small">First-touch</text>
+            <rect x="120" y="60" width="60" height="12" class="box-accent" /><rect x="230" y="60" width="60" height="12" class="box" /><rect x="340" y="60" width="60" height="12" class="box" /><rect x="450" y="60" width="60" height="12" class="box" /><rect x="560" y="60" width="60" height="12" class="box" />
+            <text x="0" y="102" class="s-small">Last-touch</text>
+            <rect x="120" y="92" width="60" height="12" class="box" /><rect x="230" y="92" width="60" height="12" class="box" /><rect x="340" y="92" width="60" height="12" class="box" /><rect x="450" y="92" width="60" height="12" class="box" /><rect x="560" y="92" width="60" height="12" class="box-accent" />
+            <text x="0" y="134" class="s-small">Linear</text>
+            <rect x="120" y="124" width="60" height="12" class="box-accent" opacity="0.6" /><rect x="230" y="124" width="60" height="12" class="box-accent" opacity="0.6" /><rect x="340" y="124" width="60" height="12" class="box-accent" opacity="0.6" /><rect x="450" y="124" width="60" height="12" class="box-accent" opacity="0.6" /><rect x="560" y="124" width="60" height="12" class="box-accent" opacity="0.6" />
+            <text x="0" y="166" class="s-small">W-shaped</text>
+            <rect x="120" y="156" width="60" height="12" class="box-accent" /><rect x="230" y="156" width="60" height="12" class="box" /><rect x="340" y="156" width="60" height="12" class="box-accent" opacity="0.6" /><rect x="450" y="156" width="60" height="12" class="box" /><rect x="560" y="156" width="60" height="12" class="box-accent" /></g>
+            <text x="0" y="198" class="s-small">Time-decay</text>
+            <rect x="120" y="188" width="60" height="12" class="box" /><rect x="230" y="188" width="60" height="12" class="box-accent" opacity="0.35" /><rect x="340" y="188" width="60" height="12" class="box-accent" opacity="0.55" /><rect x="450" y="188" width="60" height="12" class="box-accent" opacity="0.75" /><rect x="560" y="188" width="60" height="12" class="box-accent" />
+          <text x="0" y="234" class="s-small">Shaded = credit assigned. The ad and webinar are &ldquo;wasteful&rdquo; on last-touch and &ldquo;essential&rdquo; on first- or multi-touch. Same data.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 4.</b> One five-touch journey scored five ways. For executive reporting, use a multi-touch model (W-shaped or full-path) and compare it against first- and last-touch &mdash; never treat one as objective truth.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> HubSpot&rsquo;s multi-touch attribution</h2>
+    <p>HubSpot&rsquo;s attribution reporting assigns credit across a buyer&rsquo;s interactions rather than to a single touch, and it measures three distinct conversion types. What separates it from a standalone attribution tool is not modelling sophistication &mdash; it is that marketing engagement, CRM records, sales activity, deals, and revenue live in one platform, so the report is close to the data.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Table 1 &mdash; What HubSpot attribution measures, and the tier each requires.</caption>
+        <thead>
+          <tr><th scope="col">Conversion type</th><th scope="col">Answers</th><th scope="col">Tier required</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Contact creation</th><td>Which interactions generated new contacts</td><td>Marketing / Content Hub Pro or Enterprise</td></tr>
+          <tr><th scope="row">Deal creation</th><td>Which interactions contributed to new deals</td><td><span class="rating r-mid">Marketing Hub Enterprise</span></td></tr>
+          <tr><th scope="row">Revenue</th><td>Which interactions influenced closed-won revenue</td><td><span class="rating r-mid">Marketing Hub Enterprise</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Setup is a data-hygiene exercise before it is a reporting one. Install the tracking code on every externally hosted page; connect ad, email, and social channels; apply consistent UTMs; associate contacts with the right deals; log and associate sales activities; and populate each deal&rsquo;s amount, create date, and close date with an accurate closed-won stage. Revenue attribution silently excludes any deal missing a closed-won status, an associated contact, or those properties &mdash; so gaps read as zeroes, not errors.</p>
+    <p>The honest limitations are worth stating to a prospect, because they are the ones that sink attribution projects: quality depends entirely on tracking and association hygiene; missing UTMs, blocked cookies, and offline interactions create gaps; incorrect contact-to-deal associations distort results; new tracking does not repair historical data retroactively; and attribution shows <em>contribution, not causation</em>. It is a directional framework, not an accounting ledger.</p>
+    <div class="note">
+      <span class="label">Rollout order</span>
+      <p>Audit tracking, UTMs, deal properties, and associations first. Start with contact attribution to validate channel data, add deal and revenue attribution once hygiene is reliable, then compare first-touch, last-touch, and one multi-touch model. Do not make attribution the primary decision system until the underlying data has been audited.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> The platform landscape</h2>
+    <p>HubSpot&rsquo;s advantage is not that it is the most technically sophisticated attribution system &mdash; it is that it delivers useful, revenue-connected multi-touch attribution inside one relatively accessible platform. Salesforce and Adobe can model more deeply but demand far more configuration, administration, and governance; GA4 is strong for digital analysis but lacks the native CRM, sales-activity, deal, and pipeline context that B2B revenue attribution requires.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Table 2 &mdash; Attribution capability vs. complexity. Green marks the favorable position for the buyer, not the most powerful tool.</caption>
+        <thead>
+          <tr>
+            <th scope="col" style="width:26%">Capability</th>
+            <th scope="col">HubSpot</th>
+            <th scope="col">Salesforce</th>
+            <th scope="col">Adobe Marketo Measure</th>
+            <th scope="col">Google Analytics 4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Deal &amp; revenue attribution</th><td><span class="rating r-ok">Native</span></td><td><span class="rating r-ok">Native</span></td><td><span class="rating r-ok">Advanced</span></td><td><span class="rating r-bad">Not native</span></td></tr>
+          <tr><th scope="row">Marketing + sales touches together</th><td><span class="rating r-ok">Strong</span></td><td><span class="rating r-mid">Config-dependent</span></td><td><span class="rating r-ok">Strong</span></td><td><span class="rating r-bad">Limited</span></td></tr>
+          <tr><th scope="row">Asset / content attribution</th><td><span class="rating r-ok">Native</span></td><td><span class="rating r-mid">Needs structure</span></td><td><span class="rating r-ok">Touchpoint-based</span></td><td><span class="rating r-mid">Page / event</span></td></tr>
+          <tr><th scope="row">Compare models in-report</th><td><span class="rating r-ok">Straightforward</span></td><td><span class="rating r-mid">Config-dependent</span></td><td><span class="rating r-ok">Strong</span></td><td><span class="rating r-mid">Limited</span></td></tr>
+          <tr><th scope="row">CRM context</th><td><span class="rating r-ok">Built in</span></td><td><span class="rating r-ok">Built in</span></td><td><span class="rating r-mid">Usually integrated</span></td><td><span class="rating r-bad">Separate</span></td></tr>
+          <tr><th scope="row">Implementation effort</th><td><span class="rating r-ok">Lower</span></td><td><span class="rating r-bad">Medium&ndash;high</span></td><td><span class="rating r-bad">High</span></td><td><span class="rating r-ok">Lower (digital)</span></td></tr>
+          <tr><th scope="row">Administrator dependency</th><td><span class="rating r-ok">Lower</span></td><td><span class="rating r-bad">Higher</span></td><td><span class="rating r-bad">Higher</span></td><td><span class="rating r-mid">Medium</span></td></tr>
+          <tr><th scope="row">Time to first value</th><td><span class="rating r-ok">Faster</span></td><td><span class="rating r-mid">Slower</span></td><td><span class="rating r-bad">Slowest</span></td><td><span class="rating r-ok">Fast (digital)</span></td></tr>
+          <tr><th scope="row">Enterprise customization</th><td><span class="rating r-mid">Moderate</span></td><td><span class="rating r-ok">Extensive</span></td><td><span class="rating r-ok">Extensive</span></td><td><span class="rating r-mid">Moderate</span></td></tr>
+          <tr><th scope="row">Best fit</th><td>Integrated mid-market &amp; scaling teams</td><td>Complex Salesforce enterprises</td><td>Mature enterprise marketing ops</td><td>Digital acquisition analysis</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7.1 Where each alternative wins</h3>
+    <p><b>Salesforce</b> is the stronger choice when a large administration and analytics org already runs it as the governed revenue platform and attribution must follow highly customized opportunity stages. Its flexibility is real; so is the governance burden &mdash; campaign hierarchies, member statuses, contact roles, and influence rules all have to be disciplined for the numbers to mean anything.</p>
+    <p><b>Adobe Marketo Measure</b> is the choice when modelling flexibility matters more than simplicity: first-touch, lead-creation, U-shaped, W-shaped, full-path, and custom models with user-defined credit percentages. It operates as a specialized enterprise measurement system, with the setup and maintenance that implies. Adobe provides more attribution engineering; HubSpot provides more attribution usability.</p>
+    <p><b>GA4</b> explains how anonymous digital users reached a conversion. It cannot, on its own, explain how a <em>known</em> buyer progressed from marketing interaction to contact, deal, and closed-won revenue &mdash; it lacks contact identity, lifecycle stage, pipeline, sales activity, and CRM campaign context. It is a complement to CRM attribution, not a substitute for it.</p>
+    <div class="note good">
+      <span class="label">The defensible claim</span>
+      <p>Not &ldquo;HubSpot is the most advanced attribution platform&rdquo; &mdash; it isn&rsquo;t, and the claim invites an easy rebuttal. The credible position: <b>HubSpot offers the strongest capability-to-complexity ratio for organizations that want multi-touch attribution their teams will actually implement, understand, and use.</b></p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">8</span> How RevOps operationalizes this</h2>
+    <p>Four builds turn the theory into a running system. Together they are 6&ndash;9 weeks of setup plus ongoing maintenance, and they are the foundation every downstream marketing-investment decision rests on.</p>
+    <ol>
+      <li><b>Multi-touch attribution infrastructure.</b> Implement in Bizible, Dreamdata, HockeyStack, or a custom Snowflake/dbt pipeline; configure the window to the motion; document the model (time-decay is usually most defensible); integrate with the CRM so source-level attribution surfaces on every closed opportunity; and validate against deals whose driving touch you already know before trusting it for spend decisions.</li>
+      <li><b>Channel-level CPA reporting.</b> In Looker, Mode, or Sigma, join per-channel spend with attributed conversions; show CPA over trailing four quarters, broken out by segment; and include marginal CPA on incremental spend as a primary view. Bring it to the quarterly investment review with explicit scale / maintain / cut recommendations.</li>
+      <li><b>CPA&ndash;LTV integration.</b> Join channel CPA with channel-level LTV computed from 24-month retention and expansion for customers acquired through each channel. Evaluate on LTV&nbsp;:&nbsp;CAC, not CPA &mdash; below 3&nbsp;:&nbsp;1 are reduction candidates, above 5&nbsp;:&nbsp;1 are scaling candidates.</li>
+      <li><b>Saturation diagnostics.</b> Plot marginal CPA against total spend over eight trailing quarters and surface the curve to leadership, so reallocation happens when a channel crosses from below to above saturation &mdash; not after it breaks.</li>
+    </ol>
+    <p>A fifth build compounds the rest: integrating intent data and predictive scoring (6sense, Demandbase, Bombora, MadKudu) into <em>routing</em>, not just reporting &mdash; routing high-intent accounts to higher-touch treatment regardless of source. Teams that integrate it carefully typically see 15&ndash;25% CPA improvement within two quarters.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">9</span> A worked reallocation</h2>
+    <p>At Forge, a $25M-ARR developer-platform company, marketing had run roughly equal budget across five channels for two years on historical momentum, reporting blended CAC monthly with no channel-level view. RevOps built channel CPA under both first-touch and multi-touch attribution, then integrated it with LTV.</p>
+    <div class="tablewrap">
+      <table>
+        <caption>Table 3 &mdash; Forge&rsquo;s five channels, disaggregated and read on value rather than cost.</caption>
+        <thead>
+          <tr><th scope="col">Channel</th><th scope="col">CPA</th><th scope="col">Relative LTV</th><th scope="col">Read</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Customer referrals</th><td class="n">$400</td><td>High</td><td><span class="rating r-ok">Scale</span></td></tr>
+          <tr><th scope="row">Content marketing</th><td class="n">$1,800</td><td>Medium</td><td><span class="rating r-ok">Scale</span></td></tr>
+          <tr><th scope="row">Paid search</th><td class="n">$2,100</td><td>Medium</td><td><span class="rating r-mid">Hold</span></td></tr>
+          <tr><th scope="row">Outbound sales</th><td class="n">$5,400</td><td>Average</td><td><span class="rating r-bad">Cut</span></td></tr>
+          <tr><th scope="row">Events</th><td class="n">$9,200</td><td>High (enterprise)</td><td><span class="rating r-ok">Keep</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The integrated view inverted the naive CPA reading twice: events, the most expensive channel, produced the enterprise customers with the strongest LTV and were kept; outbound, mid-priced, produced only average-value customers and was cut. Forge reduced outbound materially, increased referrals and content, held paid search, and maintained events. Over four quarters, blended CAC fell 24%, total acquisitions grew 18% on the rebalanced spend, and LTV&nbsp;:&nbsp;CAC improved from 3.2 to 4.8 &mdash; a rebalancing informed by economics rather than history.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">10</span> Action items</h2>
+    <ol>
+      <li>Stand up multi-touch attribution matched to your motion (90 days SMB, 180&ndash;365 enterprise), model documented, validated against known deals before it drives spend.</li>
+      <li>Build a channel-level CPA dashboard with segment breakouts and marginal-CPA saturation as a primary view; take it to the quarterly investment review with scale / hold / cut calls.</li>
+      <li>Integrate CPA with channel-level LTV and evaluate on LTV&nbsp;:&nbsp;CAC &mdash; reduce below 3&nbsp;:&nbsp;1, scale above 5&nbsp;:&nbsp;1, judge the middle on fit.</li>
+      <li>Add saturation diagnostics so reallocation precedes the break, not follows it.</li>
+      <li>Route by intent score, not just source, and instrument the CPA impact to confirm the integration pays for itself.</li>
+    </ol>
+    <p>And shift toward organic and referral ahead of macro tightening: CPA degrades 15&ndash;40% in downturns as buyers extend evaluation, concentrated in outbound and paid, and organic channels take 6&ndash;12 months to ramp &mdash; so the move has to be made before the degradation lands.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">A</span> Glossary</h2>
+    <div class="glossary">
+      <div><b>CPA</b> &mdash; cost per acquisition; spend on a channel or campaign divided by acquisitions attributed to it. Channel-specific, unlike blended CAC.</div>
+      <div><b>CAC</b> &mdash; customer acquisition cost; total acquisition spend across all channels over a period, blended.</div>
+      <div><b>LTV : CAC</b> &mdash; lifetime value divided by acquisition cost; the ratio on which channel investment should be judged. ~3:1 acceptable, 5:1+ strong.</div>
+      <div><b>Attribution window</b> &mdash; the lookback over which touches receive credit for a conversion. Match to sales-cycle length.</div>
+      <div><b>Multi-touch attribution</b> &mdash; credit distributed across multiple interactions in a journey (linear, time-decay, U/W-shaped, full-path), rather than to one touch.</div>
+      <div><b>Marginal CPA</b> &mdash; the CPA of the next increment of spend in a channel; rises with saturation even while average CPA looks stable.</div>
+      <div><b>Contribution vs. causation</b> &mdash; attribution shows which touches were present on the path to conversion, not that they caused it. Directional, not proof.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="row">
+      <span class="wordmark" style="letter-spacing:0.16em"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Attribution &amp; Channel Economics &middot; White Paper No. 02</span>
+      <span>July 2026</span>
+    </div>
+    <p style="max-width:64ch">Benchmark ranges reflect patterns observed across RevOps HQ engagements and are directional, not guarantees; channel economics vary by motion, segment, and market. Platform capabilities reflect vendor behavior observed in July 2026 and change over time &mdash; verify against current documentation before a statement of work. HubSpot, Salesforce, Adobe Marketo Measure, and Google Analytics are trademarks of their respective owners.</p>
+  </footer>
+
+</article>
+
+<!-- ARTIFACT-BODY-END -->
+</body>
+</html>
