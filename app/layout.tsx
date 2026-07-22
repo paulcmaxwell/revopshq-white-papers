@@ -18,6 +18,9 @@ export const metadata: Metadata = {
       'Field research and applied analysis for the people who build and run revenue systems. An independent research project from RevOps HQ.',
     type: 'website',
   },
+  alternates: {
+    types: { 'application/rss+xml': '/feed.xml' },
+  },
 };
 
 // Set the theme before paint to avoid a flash of the wrong palette.

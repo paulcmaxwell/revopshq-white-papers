@@ -7,7 +7,9 @@ export default function Footer() {
       <div className="container inner">
         <Wordmark />
         <div className="links">
-          <a href="/#library">Library</a>
+          <a href="/#library">White Papers</a>
+          <a href="/downloads">Downloads</a>
+          <a href="/feed.xml">RSS</a>
           <a href="https://revopshq.com" target="_blank" rel="noopener noreferrer">
             revopshq.com
           </a>
