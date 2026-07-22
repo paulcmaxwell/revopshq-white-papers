@@ -108,6 +108,7 @@ function Simulator() {
       </div>
 
       {/* per-channel table: credit -> attributed conversions -> CPA */}
+      <div className="as-scroll">
       <table className="as-table">
         <thead>
           <tr>
@@ -138,6 +139,7 @@ function Simulator() {
           })}
         </tbody>
       </table>
+      </div>
       <p className="as-foot">
         {usd(JOURNEY.reduce((n, t) => n + t.spend, 0))} of spend · {CONVERSIONS} conversions · the blended CAC is{' '}
         {usd(JOURNEY.reduce((n, t) => n + t.spend, 0) / CONVERSIONS)} in every model — only the per-channel CPA moves.
