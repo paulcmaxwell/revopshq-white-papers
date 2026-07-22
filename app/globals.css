@@ -852,3 +852,42 @@ main { flex: 1 0 auto; }
 .lib-chips button:hover { border-color: var(--ink-3); }
 .lib-chips button[aria-pressed="true"] { color: #fff; background: var(--accent); border-color: var(--accent); }
 .lib-empty { font-family: var(--serif); font-size: 1rem; color: var(--ink-2); padding: 1.5rem 0 3rem; }
+
+/* ============================================================
+   GREEN BUDGET ENFORCEMENT (overrides). Accent = brand mark + inline links +
+   one primary CTA only. Everything structural is ink / rule. See CLAUDE.md.
+   ============================================================ */
+.hero { padding: 4.5rem 0 2.75rem; border-bottom: 1px solid var(--rule); }
+.hero .eyebrow { margin-bottom: 1.1rem; }
+.hero h1 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; line-height: 1.08; font-size: clamp(1.9rem, 3.6vw, 2.7rem); text-wrap: balance; max-width: 20ch; }
+.hero p { font-family: var(--serif); margin-top: 1.4rem; font-size: clamp(1.05rem, 2.2vw, 1.28rem); line-height: 1.5; color: var(--ink-2); max-width: 46ch; text-wrap: pretty; }
+.hero .stats { display: flex; flex-wrap: wrap; gap: 2.25rem; margin-top: 2.5rem; padding-top: 1.6rem; border-top: 1px solid var(--rule); }
+.hero .stat { display: flex; flex-direction: column; gap: 0.15rem; }
+.hero .stat b { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+.hero .stat span { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+
+/* labels / eyebrows / numbers → neutral (not green) */
+.eyebrow, .lc-series, .ct-no, .cc-kicker, .as-kicker, .cite-kicker { color: var(--ink-3); }
+.card .num, .sr-roman { color: var(--ink-3); }
+.card .go { color: var(--ink-2); }
+.card:hover .go { color: var(--ink); }
+
+/* active states → ink fill, not green */
+.cc-segs button[aria-pressed="true"],
+.as-switch button[aria-selected="true"],
+.lib-chips button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.toc-list li.is-active a, .toc-list li.is-active .toc-num { color: var(--ink); }
+
+/* accent rules/borders → hairline */
+.credit-calc, .attr-sim { border-top: 1px solid var(--rule); }
+.as-desc, .cite { border-left-color: var(--rule); }
+
+/* slider track/thumb → ink */
+.cc-slider { background: linear-gradient(to right, var(--ink) var(--pct, 0%), var(--rule) var(--pct, 0%)); }
+.cc-slider::-webkit-slider-thumb { border-color: var(--ink); }
+.cc-slider::-moz-range-thumb { border-color: var(--ink); }
+
+/* book spine → neutral; only the small mark stays green */
+.book-face::before { background: linear-gradient(90deg, var(--ink-2) 0 5px, var(--rule) 5px 100%); }
+.contents a:hover { background: color-mix(in srgb, var(--ink) 3%, transparent); }
+.contents a:hover .ct-arr { color: var(--ink); }

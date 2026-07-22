@@ -71,9 +71,9 @@ function credits(model: ModelKey): number[] {
 const usd = (n: number) =>
   n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const pct = (f: number) => `${(f * 100).toFixed(f > 0 && f < 0.001 ? 2 : f < 0.1 ? 1 : 0)}%`;
-// emerald ramp by touch order (time → depth), theme-aware via color-mix
+// neutral ink ramp by touch order (time → depth), theme-aware via color-mix
 const shade = (i: number, n: number) =>
-  `color-mix(in srgb, var(--accent) ${Math.round(38 + (i / (n - 1)) * 62)}%, var(--paper-2))`;
+  `color-mix(in srgb, var(--ink) ${Math.round(30 + (i / (n - 1)) * 55)}%, var(--paper-2))`;
 
 function Simulator() {
   const [model, setModel] = useState<ModelKey>('last');
