@@ -66,6 +66,23 @@ export const papers: Paper[] = [
     pages: 15,
     featured: true,
   },
+  {
+    slug: 'hubspot-credit-reference',
+    number: '03',
+    series: 'revenue-systems-architecture',
+    type: 'Reference',
+    category: 'Revenue Systems Architecture',
+    title: 'The HubSpot Credit Consumption Reference',
+    deck:
+      'What actually consumes HubSpot Credits, how many, and how to estimate a month — in plain English, for the moment credit usage comes up on a call.',
+    abstract:
+      'HubSpot folded its AI and data usage into one currency — HubSpot Credits — and reps are routinely caught flat-footed when credit usage comes up. This reference gives the plain-English answer first, then the facts: what credits are, what you get included by tier, exactly what each action costs from HubSpot’s official rate sheet, worked monthly estimates, and how to monitor and cap usage.',
+    tags: ['HubSpot', 'Breeze', 'Credits', 'Pricing'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 9,
+    pages: 9,
+  },
 ];
 
 export const bySlug = (slug: string): Paper | undefined =>

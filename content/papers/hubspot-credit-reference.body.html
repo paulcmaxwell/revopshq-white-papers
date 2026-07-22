@@ -1,0 +1,161 @@
+<article class="doc">
+
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Reference &middot; No. 03</span>
+      <span>Revenue Systems Architecture</span>
+    </div>
+    <h1>The HubSpot Credit Consumption Reference</h1>
+    <p class="deck">What actually consumes HubSpot Credits, how many, and how to estimate a month &mdash; in plain English, for the moment credit usage comes up on a call.</p>
+    <div class="byline">
+      <span><strong>Paul Maxwell</strong>, Solutions Architecture</span>
+      <span>July 22, 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>In June 2025 HubSpot folded its AI and data usage into a single currency &mdash; HubSpot Credits &mdash; and reps are still routinely caught flat-footed when credit usage comes up. This reference gives the plain-English answer first, then the facts behind it: what credits are, what you get included by tier, exactly what each action costs from HubSpot&rsquo;s official rate sheet, worked monthly estimates, and how to monitor and cap usage. Rates are current as of July&nbsp;2026 and change often &mdash; always confirm against HubSpot&rsquo;s Products &amp; Services catalog before quoting a number.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> The answer you can give on a call</h2>
+    <p class="lede">Most of the confusion disappears once one distinction is clear: credits are for <em>AI and Data Studio</em>, not for using HubSpot. The CRM, email, forms, standard workflows, lists, and reporting do not touch credits. Only a specific set of AI and data actions do.</p>
+    <div class="note good">
+      <span class="label">The 20-second version</span>
+      <p>HubSpot Credits are a monthly usage currency for AI features and Data Studio &mdash; not for normal CRM, email, workflows, or reporting. You get an included allowance based on your highest subscription tier (500 / 3,000 / 5,000 for the core Hubs; up to 10,000 for Data Hub or Customer Platform). They reset every month and don&rsquo;t roll over. Only specific actions burn credits: AI agents, Breeze actions in workflows, buyer intent, and Data Studio dataset syncs. At $0.01 per credit, the two that add up fastest are <b>frequent Data Studio syncs</b> (25 credits each) and the <b>Prospecting Agent</b> (100 per lead).</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> What HubSpot Credits are</h2>
+    <ul>
+      <li><b>One unified currency.</b> The old &ldquo;Breeze Intelligence Credits&rdquo; were merged into HubSpot Credits in June 2025. There is now a single balance for AI and data usage.</li>
+      <li><b>Monthly, use-it-or-lose-it.</b> Credits reset every month on your usage-period start date. Unused credits expire and do <em>not</em> roll over.</li>
+      <li><b>Paid seats only.</b> Only Core, Sales, Service, and Revenue Seats (and Partner Seats) can consume credits. Free and View-only users cannot.</li>
+      <li><b>Priced at $0.01 each.</b> Extra credits are $10 per capacity pack of 1,000, or Pay-as-You-Go at $0.010 per credit (billed in increments of 10).</li>
+    </ul>
+    <div class="note">
+      <span class="label">Cost translation</span>
+      <p>Because one credit is one cent, the rate sheet doubles as a price list: <b>10 credits = $0.10 &middot; 25 = $0.25 &middot; 100 = $1.00 &middot; 1,000 = $10.00.</b> A month that burns 20,000 credits over the included allowance costs about $200.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> What you get included</h2>
+    <p>Every seat-based account includes a monthly credit allowance set by your <em>highest</em> subscription tier. You only pay when usage exceeds it.</p>
+    <div class="tablewrap">
+      <table>
+        <caption>Table 1 &mdash; Included HubSpot Credits per month, by highest subscription tier.</caption>
+        <thead>
+          <tr><th scope="col">Product line</th><th scope="col">Starter</th><th scope="col">Professional</th><th scope="col">Enterprise</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Marketing, Sales, Service, Content, Smart CRM, Revenue Hub</th><td class="n">500</td><td class="n">3,000</td><td class="n">5,000</td></tr>
+          <tr><th scope="row">Data Hub or Customer Platform</th><td class="n">500</td><td class="n">5,000</td><td class="n">10,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The allowance is per account, not per seat, and it is the single largest reason two similar companies see very different credit bills: a Data-Hub-Enterprise account starts with 10,000 free credits a month; a Marketing-Starter account starts with 500.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> The rate sheet &mdash; what consumes credits</h2>
+    <p>These are the credit costs from HubSpot&rsquo;s official Products &amp; Services catalog, grouped by category. Everything not on this list &mdash; standard CRM, email, forms, non-AI workflows, lists, dashboards, reporting &mdash; consumes no credits.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Table 2 &mdash; HubSpot Credits Rate Sheet (credits per action), as of July 2026.</caption>
+        <thead>
+          <tr><th scope="col">Category</th><th scope="col">Action</th><th scope="col">Credits</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">AI automation</th><td>Execute one Breeze action in a workflow</td><td class="n">10</td></tr>
+          <tr><th scope="row">Breeze &mdash; Data agent</th><td>Generate a response to one prompt for one record</td><td class="n">10</td></tr>
+          <tr><th scope="row">Breeze &mdash; Customer agent</th><td>Resolve one conversation (text-based channels)</td><td class="n">50</td></tr>
+          <tr><th scope="row">Breeze &mdash; Prospecting agent</th><td>Recommend outreach for one lead</td><td class="n">100</td></tr>
+          <tr><th scope="row">Breeze &mdash; Content agent <span style="color:var(--ink-3)">(beta)</span></th><td>Generate one piece of content</td><td class="n">1,000</td></tr>
+          <tr><th scope="row">Breeze &mdash; Custom agents <span style="color:var(--ink-3)">(beta)</span></th><td>Use one action unit <span style="color:var(--ink-3)">(from Jul 23, 2026)</span></td><td class="n">1</td></tr>
+          <tr><th scope="row">Buyer intent</th><td>Create and/or monitor one company for one month</td><td class="n">10</td></tr>
+          <tr><th scope="row">Buyer intent <span style="color:var(--ink-3)">(beta)</span></th><td>Monitor one company for one custom signal / month <span style="color:var(--ink-3)">(from Jun 30, 2026)</span></td><td class="n">50</td></tr>
+          <tr><th scope="row">Data Studio <span style="color:var(--ink-3)">(beta)</span></th><td>Each dataset sync / use in a workflow, segment, or export &mdash; &lt;500K rows</td><td class="n">25</td></tr>
+          <tr><th scope="row">Data Studio <span style="color:var(--ink-3)">(beta)</span></th><td>Same &mdash; 500K to 5M rows</td><td class="n">75</td></tr>
+          <tr><th scope="row">Data Studio <span style="color:var(--ink-3)">(beta)</span></th><td>Same &mdash; more than 5M rows</td><td class="n">200</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <span class="label">Two things the rate sheet doesn&rsquo;t say out loud</span>
+      <p>First, some features charge <em>per recurrence</em> &mdash; they consume credits on activation and again every month the feature stays enabled, not just once. Second, agent actions can incur <em>additional</em> service charges on top of credits (telephony minutes, SMS). Using a dataset in a <b>report</b> does not consume credits &mdash; only syncs, workflow/segment use, and exports do.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Estimating a month</h2>
+    <p>The rate sheet only becomes intuitive once it is multiplied by volume. These are the scenarios that come up most, against the included allowance from Table&nbsp;1.</p>
+    <div class="tablewrap">
+      <table>
+        <caption>Table 3 &mdash; Worked monthly estimates (credits, and cost at $0.01/credit).</caption>
+        <thead>
+          <tr><th scope="col">Scenario</th><th scope="col">Math</th><th scope="col">Credits / mo</th><th scope="col">Cost / mo</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Data Studio sync, every 15 min, one dataset</th><td class="n">96/day &times; 25 &times; 30</td><td class="n">72,000</td><td class="n">$720</td></tr>
+          <tr><th scope="row">Data Studio sync, hourly, one dataset</th><td class="n">24/day &times; 25 &times; 30</td><td class="n">18,000</td><td class="n">$180</td></tr>
+          <tr><th scope="row">Prospecting agent on 200 leads</th><td class="n">200 &times; 100</td><td class="n">20,000</td><td class="n">$200</td></tr>
+          <tr><th scope="row">Customer agent resolving 500 conversations</th><td class="n">500 &times; 50</td><td class="n">25,000</td><td class="n">$250</td></tr>
+          <tr><th scope="row">Data agent, 1,000 prompts</th><td class="n">1,000 &times; 10</td><td class="n">10,000</td><td class="n">$100</td></tr>
+          <tr><th scope="row">Content agent, 50 pieces</th><td class="n">50 &times; 1,000</td><td class="n">50,000</td><td class="n">$500</td></tr>
+          <tr><th scope="row">Buyer intent on 300 companies</th><td class="n">300 &times; 10</td><td class="n">3,000</td><td class="n">$30</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Read the top row against the allowance: a single 15-minute Data Studio sync consumes 72,000 credits a month &mdash; more than seven times a Data-Hub-Enterprise account&rsquo;s entire 10,000 included, before any other AI is used. This is the single most common credit surprise, and it is the one worth pre-empting on a call.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> The four that surprise people</h2>
+    <ul>
+      <li><b>Frequent Data Studio syncs.</b> At 25 credits each, cadence &mdash; not data volume &mdash; is the cost driver. Every 15 minutes is ~72,000 credits/month <em>per dataset</em>. Four objects on that cadence is ~288,000. Recommend daily or hourly unless real-time is genuinely required.</li>
+      <li><b>The Prospecting agent at 100 credits per lead.</b> Cheap for a pilot, expensive at scale: 1,000 leads is 100,000 credits ($1,000/month).</li>
+      <li><b>The Content agent at 1,000 credits per piece.</b> The most expensive single action on the sheet; a modest content program can outrun a large allowance quickly.</li>
+      <li><b>&ldquo;Per recurrence&rdquo; features.</b> Anything that keeps producing output (some intent and monitoring features) charges again each month it stays on &mdash; the cost is not a one-time activation.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> Monitoring and capping usage</h2>
+    <p>Every account can see exactly where credits go and put a ceiling on them. This is the second half of the answer for a nervous buyer: the spend is visible and controllable.</p>
+    <ul>
+      <li><b>See usage.</b> Account name (top right) &rarr; <em>Account &amp; Billing</em> &rarr; <em>Usage &amp; Limits</em> &rarr; <em>HubSpot Credits</em>. The usage log shows which features and tools consumed credits this month.</li>
+      <li><b>Set a limit.</b> Define a monthly credit ceiling so usage cannot silently run past a threshold.</li>
+      <li><b>Choose the overage behavior.</b> <em>Auto-upgrade</em> adds a capacity pack ($10 / 1,000) for the rest of the term when you exceed the limit; <em>Pay-as-You-Go</em> instead bills only the credits used beyond the limit that month ($0.01 each, in increments of 10) and resets to your original limit next period.</li>
+    </ul>
+    <div class="note good">
+      <span class="label">The reassurance</span>
+      <p>Credits cannot run away unnoticed: usage is itemized in the log, a monthly limit can be set, and overages are opt-in behaviors the admin chooses. The honest framing for a prospect is that credits are a metered, controllable line item &mdash; not a surprise on the invoice &mdash; provided someone owns the limit and reviews the log.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">A</span> Quick reference</h2>
+    <div class="glossary">
+      <div><b>HubSpot Credit</b> &mdash; the unified monthly usage currency for AI and Data Studio. $0.01 each. Resets monthly; does not roll over.</div>
+      <div><b>Included allowance</b> &mdash; 500 / 3,000 / 5,000 for the core Hubs (Starter / Pro / Ent); 500 / 5,000 / 10,000 for Data Hub or Customer Platform. Set by highest tier, per account.</div>
+      <div><b>Consumes credits</b> &mdash; Breeze workflow actions (10), Data agent (10/record), Customer agent (50/conversation), Prospecting agent (100/lead), Content agent (1,000/piece), buyer intent (10/company/mo), Data Studio syncs (25 / 75 / 200 by size).</div>
+      <div><b>Does not consume credits</b> &mdash; standard CRM, email, forms, non-AI workflows, lists, dashboards, reporting, and using a dataset in a report.</div>
+      <div><b>Capacity pack</b> &mdash; $10 for 1,000 additional credits/month. <b>Pay-as-You-Go</b> &mdash; $0.01/credit beyond the limit, in increments of 10.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="row">
+      <span class="wordmark" style="letter-spacing:0.16em"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>The HubSpot Credit Consumption Reference &middot; No. 03</span>
+      <span>July 2026</span>
+    </div>
+    <p style="max-width:64ch">Credit rates, included allowances, and pricing are taken from HubSpot&rsquo;s Products &amp; Services catalog (HubSpot Credits Rate Sheet) as observed in July 2026. HubSpot changes these frequently, and some rates carry future effective dates &mdash; always confirm the current numbers in the catalog and in your account&rsquo;s Usage &amp; Limits before quoting a figure. Beta features may change or begin consuming credits with limited notice. HubSpot, Breeze, and Data Studio are trademarks of HubSpot, Inc.</p>
+  </footer>
+
+</article>

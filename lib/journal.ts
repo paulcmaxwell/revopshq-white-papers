@@ -20,6 +20,7 @@ export type ArticleType =
   | 'Research Article'
   | 'Comparative Review'
   | 'White Paper'
+  | 'Reference'
   | 'Field Note'
   | 'Case Study';
 
