@@ -276,12 +276,75 @@ function Calculator() {
   );
 }
 
-/** Portals the calculator into the `#credit-calculator` marker inside the paper body. */
+/** Compact inline launcher rendered at the article marker. */
+function InlineLauncher({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="cc-launch">
+      <div className="cc-launch-txt">
+        <span className="cc-kicker">Interactive · Estimate a month</span>
+        <span className="cc-launch-sub">Model your credit usage against the included allowance — live.</span>
+      </div>
+      <button type="button" className="cc-launch-btn" onClick={onOpen}>
+        Open the estimator <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Mounts two access points for the estimator (only on the credits paper):
+ *  - an inline launcher card at the `#credit-calculator` marker, and
+ *  - a persistent floating launcher that opens a right-side drawer.
+ * The calculator itself lives once, inside the drawer.
+ */
 export default function CreditCalculator() {
-  const [host, setHost] = useState<HTMLElement | null>(null);
+  const [open, setOpen] = useState(false);
+  const [marker, setMarker] = useState<HTMLElement | null>(null);
+  const [body, setBody] = useState<HTMLElement | null>(null);
+
   useEffect(() => {
-    setHost(document.getElementById('credit-calculator'));
+    setMarker(document.getElementById('credit-calculator'));
+    setBody(document.body);
   }, []);
-  if (!host) return null;
-  return createPortal(<Calculator />, host);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [open]);
+
+  return (
+    <>
+      {marker && createPortal(<InlineLauncher onOpen={() => setOpen(true)} />, marker)}
+      {body && createPortal(
+        <>
+          <button
+            type="button"
+            className="cc-fab"
+            onClick={() => setOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={open}
+          >
+            <span className="cc-fab-mark" aria-hidden="true" />
+            Estimate a month
+          </button>
+
+          <div className={`cc-drawer-root${open ? ' open' : ''}`} aria-hidden={!open}>
+            <div className="cc-scrim" onClick={() => setOpen(false)} />
+            <aside className="cc-drawer" role="dialog" aria-modal="true" aria-label="HubSpot credit estimator">
+              <div className="cc-drawer-bar">
+                <span className="cc-kicker">Credit estimator</span>
+                <button type="button" className="cc-drawer-close" onClick={() => setOpen(false)} aria-label="Close estimator">✕</button>
+              </div>
+              {open && <Calculator />}
+            </aside>
+          </div>
+        </>,
+        body,
+      )}
+    </>
+  );
 }

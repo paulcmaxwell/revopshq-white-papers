@@ -638,4 +638,54 @@ main { flex: 1 0 auto; }
 .cc-break li { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-2); }
 .cc-break-n { font-family: var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
 
-@media print { .credit-calc { display: none !important; } }
+/* --- inline launcher card (at the article marker) --- */
+.cc-launch {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  margin: 2rem 0 0.5rem; padding: 1.15rem 1.35rem;
+  border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 4px;
+  background: var(--paper-2); font-family: var(--sans);
+}
+.cc-launch-txt { display: flex; flex-direction: column; gap: 0.25rem; }
+.cc-launch-sub { font-family: var(--serif); font-size: 0.95rem; color: var(--ink-2); }
+.cc-launch-btn {
+  flex: none; padding: 0.5rem 0.95rem; font-family: var(--sans); font-size: 0.82rem; font-weight: 600;
+  color: #fff; background: var(--accent); border: 1px solid var(--accent); border-radius: 3px; cursor: pointer;
+  transition: background 0.15s;
+}
+.cc-launch-btn:hover { background: var(--accent-2); }
+
+/* --- persistent floating launcher --- */
+.cc-fab {
+  position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 60;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  padding: 0.7rem 1.05rem; font-family: var(--sans); font-size: 0.84rem; font-weight: 600;
+  color: var(--paper); background: var(--ink);
+  border: none; border-radius: 999px; cursor: pointer;
+  box-shadow: 0 6px 20px -6px rgba(0,0,0,0.4); transition: transform 0.15s, background 0.15s;
+}
+.cc-fab:hover { transform: translateY(-1px); background: var(--accent); }
+.cc-fab-mark { width: 0.7rem; height: 0.7rem; border-radius: 2px; background: var(--mint); box-shadow: 0.22rem 0.22rem 0 0 var(--accent); }
+
+/* --- drawer --- */
+.cc-drawer-root { position: fixed; inset: 0; z-index: 80; pointer-events: none; }
+.cc-scrim { position: absolute; inset: 0; background: rgba(10,16,13,0.42); opacity: 0; transition: opacity 0.28s ease; }
+.cc-drawer {
+  position: absolute; top: 0; right: 0; height: 100%; width: min(500px, 94vw);
+  background: var(--paper); border-left: 1px solid var(--rule); box-shadow: -12px 0 40px -20px rgba(0,0,0,0.45);
+  transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto; overscroll-behavior: contain; padding: 1.25rem 1.4rem 3rem;
+}
+.cc-drawer-root.open { pointer-events: auto; }
+.cc-drawer-root.open .cc-scrim { opacity: 1; }
+.cc-drawer-root.open .cc-drawer { transform: translateX(0); }
+.cc-drawer-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.9rem; margin-bottom: 0.4rem; border-bottom: 1px solid var(--rule); position: sticky; top: 0; background: var(--paper); z-index: 1; }
+.cc-drawer-close { width: 1.9rem; height: 1.9rem; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--ink-2); background: transparent; border: 1px solid var(--rule); border-radius: 999px; cursor: pointer; transition: color 0.15s, border-color 0.15s; }
+.cc-drawer-close:hover { color: var(--ink); border-color: var(--ink-3); }
+
+/* calculator sits inside the drawer: single column, summary pinned to top */
+.cc-drawer .credit-calc { margin: 0; padding: 0; border: none; background: transparent; }
+.cc-drawer .credit-calc > figcaption { margin-top: 0.6rem; }
+.cc-drawer .cc-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+.cc-drawer .cc-out { order: -1; }
+
+@media print { .credit-calc, .cc-fab, .cc-drawer-root, .cc-launch { display: none !important; } }
