@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { papers } from '@/content/papers';
 import { series as allSeries } from '@/content/series';
 import { volIssue } from '@/lib/journal';
+import LibraryFilter from '@/components/LibraryFilter';
 
 const fmtDate = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
@@ -68,24 +69,7 @@ export default function Home() {
           <h2>Contents</h2>
           <span className="count">{papers.length} {papers.length === 1 ? 'title' : 'titles'}</span>
         </div>
-        <ol className="contents">
-          {sorted.map((p) => (
-            <li key={p.slug}>
-              <Link href={`/papers/${p.slug}`}>
-                <span className="ct-no">No.&nbsp;{p.number}</span>
-                <span className="ct-main">
-                  <span className="ct-title">{p.title}</span>
-                  <span className="ct-deck">{p.deck}</span>
-                  <span className="ct-meta">
-                    {p.category} <span aria-hidden="true">·</span> {fmtDate(p.date)}{' '}
-                    <span aria-hidden="true">·</span> {p.readingMinutes} min
-                  </span>
-                </span>
-                <span className="ct-arr" aria-hidden="true">→</span>
-              </Link>
-            </li>
-          ))}
-        </ol>
+        <LibraryFilter papers={sorted} series={allSeries} />
       </section>
 
       {/* ---- series index ---- */}

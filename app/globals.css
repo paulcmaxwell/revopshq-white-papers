@@ -824,3 +824,23 @@ main { flex: 1 0 auto; }
 .cs-forthcoming { font-family: var(--serif); font-size: 1.02rem; color: var(--ink-2); padding-bottom: 4rem; max-width: 48ch; }
 
 @media (prefers-reduced-motion: reduce) { .book-face { transition: none; } }
+
+/* ---------- library search / filter ---------- */
+.lib-controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem;
+  margin-bottom: 0.5rem; padding-bottom: 1.25rem;
+}
+.lib-search { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 16rem; border-bottom: 1px solid var(--ink); padding-bottom: 0.4rem; }
+.lib-search-icon { color: var(--ink-3); font-size: 1rem; }
+.lib-search input { flex: 1; border: none; background: transparent; font-family: var(--sans); font-size: 0.95rem; color: var(--ink); }
+.lib-search input::placeholder { color: var(--ink-3); }
+.lib-search input:focus { outline: none; }
+.lib-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.lib-chips button {
+  padding: 0.3rem 0.7rem; font-family: var(--sans); font-size: 0.76rem; color: var(--ink-2);
+  background: transparent; border: 1px solid var(--rule); border-radius: 999px; cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.lib-chips button:hover { border-color: var(--ink-3); }
+.lib-chips button[aria-pressed="true"] { color: #fff; background: var(--accent); border-color: var(--accent); }
+.lib-empty { font-family: var(--serif); font-size: 1rem; color: var(--ink-2); padding: 1.5rem 0 3rem; }

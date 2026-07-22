@@ -45,7 +45,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done
       Card grid retired on homepage (`PaperCard` now unused there). VERIFY live render.
 - [ ] Nav IA: update `Nav.tsx` links to match (White Papers / Series) — still Library
 - [x] Kill "journal" over-branding in copy (brand-first; white papers primary)
-- [ ] Article page: clickable TOC that collapses on scroll + Cite-this line
+- [x] Article page: clickable TOC (scroll-spy rail, collapsible on mobile) + Cite-this
 
 ## Case study backlog (draft — same design/voice, gated ebook download)
 Map each to a series; ground in real archetypes (the Forge $25M example in
@@ -63,9 +63,9 @@ Map each to a series; ground in real archetypes (the Forge $25M example in
 ## Next
 - [ ] Brand-first IA: White Papers → Case Studies → Tools & Downloads → Articles
 - [ ] Tools & Downloads product system (calculators + downloadable assets) w/ covers
-- [ ] Search / filter across resources; optional table view
+- [x] Search / filter across resources (homepage: live search + series chips)
 - [ ] CONTENT_IDEAS.md + daily publishing workflow (assign issue/vol/series/authors)
-- [ ] Per-paper OG images
+- [x] Per-paper OG images (dynamic next/og card per paper)
 
 ## Content ideas (seed — move to CONTENT_IDEAS.md)
 - Deduplication & data quality in HubSpot; lifecycle architecture; routing SLAs
