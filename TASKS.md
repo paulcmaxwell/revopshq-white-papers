@@ -27,12 +27,13 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done
       time-decay, U/W-shaped, data-driven): what credit each touch gets, shown as a
       chart. Add a **model switcher** and an interactive **simulator with fake data**
       (a sample journey → live credit split per model). Same design language.
-- [ ] **Case Studies content type** — new format alongside white papers, same design
-      + voice. See "Case study backlog" below. Numbered, series-tagged, gated PDF.
-- [ ] **AgencyHabits-style packaging** — downloadable assets shown as **3D ebook /
-      journal-issue cover images** in a grid; email-gated download. Repurpose the
-      orphaned `components/CoverArt.tsx` (WebGL cover) as the cover-image generator.
-      Applies to white papers, case studies, and tools/downloads.
+- [x] **AgencyHabits-style packaging** — `/downloads` shelf of 3D book covers
+      (`components/BookCover.tsx`, restrained journal-issue treatment, emerald spine +
+      mark), each → `/papers/<slug>?gate=1` gated download. Nav: Downloads. Verify live.
+- [~] **Case Studies content type** — packaging slot ready (Case Studies section on
+      /downloads marked Forthcoming). CONTENT: Paul provides real engagement details;
+      DO NOT fabricate. When content arrives: add registry entries (type 'Case Study'),
+      author standalone HTML → extract → PDF → they appear on the shelf automatically.
 
 ## Bugs
 - [x] **No. 02 attribution** — "the number on the board slide" SVG label overflowed
