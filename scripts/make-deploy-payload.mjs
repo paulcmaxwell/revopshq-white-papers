@@ -29,8 +29,9 @@ function walk(dir) {
     } else {
       if (EXCLUDE_FILES.has(name)) continue;
       const ext = path.extname(name).toLowerCase();
-      // The assembled .pdf ships as base64 part.NNN text files instead.
+      // Large assets are fetched from the repo raw URL at runtime, not shipped.
       if (ext === '.pdf') continue;
+      if (name.endsWith('.body.html')) continue;
       if (BINARY_EXT.has(ext)) {
         files.push({ file: rel, data: readFileSync(abs).toString('base64'), encoding: 'base64' });
       } else {
@@ -42,7 +43,7 @@ function walk(dir) {
 walk(root);
 
 const out = process.argv[2] || '/tmp/wp-deploy.json';
-writeFileSync(out, JSON.stringify(files));
+writeFileSync(out, JSON.stringify(files, null, 1));
 const bytes = files.reduce((n, f) => n + f.data.length, 0);
 console.log(`${files.length} files -> ${out} (${(bytes / 1024).toFixed(0)} KB of data)`);
 for (const f of files) console.log(`  ${f.encoding === 'base64' ? '[bin]' : '     '} ${f.file} (${f.data.length}b)`);
