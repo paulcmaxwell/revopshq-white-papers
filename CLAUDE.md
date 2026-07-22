@@ -102,6 +102,55 @@ Push to `main` → Vercel auto-builds and promotes to production. Verify with th
 - **Downloads must never block on HubSpot.** `submitLeadToHubSpotForm` is
   best-effort and always logs the lead; the unlock cookie is set regardless.
 
+## UI & design — non-negotiable rules (read before ANY visual change)
+
+These exist because ignoring them produced a mess. They are hard rules, not taste.
+
+**Never ship design you haven't looked at.** After any visual/CSS/component change,
+before you commit:
+1. `node scripts/audit-responsive.mjs` — must report **"All routes clean"** (no
+   horizontal overflow at 360–1280). Fix the element it names; do not `overflow:hidden`
+   the symptom.
+2. `node scripts/shot.mjs <route> 390 out.png` and `... 1280 ...`, then **Read the
+   PNG and actually look at it.** CLI `--screenshot` mis-sizes small windows — use
+   `shot.mjs` (device-emulated CDP), not `--window-size`.
+Only then commit + push.
+
+**Green budget (this was the #1 complaint).** Emerald (`--accent`) is punctuation.
+On any screen it may appear ONLY as: the brand mark, inline text links, and at most
+ONE primary CTA. **Banned** on eyebrows, section numbers, category/labels, rules,
+card borders, segmented/tab active states, chips, slider tracks, decorative fills —
+those are `--ink*` / `--rule`. Semantic colors (clay/amber/mint) only inside a data
+figure that encodes meaning, muted, with a legend. Type + hairlines carry hierarchy,
+not color.
+
+**No empty boxes, no duplicated content.** A card/cover must be filled (title + deck),
+and must never repeat a title shown right next to it. Cards: `--paper-2`, 1px `--rule`,
+hover → `--ink-3` border. No forced tall aspect-ratios with a hollow middle.
+
+**Mobile margins never break.** Flex/grid children default to `min-width:auto` and
+will stretch the page — add `min-width:0` and put wide tables/figures in their own
+`overflow-x:auto` wrapper. `.container` side padding is sacred.
+
+**Don't thrash the same surface.** Lock the target first (an existing good commit or
+a reference the user names) and make ONE cohesive change. If you don't know what
+"good" looks like, ASK for a reference — do not iterate on your own guess. Nothing is
+ever lost: every version is a `git checkout <sha> -- <file>` away.
+
+**Push after every verified change.** Paul reviews on the live site — never hand him
+a localhost URL. Commit + push to `main` once a change builds, audits clean, and you've
+looked at the screenshot.
+
+## Case studies vs. educational content
+- **Case studies** (type `'Case Study'`, `content/papers/index.ts` → `caseStudies`):
+  results pieces grounded in a real engagement. Anonymize the CLIENT (no name, people,
+  city) but DO name third-party software (Redtail, HubSpot, NetSuite) and the industry
+  (RIA, manufacturer). Client-attested representative numbers are allowed. Extraction
+  briefs + rules: `CASE_STUDIES.md`; product map: memory `revops-products`.
+- **Educational** (white papers, calculators): first-principles, information-forward,
+  illustrative examples only — no client-attributed results. Not click-baity.
+- Only the **PDF download** is email-gated; web content and tools read free.
+
 ## Adding a white paper
 
 Use the **`new-white-paper`** skill. In short: author the standalone HTML in the
