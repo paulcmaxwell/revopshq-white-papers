@@ -17,6 +17,7 @@ export default function BookCover({ paper }: { paper: Paper }) {
         </div>
         <div className="bc-cat">{paper.category}</div>
         <div className="bc-title">{paper.title}</div>
+        <div className="bc-deck">{paper.deck}</div>
         <div className="bc-foot">
           <span>Revenue&nbsp;Foundations</span>
           <span>{volIssue(paper.date)}</span>

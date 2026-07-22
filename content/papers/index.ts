@@ -96,7 +96,7 @@ export const caseStudies: Paper[] = [
     series: 'revenue-systems-architecture',
     type: 'Case Study',
     category: 'Revenue Systems Architecture',
-    title: 'Moving a wealth CRM into HubSpot without losing the relationships',
+    title: 'Migrating an RIA from Redtail to HubSpot without losing the relationships',
     deck:
       'A registered investment advisor left Redtail for HubSpot. The hard part was householding, the account book, and the audit trail — a data-model exercise, not a data export.',
     abstract:

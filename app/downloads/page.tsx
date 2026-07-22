@@ -55,7 +55,6 @@ export default function Downloads() {
                 <Link key={p.slug} href={`/papers/${p.slug}?gate=1`} className="shelf-item">
                   <BookCover paper={p} />
                   <span className="shelf-meta">
-                    <span className="shelf-title">{p.title}</span>
                     <span className="shelf-cta">Download PDF <span aria-hidden="true">↓</span></span>
                   </span>
                 </Link>

@@ -786,14 +786,14 @@ main { flex: 1 0 auto; }
   gap: 2.5rem 2rem;
   padding: 1rem 0 4rem;
 }
-.shelf-item { display: flex; flex-direction: column; gap: 1rem; perspective: 1400px; }
+.shelf-item { display: flex; flex-direction: column; gap: 1rem; }
 .shelf-meta { display: flex; flex-direction: column; gap: 0.3rem; }
 .shelf-title { font-family: var(--serif); font-size: 1.02rem; font-weight: 600; line-height: 1.2; color: var(--ink); text-wrap: balance; }
 .shelf-cta { font-family: var(--sans); font-size: 0.78rem; font-weight: 600; color: var(--accent); transition: gap 0.15s; }
 .shelf-item:hover .shelf-cta { color: var(--accent-2); }
 
 /* the book */
-.book { aspect-ratio: 3 / 4; transform-style: preserve-3d; }
+.book { aspect-ratio: 3 / 4; }
 .book-face {
   position: relative; height: 100%;
   display: flex; flex-direction: column;
@@ -801,12 +801,8 @@ main { flex: 1 0 auto; }
   background: var(--paper-2);
   border: 1px solid var(--rule);
   border-radius: 2px 5px 5px 2px;
-  transform: rotateY(-16deg);
-  transform-origin: left center;
-  box-shadow:
-    -2px 4px 6px rgba(20,32,28,0.08),
-    -14px 18px 34px -12px rgba(20,32,28,0.32);
-  transition: transform 0.4s cubic-bezier(0.2,0.7,0.2,1), box-shadow 0.4s ease;
+  box-shadow: 0 1px 2px rgba(20,32,28,0.06), 0 10px 24px -14px rgba(20,32,28,0.22);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 /* the spine */
 .book-face::before {
@@ -821,8 +817,8 @@ main { flex: 1 0 auto; }
   border-radius: 0 2px 2px 0; transform: translateZ(-1px);
 }
 .shelf-item:hover .book-face {
-  transform: rotateY(-4deg) translateY(-4px);
-  box-shadow: -2px 6px 8px rgba(20,32,28,0.1), -18px 24px 44px -12px rgba(20,32,28,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgba(20,32,28,0.08), 0 16px 32px -14px rgba(20,32,28,0.3);
 }
 
 .book-face .bc-top { display: flex; align-items: flex-start; justify-content: space-between; }
@@ -830,6 +826,7 @@ main { flex: 1 0 auto; }
 .bc-mark { width: 0.8rem; height: 0.8rem; border-radius: 2px; background: var(--accent); box-shadow: 0.26rem 0.26rem 0 0 var(--mint); flex: none; }
 .bc-cat { margin-top: 1.35rem; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 650; color: var(--ink-3); }
 .bc-title { font-family: var(--serif); font-weight: 600; color: var(--ink); font-size: clamp(1.15rem, 1.6vw, 1.4rem); line-height: 1.12; letter-spacing: -0.01em; margin-top: 0.5rem; text-wrap: balance; }
+.bc-deck { margin-top: 0.7rem; font-family: var(--serif); font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .bc-foot { margin-top: auto; padding-top: 1rem; display: flex; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; color: var(--ink-3); border-top: 1px solid var(--rule); }
 
 .cs-forthcoming { font-family: var(--serif); font-size: 1.02rem; color: var(--ink-2); padding-bottom: 4rem; max-width: 48ch; }
