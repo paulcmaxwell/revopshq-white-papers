@@ -891,3 +891,46 @@ main { flex: 1 0 auto; }
 .book-face::before { background: linear-gradient(90deg, var(--ink-2) 0 5px, var(--rule) 5px 100%); }
 .contents a:hover { background: color-mix(in srgb, var(--ink) 3%, transparent); }
 .contents a:hover .ct-arr { color: var(--ink); }
+
+/* ---------- tools ---------- */
+.tool-block { padding-bottom: 4rem; }
+.tool-intro { font-family: var(--serif); font-size: 1.05rem; line-height: 1.5; color: var(--ink-2); max-width: 60ch; margin-bottom: 1.75rem; }
+
+.ue { border: 1px solid var(--rule); border-radius: 4px; background: var(--paper-2); padding: 1.6rem; font-family: var(--sans); }
+.ue-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 2.25rem; }
+@media (max-width: 760px) { .ue-grid { grid-template-columns: 1fr; gap: 1.75rem; } }
+
+.ue-inputs { display: flex; flex-direction: column; gap: 1.15rem; }
+.ue-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.ue-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.ue-label { font-size: 0.84rem; font-weight: 600; color: var(--ink); }
+.ue-hint { font-weight: 400; color: var(--ink-3); font-family: var(--mono); font-size: 0.7rem; }
+.ue-val { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.ue-val b { color: var(--ink); font-weight: 600; }
+.ue-slider {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 2px; cursor: pointer;
+  background: linear-gradient(to right, var(--ink) var(--pct, 0%), var(--rule) var(--pct, 0%));
+  border-radius: 2px;
+}
+.ue-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--paper-2); border: 2px solid var(--ink); }
+.ue-slider::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--paper-2); border: 2px solid var(--ink); }
+.ue-slider:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.ue-out { display: flex; flex-direction: column; gap: 1rem; }
+.ue-result { display: flex; flex-direction: column; gap: 0.15rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--rule); }
+.ue-result-val { font-family: var(--serif); font-size: 2.4rem; line-height: 1; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ue-result-lab { font-size: 0.8rem; color: var(--ink-3); }
+.ue-flag { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.2rem; }
+.ue-flag.ok { color: var(--ink-2); }
+.ue-flag.warn { color: var(--clay); }
+.ue-derived { margin: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.ue-derived > div { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.82rem; }
+.ue-derived dt { color: var(--ink-2); }
+.ue-derived dd { margin: 0; font-family: var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.ue-math { margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid var(--rule); font-family: var(--serif); font-size: 0.95rem; line-height: 1.55; color: var(--ink-2); }
+.ue-math ul { margin: 0.7rem 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.ue-math b { color: var(--ink); }
+.ue-mono { font-family: var(--mono); font-size: 0.85em; color: var(--ink); }
+.ue-note { font-size: 0.85rem; color: var(--ink-3); margin-top: 0.7rem; }
+.ue-note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }

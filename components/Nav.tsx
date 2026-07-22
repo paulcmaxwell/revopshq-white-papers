@@ -10,6 +10,7 @@ export default function Nav() {
           <div className="nav-links">
             <a href="/#library">White Papers</a>
             <a href="/#case-studies">Case Studies</a>
+            <a href="/tools">Tools</a>
             <a href="/downloads">Downloads</a>
             <a href="https://revopshq.com" target="_blank" rel="noopener noreferrer">
               RevOps HQ
