@@ -11,7 +11,7 @@
     "extract": "node scripts/extract-source.mjs"
   },
   "dependencies": {
-    "next": "15.5.4",
+    "next": "15.5.21",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "server-only": "0.0.1"
