@@ -12,7 +12,7 @@ export default function Footer() {
             revopshq.com
           </a>
         </div>
-        <div className="fine">© {year} RevOps HQ · Revenue Systems Architecture</div>
+        <div className="fine">© {year} Revenue Foundations · An independent research project from RevOps HQ</div>
       </div>
     </footer>
   );

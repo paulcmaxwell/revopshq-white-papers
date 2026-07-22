@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <section className="hero">
         <div className="container">
-          <p className="eyebrow">RevOps HQ · Research</p>
+          <p className="eyebrow">Revenue Foundations · Research</p>
           <h1>White papers on revenue systems that actually ship.</h1>
           <p>
             Field notes from the work — HubSpot architecture, integration design, and the trade-offs

@@ -17,13 +17,7 @@ export default function PaperCard({ paper }: { paper: Paper }) {
       </div>
       <h3>{paper.title}</h3>
       <p className="dek">{paper.abstract}</p>
-      <div className="tags">
-        {paper.tags.slice(0, 4).map((t) => (
-          <span className="tag" key={t}>
-            {t}
-          </span>
-        ))}
-      </div>
+      <p className="card-topics">{paper.tags.slice(0, 4).join('  ·  ')}</p>
       <div className="meta">
         <span>{fmtDate(paper.date)}</span>
         <span aria-hidden="true">·</span>
