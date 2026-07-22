@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Migrating an RIA from Redtail to HubSpot without losing the relationships — RevOps HQ</title>
+<title>Rebuilding a wealth advisor on HubSpot — RevOps HQ</title>
 </head>
 <body>
 <!-- ARTIFACT-BODY-START -->
@@ -391,8 +391,8 @@ footer .row { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content:
       <span>Case Study &middot; No. C1</span>
       <span>Revenue Systems Architecture</span>
     </div>
-    <h1>Migrating an RIA from Redtail to HubSpot without losing the relationships</h1>
-    <p class="deck">A registered investment advisor left Redtail for HubSpot. The hard part was never the contacts &mdash; it was householding, the account book, and the audit trail. This is the data-model exercise that decides whether the migration works.</p>
+    <h1>Rebuilding a wealth advisor on HubSpot: a platform, process, and data migration off Redtail</h1>
+    <p class="deck">Moving an advisory firm off Redtail wasn&rsquo;t a CRM swap. It was a platform migration &mdash; the data model, the compliance processes, and a decade of history &mdash; rebuilt so households, relationships, and the audit trail survived.</p>
     <div class="byline">
       <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
       <span>July 2026</span>
@@ -401,82 +401,146 @@ footer .row { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content:
 
   <div class="abstract">
     <span class="eyebrow">Abstract</span>
-    <p>A mid-market RIA with an affiliated tax practice ran a decade of client history in Redtail &mdash; roughly 11,000 contacts, 3,300 investment accounts, 3,300 households, 9,000 relationships, and 180,000 notes &mdash; and wanted to standardize on HubSpot. The migration is treated as a data-modeling problem first and a software problem second: inventory the source model, map each entity to a HubSpot object, and find what has no native home. That last step &mdash; investment accounts and households &mdash; is what forces HubSpot Enterprise, and it is the decision most teams get wrong. This is a first-principles walkthrough of the object model, the association graph, the property parsing, and the idempotent migration that let a compliance-heavy firm move without losing the thing that makes it a wealth firm: the web of relationships.</p>
+    <p>A wealth-advisory firm wanted to standardize on HubSpot. Treating it as a contact export would have failed on day one, because an advisory firm&rsquo;s value doesn&rsquo;t live in contacts &mdash; it lives in households, investment accounts, a dense web of relationships, and a compliance process that has to be provable. This is a first-principles account of a platform migration: mapping the source data model to HubSpot objects, finding what has no native home (accounts and households) and what that forces, parsing a decade of encoded fields into typed properties, rebuilding dozens of compliance workflows as team-assignable ticket pipelines, and running the load so it was safe to run twice.</p>
   </div>
 
   <section>
-    <h2><span class="num">1</span> A CRM is a data model before it is software</h2>
-    <p class="lede">The instinct on a CRM migration is to export contacts, import contacts, and call the rest configuration. For a transactional sales team that mostly works. For a wealth-management firm it fails on day one, because the unit of value is not the contact. It is the <em>household</em>, the <em>account</em>, and the <em>relationships</em> between people &mdash; and none of those are contacts.</p>
-    <p>So the migration starts as an inventory, not an export. Every distinct kind of thing in the source system is written down and asked one question: what HubSpot object represents this? The answers fall into three buckets &mdash; has a native home, needs modeling, or has no home at all &mdash; and the third bucket is the whole engagement.</p>
+    <h2><span class="num">1</span> This was a platform migration, not a CRM swap</h2>
+    <p class="lede">The instinct on a CRM change is to export contacts, import contacts, and treat the rest as configuration. For an advisory firm that framing collapses immediately. The unit of value isn&rsquo;t the contact &mdash; it&rsquo;s the <em>household</em>, the <em>account</em>, the <em>relationships</em> between people, and the <em>process</em> that moves money under supervision. Migrating the firm meant migrating all four: the data model, the history, the workflows, and the controls.</p>
+    <p>So the work began as an inventory of the source model, not an export. Every distinct kind of thing &mdash; and every process attached to it &mdash; was written down and asked one question: what represents this in HubSpot? The answers sorted into three buckets: has a native home, needs modeling, or has no home at all. The third bucket is the engagement.</p>
     <div class="note good">
       <span class="label">The first principle</span>
-      <p><b>Map the source model before you touch the data.</b> A CRM is a set of objects, the properties on them, and the associations between them. Migrate the model, and the records follow. Migrate the records first, and you spend the next year rebuilding a model by hand under a live team.</p>
+      <p><b>Migrate the model and the process, then the records follow.</b> A platform is objects, the properties on them, the associations between them, and the workflows that operate on them. Move those deliberately; move records first and you spend the next year rebuilding a platform by hand under a live team.</p>
     </div>
   </section>
 
   <section>
-    <h2><span class="num">2</span> Where a wealth CRM and HubSpot diverge</h2>
-    <p>Redtail, like most vertical CRMs, keeps everyone in a single &ldquo;contact&rdquo; table and separates them with a type flag: individuals, businesses, trusts, and associations all live together. HubSpot does not work that way. People are Contacts; organizations are Companies; and a trust is neither cleanly. The migration has to <em>shard one table into several objects</em> and preserve an Entity-Type property so nothing is lost in the split.</p>
-    <p>Two source entities have no native HubSpot object at all, and they are the two that matter most:</p>
-    <ul>
-      <li><b>The investment account.</b> ~3,300 of them, each with balances, ownership roles, custodian, and registration. HubSpot has no standard object for it.</li>
-      <li><b>The household.</b> ~3,300 of them &mdash; the reporting and billing unit an advisor actually thinks in. Also no standard object.</li>
-    </ul>
-    <p>You can model accounts as Deals and households as Companies on a lower tier, and it looks fine in a demo. It breaks the moment you need labeled relationships. Which brings us to the part that decides the tier.</p>
+    <h2><span class="num">2</span> The object-model gap</h2>
+    <p>Redtail, like most vertical CRMs, keeps everyone in a single &ldquo;contact&rdquo; table, separated by a type flag: individuals, businesses, trusts, and associations all live together. HubSpot doesn&rsquo;t work that way &mdash; people are Contacts, organizations are Companies, and a trust is neither cleanly. The migration has to <em>shard one table into several objects</em> and keep an Entity-Type property so nothing blurs in the split.</p>
+    <p>Two source entities have no native HubSpot object, and they are the two that matter most to an advisor: the <b>investment account</b> and the <b>household</b> &mdash; the reporting and billing units the firm actually thinks in. You can approximate accounts as deals and households as companies on a lower tier, and it demos fine. It breaks the moment relationships need labels.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 300" role="img" aria-label="One Redtail contact table sharded into several HubSpot objects, including two custom objects that force Enterprise.">
+          <text x="0" y="14" class="s-cap">ONE SOURCE TABLE &rarr; A REAL OBJECT MODEL</text>
+          <rect x="0" y="34" width="196" height="232" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+          <text x="16" y="60" class="s-title">Redtail</text>
+          <text x="16" y="80" class="s-small">one &ldquo;contact&rdquo; table,</text>
+          <text x="16" y="96" class="s-small">split by a type flag</text>
+          <text x="16" y="132" class="s-small">&bull; People</text>
+          <text x="16" y="152" class="s-small">&bull; Businesses</text>
+          <text x="16" y="172" class="s-small">&bull; Trusts</text>
+          <text x="16" y="192" class="s-small">&bull; Associations</text>
+          <text x="16" y="212" class="s-small">&bull; Accounts (in fields)</text>
+          <text x="16" y="232" class="s-small">&bull; Households (implied)</text>
+
+          <path d="M196 150 H250" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M250 150 l-9 -5 v10 z" fill="var(--ink-3)"/>
+
+          <g font-family="var(--sans)">
+            <rect x="262" y="34" width="458" height="34" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="278" y="55" class="s-label">Contacts <tspan fill="var(--ink-3)">&mdash; people</tspan></text>
+            <rect x="262" y="74" width="458" height="34" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="278" y="95" class="s-label">Companies <tspan fill="var(--ink-3)">&mdash; businesses, trusts (Entity Type)</tspan></text>
+            <rect x="262" y="114" width="458" height="34" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="278" y="135" class="s-label">Deals <tspan fill="var(--ink-3)">&mdash; opportunities</tspan></text>
+            <rect x="262" y="160" width="458" height="34" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="278" y="181" class="s-label">Account <tspan fill="var(--accent)">&mdash; custom object &starf;</tspan></text>
+            <rect x="262" y="200" width="458" height="34" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="278" y="221" class="s-label">Household <tspan fill="var(--accent)">&mdash; custom object &starf;</tspan></text>
+          </g>
+          <text x="262" y="256" class="s-small">&starf; No native object &rarr; custom objects &rarr; this is the line that forces Enterprise, not Pro.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> The migration shards one source table into several objects. Accounts and households have no native home; modeling them as custom objects is what decides the subscription tier.</figcaption>
+    </figure>
   </section>
 
   <section>
     <h2><span class="num">3</span> The association graph is the firm</h2>
-    <p>The 9,000 relationships in the source are not decoration; they <em>are</em> the business. Spouse to spouse. Parent to child. Trustee, grantor, and beneficiary to a trust. Owner, joint owner, and beneficiary to an account. Head of household to member. Attorney and CPA to a client. Fifty-plus distinct relationship types, many of them on the same pair of records at once.</p>
-    <p>HubSpot can represent this &mdash; with <b>custom association labels</b> and <b>multiple labeled associations per record pair</b>. Both are Enterprise features. On Professional they import unlabeled, every relationship flattens to a generic link, and the graph that makes the firm legible collapses into noise. This is the single most consequential scoping decision on the project, and it is invisible in a product demo.</p>
+    <p>A firm like this carries a dense web of relationships, and the web <em>is</em> the business: spouse to spouse, parent to child, trustee and beneficiary to a trust, owner and joint owner to an account, head of household to member, attorney and CPA to a client. Dozens of distinct relationship types, many on the same pair of records at once.</p>
+    <p>HubSpot can represent this &mdash; with <b>custom association labels</b> and <b>multiple labeled associations per record pair</b>. Both are Enterprise features. On Professional they import unlabeled, every relationship flattens to a generic link, and the graph that makes the firm legible collapses into noise. It is the most consequential scoping decision on the project, and it is invisible in a demo.</p>
     <div class="note">
       <span class="label">The Enterprise line</span>
-      <p>Custom objects (Account, Household) and labeled multi-associations are the features that separate a real wealth CRM from a toy. If a proposal quotes Professional for a householded book, it has mispriced the job. The tier is a data-model consequence, not a budget preference.</p>
+      <p>Custom objects (Account, Household) and labeled multi-associations are what separate a real advisory platform from a toy CRM. A proposal that quotes Professional for a householded book has mispriced the job &mdash; the tier is a data-model consequence, not a budget preference.</p>
     </div>
   </section>
 
   <section>
-    <h2><span class="num">4</span> Everything is a keyword until you make it a field</h2>
-    <p>Because Redtail lacked dedicated fields for many attributes, the firm did what every team does: it crammed them into keyword strings and user-defined fields. Client tier, do-not-solicit flags, plan types, custodians, prospect stage &mdash; all encoded as text. Migrating them verbatim would carry the mess across; the value is in <em>parsing them apart</em> into typed HubSpot properties that workflows and reports can actually use.</p>
-    <p>The build defined roughly 200 properties, grouped by business process &mdash; tax, billing, compliance, retirement plans, communication &mdash; so a record stays navigable instead of becoming a wall of fields. Keyword clusters became single- and multi-select properties: Tier, Plan Types, Custodian, Prospect Stage, Do-Not-Solicit. Fee blobs split into an amount and a date. Legacy duplicate fields were archived rather than deleted, so nothing was destroyed on the way in.</p>
+    <h2><span class="num">4</span> A decade of fields, encoded as text</h2>
+    <p>Because the source lacked dedicated fields for many attributes, the firm did what every team does: crammed them into keyword strings and user-defined fields &mdash; client tier, do-not-solicit flags, plan types, custodians, prospect stage, all as text. Carrying them verbatim would move the mess across; the value is in <em>parsing them apart</em> into typed properties that workflows and reports can use.</p>
+    <p>The build defined a couple hundred properties grouped by business process &mdash; tax, billing, compliance, retirement plans, communication &mdash; so a record stays navigable instead of becoming a wall of fields. Keyword clusters became single- and multi-select properties; fee blobs split into an amount and a date; legacy duplicates were archived, not deleted, so nothing was destroyed on the way in.</p>
   </section>
 
   <section>
-    <h2><span class="num">5</span> Compliance is a workflow, not a checkbox</h2>
-    <p>An RIA has supervisory obligations a flat activity log cannot satisfy: approvals, thresholds, segregation of duties, a record of who signed off. Redtail&rsquo;s free-text activities have none of this, so it was rebuilt as controlled process in HubSpot &mdash; ticket pipelines with stage requirements and conditional routing.</p>
-    <p>The clearest example is money movement. A distribution above a set threshold to a third party cannot simply advance; the workflow routes it to a principal for approval and blocks the stage until that approval exists. The control is enforced by the system, not remembered by a person. In total the firm&rsquo;s 69 legacy activity templates were rationalized to 33 real processes, expressed as 10 ticket pipelines, 22 workflows, seven guided playbooks, and four dashboards.</p>
+    <h2><span class="num">5</span> Compliance is a process you rebuild, not a field</h2>
+    <p>The heaviest part of the platform wasn&rsquo;t data &mdash; it was process. The firm ran <b>60+ compliance and service workflows</b> that had always lived on the advisors&rsquo; shoulders: money movement, account maintenance, document collection, review cadences. Each one was reviewed, rationalized, and rebuilt in HubSpot as a <b>ticket pipeline</b> with stage requirements and conditional routing &mdash; and, deliberately, <em>moved off the advisors onto a customer-service team</em> so the people who close business stop doing operational paperwork.</p>
+    <p>The requirement that shaped the build: work had to be <b>assignable to a team, not a person</b>. A request enters a queue and whoever is available picks it up &mdash; no bottleneck on one owner&rsquo;s inbox, no dropped item when someone is out. Supervisory controls are enforced by the pipeline itself: a money movement above a set threshold to a third party cannot advance until a principal approves it, and the approval is a recorded step, not a remembered one.</p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 250" role="img" aria-label="Sixty-plus adviser-run compliance workflows rebuilt as ticket pipelines assigned to a customer-service team queue.">
+          <text x="0" y="14" class="s-cap">ADVISER WORKFLOWS &rarr; TEAM-ASSIGNED TICKET PIPELINES</text>
+          <rect x="0" y="34" width="180" height="150" rx="4" fill="var(--paper-2)" stroke="var(--rule)"/>
+          <text x="16" y="62" class="s-title">60+ workflows</text>
+          <text x="16" y="84" class="s-small">on the advisors:</text>
+          <text x="16" y="106" class="s-small">money movement,</text>
+          <text x="16" y="124" class="s-small">maintenance,</text>
+          <text x="16" y="142" class="s-small">document collection,</text>
+          <text x="16" y="160" class="s-small">review cadences</text>
+
+          <path d="M180 108 H236" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M236 108 l-9 -5 v10 z" fill="var(--ink-3)"/>
+
+          <g font-family="var(--sans)">
+            <rect x="248" y="60" width="472" height="34" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="264" y="81" class="s-label">Ticket pipeline <tspan fill="var(--ink-3)">&mdash; stages + required fields + approval gates</tspan></text>
+          </g>
+          <text x="248" y="120" class="s-small">Move-money over a threshold &rarr; blocked until a principal approves (a recorded step).</text>
+
+          <g font-family="var(--sans)">
+            <rect x="248" y="140" width="472" height="70" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="264" y="164" class="s-label">Assigned to a TEAM, not a person</text>
+            <circle cx="272" cy="188" r="7" fill="none" stroke="var(--ink-3)"/>
+            <circle cx="292" cy="188" r="7" fill="none" stroke="var(--ink-3)"/>
+            <circle cx="312" cy="188" r="7" fill="none" stroke="var(--ink-3)"/>
+            <text x="330" y="192" class="s-small">a service queue &mdash; whoever is free picks it up</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><b>Figure 2.</b> Dozens of adviser-run compliance workflows were rationalized and rebuilt as ticket pipelines with approval gates, assigned to a customer-service <em>team queue</em> so work is picked up by whoever is available &mdash; not bottlenecked on one owner.</figcaption>
+    </figure>
   </section>
 
   <section>
     <h2><span class="num">6</span> A migration you can run twice</h2>
-    <p>At this volume the migration has to be <em>idempotent</em> &mdash; safe to run again without doubling anything &mdash; because you will run it again. The mechanism is simple and worth stealing: give every record a unique external-ID property carrying its Redtail identifier, and match on it. A note stamped with its source note ID cannot be imported twice. An activity stamped with its source activity ID maps to a single HubSpot task no matter how many times the load runs.</p>
-    <p>The standard Redtail export quietly dropped columns, so extraction was rebuilt against the raw API with the Redtail ID as the key of record. Every write was logged with counts and a verification step, and a small reconciliation pass compared HubSpot against the source field by field, surfacing a short list of records to restore or recreate &mdash; with explicit logic to never recreate a record that already existed. That is how ~180,000 notes and 9,000 labeled associations land once, correctly, and stay that way.</p>
+    <p>At this scale the load has to be <em>idempotent</em> &mdash; safe to run again without doubling anything &mdash; because you will run it again. The mechanism is worth stealing: give every record a unique external-ID property carrying its source identifier, and match on it. A note stamped with its source ID can&rsquo;t import twice; an activity stamped with its source ID maps to a single task no matter how many times the load runs.</p>
+    <p>Because the standard export silently dropped columns, extraction was rebuilt against the source API with that ID as the key of record. Every write was logged with counts and a verification step, and a reconciliation pass compared HubSpot against the source field by field &mdash; with explicit logic never to recreate a record that already existed. That is how a decade of history &mdash; thousands of households and accounts, a six-figure volume of notes, a dense web of labeled relationships &mdash; lands once, correctly, and stays that way.</p>
     <div class="note good">
       <span class="label">Transferable pattern</span>
-      <p>A unique external-ID property per object is the cheapest thing you can build and the one that makes a large migration safe. It turns imports into upserts, makes re-runs free, and gives you a real reconciliation key. Do this before you move a single record.</p>
+      <p>A unique external-ID property per object is the cheapest thing you can build and the one that makes a large migration safe. It turns imports into upserts, makes re-runs free, and gives you a real reconciliation key. Build it before you move a single record.</p>
     </div>
   </section>
 
   <section>
     <h2><span class="num">7</span> What changed</h2>
-    <p>The firm now runs on a model that matches how it actually works. Households and accounts are first-class records; a decade of relationships carries their real labels; and the client history &mdash; every note, every activity &mdash; is intact and searchable in one place instead of split across a legacy tool and a stack of spreadsheets.</p>
-    <p>The operational effect is that advisors stopped reconstructing context by hand. Preparing for a client meeting had meant cross-referencing Redtail, a portfolio system, and a shared drive; with the household and its accounts, relationships, and open items on one record, that prep collapsed to a single screen and gave each advisor back an estimated four to six hours a week. Intake became a guided playbook instead of tribal knowledge, so a new household is onboarded consistently by anyone on the team. And the money-movement controls mean the compliance story is now something the system proves, not something staff swear they followed.</p>
-    <p class="micro">Figures are representative of the engagement and drawn from RevOps HQ&rsquo;s delivery experience; exact results vary by firm.</p>
+    <p>The firm now runs on a platform that matches how it works. Households and accounts are first-class records; a decade of relationships carries its real labels; and the full client history is intact and searchable in one place instead of split across a legacy tool and a stack of spreadsheets. Compliance and service work moved off the advisors into team-assigned pipelines, so the people who advise clients stopped doing operational paperwork and the firm can prove its controls instead of asserting them.</p>
+    <p class="micro">Details are generalized and figures are representative of the engagement; specifics vary by firm.</p>
   </section>
 
   <section>
     <h2><span class="num">8</span> The model, generalized</h2>
-    <p>Strip away the vertical and the exercise is reusable for any migration into HubSpot:</p>
+    <p>Strip away the vertical and the exercise is reusable for any platform migration into HubSpot:</p>
     <ul>
-      <li><b>Inventory the source model first.</b> Objects, properties, associations &mdash; on paper &mdash; before any export.</li>
-      <li><b>Find what has no native object.</b> That is where custom objects go, and it usually decides your tier.</li>
-      <li><b>Treat labeled relationships as data, not garnish.</b> If association labels matter, that is an Enterprise decision, full stop.</li>
-      <li><b>Parse encoded fields into typed properties.</b> Don&rsquo;t carry the keyword soup across.</li>
-      <li><b>Make it idempotent with external IDs.</b> Build the re-run safety before the first load.</li>
+      <li><b>Inventory the source model and its processes first</b> &mdash; objects, properties, associations, and the workflows on them &mdash; before any export.</li>
+      <li><b>Find what has no native object.</b> That is where custom objects go, and it usually decides the tier.</li>
+      <li><b>Treat labeled relationships as data, not garnish.</b> If association labels matter, that is an Enterprise decision.</li>
+      <li><b>Rebuild process as team-assignable pipelines</b> with approval gates &mdash; queues, not single owners.</li>
+      <li><b>Make the load idempotent with external IDs</b> before the first record moves.</li>
     </ul>
     <div class="note">
       <span class="label">Related studies</span>
-      <p>The same &ldquo;model before software&rdquo; discipline shows up elsewhere: representing a <em>dealer channel</em> where the buyer isn&rsquo;t the user, modeling <em>project-based</em> revenue when the deal isn&rsquo;t the work, and solving <em>identity resolution</em> at an integration boundary where a native sync multiplies records. Different verticals, one exercise.</p>
+      <p>The same &ldquo;model before software&rdquo; discipline runs through <em>identity resolution</em> at an integration boundary where a native sync multiplies records, representing a <em>dealer channel</em> where the buyer isn&rsquo;t the user, and modeling <em>project-based revenue</em> when the deal isn&rsquo;t the work.</p>
     </div>
   </section>
 

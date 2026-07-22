@@ -1,0 +1,116 @@
+<article class="doc">
+  <header class="masthead">
+    <div class="brandbar">
+      <span class="wordmark"><span class="mark" aria-hidden="true"></span>RevOps HQ</span>
+      <span>Case Study &middot; No. C2</span>
+      <span>Revenue Systems Architecture</span>
+    </div>
+    <h1>Identity resolution at the CRM boundary: fixing a sync that multiplied members into ghosts</h1>
+    <p class="deck">A membership business synced its billing platform to HubSpot with the native connector. Every re-signup minted a new record, and ~5,000 members split into duplicates. The fix wasn&rsquo;t a field map &mdash; it was an identity model behind middleware.</p>
+    <div class="byline">
+      <span><strong><a href="https://www.linkedin.com/in/paulcmaxwell/" target="_blank" rel="noopener">Paul Maxwell</a></strong>, CEO, RevOps HQ</span>
+      <span>July 2026</span>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="eyebrow">Abstract</span>
+    <p>A multi-location membership business &mdash; recurring subscriptions across dozens of sites, plus physical check-ins &mdash; wired Stripe into HubSpot with the off-the-shelf connector. It worked until members behaved like members: cancel, come back, and the billing platform issued a brand-new customer ID each time. The native 1:1 sync treated every new ID as a new human, and roughly 5,000 contacts fractured into duplicates with broken subscription history and unusable lifetime value. This is a first-principles walk through the failure most integrations hit but few scope for: identity resolution. It covers why native connectors structurally can&rsquo;t solve it, the bridge-object model that collapses many billing IDs into one person, the custom objects a non-deal business actually needs, and the decision line between an in-portal Custom Code action and real middleware.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> The integration failure is identity, not fields</h2>
+    <p class="lede">Most integration projects are scoped as field mapping: connect two systems, match their properties, watch the data flow. That framing hides the failure mode that actually breaks CRMs &mdash; not <em>which field goes where</em>, but <em>which records are the same person</em>. Identity resolution is the hard part, and it is almost never in the statement of work.</p>
+    <p>The tell is simple: ask what happens when the source system issues a new identifier for someone who already exists. If the answer is &ldquo;a new contact appears,&rdquo; the integration has no identity model, and it is only a matter of volume before the CRM fills with ghosts.</p>
+    <div class="note good">
+      <span class="label">The first principle</span>
+      <p><b>An integration needs an identity model before a field map.</b> Decide what makes two records the same human, where that decision lives, and how a re-used or re-issued ID collapses onto one person. Everything downstream &mdash; history, LTV, lifecycle &mdash; depends on it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Why a native connector multiplies people</h2>
+    <p>The billing platform re-issued a customer ID every time a member cancelled and later signed back up. To Stripe those are two customer objects; to the business they are one person with a gap. A native HubSpot&ndash;Stripe connector maps one billing customer to one contact &mdash; a 1:1 sync with nowhere to say &ldquo;these two IDs are the same human.&rdquo; So every returning member became a second contact, and about 5,000 records ended up duplicated, their subscription history split across the copies and their lifetime value meaningless.</p>
+    <p>Two more things a 1:1 connector cannot do surfaced at the same time. <b>Ordering:</b> invoice webhooks arrived before the customer record existed, because independent connectors fire with no sequencing. <b>Non-CRM data:</b> physical check-ins &mdash; a member badging into a location &mdash; are usage events with no native connector at all. None of these is a mapping problem; they are all consequences of missing a layer that can hold identity, order, and event data.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> Modeling identity: the bridge object</h2>
+    <p>The fix is a small idea with large consequences. Between the billing platform and the Contact, add a <b>bridge object</b> &mdash; one record per billing customer ID &mdash; and associate many of them to a single Contact. The Contact becomes the durable human; the bridge records are the aliases the billing system keeps minting. A returning member&rsquo;s new ID becomes another bridge record on the same person, not a new person.</p>
+    <p>With identity anchored, subscription attributes &mdash; membership type, billing interval, start and cancel dates, status &mdash; are flattened onto the Contact, so &ldquo;are they active?&rdquo; is one property, not a query across duplicates. Lifetime value sums correctly because every payment resolves to one human again.</p>
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 720 230" role="img" aria-label="Three re-issued billing customer IDs collapsed through a bridge object onto one HubSpot contact.">
+          <text x="0" y="14" class="s-cap">MANY BILLING IDs &rarr; ONE PERSON</text>
+          <g font-family="var(--mono)">
+            <rect x="0" y="40" width="150" height="30" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="14" y="60" class="s-small">cus_A1 &middot; 2023 signup</text>
+            <rect x="0" y="94" width="150" height="30" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="14" y="114" class="s-small">cus_B7 &middot; re-signup</text>
+            <rect x="0" y="148" width="150" height="30" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+            <text x="14" y="168" class="s-small">cus_C3 &middot; re-signup</text>
+          </g>
+          <path d="M150 55 C210 55 210 100 268 105" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M150 109 H268" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M150 163 C210 163 210 118 268 113" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+
+          <rect x="270" y="86" width="180" height="52" rx="3" fill="var(--paper-2)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="286" y="108" class="s-label">Bridge object</text>
+          <text x="286" y="126" class="s-small" font-family="var(--sans)">one record per billing ID</text>
+
+          <path d="M450 112 H520" stroke="var(--ink-3)" stroke-width="1.5" fill="none"/>
+          <path d="M520 112 l-9 -5 v10 z" fill="var(--ink-3)"/>
+
+          <rect x="532" y="84" width="188" height="56" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
+          <text x="548" y="108" class="s-label">One Contact</text>
+          <text x="548" y="126" class="s-small" font-family="var(--sans)">the durable human</text>
+          <text x="0" y="212" class="s-small" font-family="var(--sans)">A returning member&rsquo;s new ID becomes another bridge record on the same person &mdash; not a new person.</text>
+        </svg>
+      </div>
+      <figcaption><b>Figure 1.</b> The bridge object holds one record per billing customer ID and associates many of them to a single Contact, so re-issued IDs resolve to one human instead of fracturing into duplicates.</figcaption>
+    </figure>
+
+    <div class="note good">
+      <span class="label">Transferable pattern</span>
+      <p>When a source system re-issues IDs, do not map its ID straight onto your primary record. Introduce an alias/bridge object (many source IDs &rarr; one entity) and resolve identity there. It is the single most reusable fix in CRM integration.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> A membership business isn&rsquo;t deal-shaped</h2>
+    <p>HubSpot&rsquo;s defaults assume a deal pipeline. A membership business does not sell deals; it enrolls members and records what they do. Modeled from first principles, the objects are: the <b>Contact</b> as the member and system of record for membership status; a <b>Location</b> custom object with a location &rarr; area &rarr; market hierarchy for roll-up reporting; a <b>Payment</b> object; and <b>Visit</b> records for check-ins. Physical check-ins flow from the access system through the app&rsquo;s database into HubSpot as Visit events &mdash; usage signals the CRM otherwise never sees.</p>
+    <p>None of this is exotic; it is just modeling the business as it is rather than forcing it into contacts-and-deals. The association hierarchy is what makes &ldquo;members and revenue by location, area, and market&rdquo; a native report instead of a spreadsheet.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> The real decision: Custom Code vs. middleware</h2>
+    <p>HubSpot gives you three ways to integrate: a native connector, in-portal <b>Custom Code workflow actions</b>, and external <b>middleware</b>. The consultative skill is knowing which the problem needs. Native was already shown to fail on identity. Custom Code actions run inside HubSpot and are perfect for light, in-portal logic &mdash; but they inherit the portal&rsquo;s execution limits and have no place to hold a durable identity map, sequence out-of-order webhooks, or backfill history at volume.</p>
+    <p>Here the load &mdash; real-time billing webhooks, high-volume check-in events at peak, historical backfill, and dedup logic that must run reliably &mdash; pushed past what in-portal code carries. That is the line where middleware earns its place. A single middleware layer (RevOps Connect) became the one path all data flows through: billing, access events, and web signups land there, get ordered, deduplicated against the bridge object, and written to HubSpot &mdash; with retries, a field-level audit log, and the ability to re-run a failed sync. One embedded action card on the record even lets an agent cancel, pause, or refund a subscription without leaving HubSpot.</p>
+    <div class="note">
+      <span class="label">The decision, stated plainly</span>
+      <p>Native connector for simple 1:1 sync. Custom Code action for light in-portal logic within HubSpot&rsquo;s limits. Middleware when you need identity resolution, ordering, retries, backfill, or volume beyond the portal. Naming the right one is the difference between a build that holds and one that fills with ghosts.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> What changed</h2>
+    <p>With identity resolved, the roughly 5,000 fractured members collapsed back to one record each, subscription history reattached, and lifetime value became a number the business could trust again. Membership status lives on the Contact, so lifecycle automation and &ldquo;win-back&rdquo; outreach finally target the right people instead of duplicates. Check-in data flowing in as Visit events turned engagement into something reportable &mdash; who is actually showing up, by location, area, and market. On the marketing side, seven per-location acquisition workflows collapsed toward a single cloneable template, cutting the maintenance surface.</p>
+    <p class="micro">Figures are representative of the engagement and drawn from RevOps HQ&rsquo;s delivery experience; the ~5,000-record dedup is the one figure documented in the source.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> The model, generalized</h2>
+    <p>Independent of membership, the exercise repeats on any integration:</p>
+    <ul>
+      <li><b>Model identity before fields.</b> Decide what makes two records one human, and where that lives.</li>
+      <li><b>Never sync a re-issuable ID onto your primary record.</b> Put an alias/bridge object between them.</li>
+      <li><b>Model the business, not the default.</b> A non-deal business needs its own objects and an association hierarchy for roll-ups.</li>
+      <li><b>Pick the integration tier deliberately.</b> Native / Custom Code / middleware is a decision, not a default &mdash; match it to identity, ordering, volume, and backfill.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Related studies</span>
+      <p>The same &ldquo;model before software&rdquo; discipline runs through migrating an <em>RIA off a legacy CRM</em> (sharding one table into objects), representing a <em>dealer channel</em> where the buyer isn&rsquo;t the user, and modeling <em>project-based revenue</em> when the deal isn&rsquo;t the work.</p>
+    </div>
+  </section>
+
+  </article>

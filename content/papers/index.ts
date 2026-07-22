@@ -96,16 +96,33 @@ export const caseStudies: Paper[] = [
     series: 'revenue-systems-architecture',
     type: 'Case Study',
     category: 'Revenue Systems Architecture',
-    title: 'Migrating an RIA from Redtail to HubSpot without losing the relationships',
+    title: 'Rebuilding a wealth advisor on HubSpot: a platform, process, and data migration off Redtail',
     deck:
-      'A registered investment advisor left Redtail for HubSpot. The hard part was householding, the account book, and the audit trail — a data-model exercise, not a data export.',
+      'Moving an advisory firm off Redtail wasn’t a CRM swap — it was a platform migration: the data model, the compliance processes, and a decade of history, rebuilt so households, relationships, and the audit trail survived.',
     abstract:
-      'A mid-market RIA ran a decade of client history in Redtail — ~11,000 contacts, ~3,300 accounts, ~3,300 households, ~9,000 relationships, ~180,000 notes. This walks the migration as a first-principles data-modeling problem: map the source model, find what has no native HubSpot object (accounts, households), and treat labeled relationships as the Enterprise-deciding data they are.',
+      'A wealth-advisory firm standardized on HubSpot — but an advisory firm’s value lives in households, accounts, a web of relationships, and provable compliance, not in contacts. A first-principles account of a platform migration: mapping the source model to HubSpot objects, finding what has no native home (accounts, households) and what that forces, parsing a decade of encoded fields into typed properties, and rebuilding 60+ adviser-run compliance workflows as team-assignable ticket pipelines.',
     tags: ['HubSpot', 'Migration', 'Custom Objects', 'Wealth / RIA'],
     authors: ['Paul Maxwell'],
     date: '2026-07-22',
     readingMinutes: 9,
     pages: 8,
+  },
+  {
+    slug: 'case-identity-resolution-middleware',
+    number: 'C2',
+    series: 'revenue-systems-architecture',
+    type: 'Case Study',
+    category: 'Revenue Systems Architecture',
+    title: 'Identity resolution at the CRM boundary: fixing a sync that multiplied members into ghosts',
+    deck:
+      'A membership business synced its billing platform to HubSpot with the native connector. Every re-signup minted a new record — ~5,000 members split into duplicates. The fix was an identity model behind middleware, not a field map.',
+    abstract:
+      'A multi-location membership business wired Stripe into HubSpot with the off-the-shelf connector. It worked until members cancelled and returned — the billing platform re-issued a new customer ID each time, the 1:1 sync treated each as a new human, and ~5,000 contacts fractured. A first-principles look at identity resolution: why native connectors can’t solve it, the bridge-object model that collapses many billing IDs into one person, the custom objects a non-deal business needs, and the Custom-Code-vs-middleware decision.',
+    tags: ['HubSpot', 'Integration', 'Identity Resolution', 'Middleware'],
+    authors: ['Paul Maxwell'],
+    date: '2026-07-22',
+    readingMinutes: 8,
+    pages: 7,
   },
 ];
 
