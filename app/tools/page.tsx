@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import UnitEconomicsCalculator from '@/components/UnitEconomicsCalculator';
+import MaturityAssessment from '@/components/MaturityAssessment';
 
 export const metadata: Metadata = {
   title: 'Tools',
@@ -28,6 +29,18 @@ export default function Tools() {
           back what it cost to acquire them, and how much they return over their life.
         </p>
         <UnitEconomicsCalculator />
+      </section>
+
+      <section className="container tool-block">
+        <div className="section-head">
+          <h2>RevOps maturity</h2>
+          <span className="count">4 foundations · 1–5</span>
+        </div>
+        <p className="tool-intro">
+          Rate four foundations — data, process, tooling, insight. Your maturity is gated by the
+          weakest one, so the assessment points at the next move rather than the average.
+        </p>
+        <MaturityAssessment />
       </section>
     </>
   );

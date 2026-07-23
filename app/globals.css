@@ -934,3 +934,36 @@ main { flex: 1 0 auto; }
 .ue-mono { font-family: var(--mono); font-size: 0.85em; color: var(--ink); }
 .ue-note { font-size: 0.85rem; color: var(--ink-3); margin-top: 0.7rem; }
 .ue-note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+/* maturity assessment */
+.ma { border: 1px solid var(--rule); border-radius: 4px; background: var(--paper-2); padding: 1.6rem; font-family: var(--sans); }
+.ma-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.25rem; }
+@media (max-width: 760px) { .ma-grid { grid-template-columns: 1fr; gap: 1.75rem; } }
+.ma-inputs { display: flex; flex-direction: column; gap: 1.4rem; }
+.ma-dim { display: flex; flex-direction: column; gap: 0.5rem; }
+.ma-dim-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.ma-dim-name { font-size: 0.86rem; font-weight: 600; color: var(--ink); }
+.ma-dim-blurb { font-weight: 400; color: var(--ink-3); font-size: 0.78rem; }
+.ma-dim-score { font-family: var(--mono); font-size: 0.78rem; color: var(--ink); }
+.ma-scale { display: flex; gap: 0.35rem; }
+.ma-scale button {
+  flex: 1; padding: 0.4rem 0; font-family: var(--mono); font-size: 0.82rem; color: var(--ink-2);
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.ma-scale button:hover { border-color: var(--ink-3); }
+.ma-scale button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.ma-level { font-family: var(--serif); font-size: 0.9rem; line-height: 1.4; color: var(--ink-2); min-height: 2.5em; }
+
+.ma-out { display: flex; flex-direction: column; gap: 1.2rem; }
+.ma-result { display: flex; flex-direction: column; gap: 0.15rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
+.ma-result-lab { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+.ma-result-val { font-family: var(--serif); font-size: 2.2rem; line-height: 1; font-weight: 600; color: var(--ink); }
+.ma-result-sub { font-size: 0.8rem; color: var(--ink-3); }
+.ma-bars { display: flex; flex-direction: column; gap: 0.55rem; }
+.ma-bar-row { display: grid; grid-template-columns: 8.5rem 1fr; gap: 0.75rem; align-items: center; }
+.ma-bar-lab { font-size: 0.76rem; color: var(--ink-2); }
+.ma-bar-track { height: 8px; background: var(--paper); border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; }
+.ma-bar-fill { display: block; height: 100%; background: var(--ink); transition: width 0.2s ease; }
+.ma-callout { font-family: var(--serif); font-size: 0.92rem; line-height: 1.45; color: var(--ink-2); padding-left: 0.85rem; border-left: 2px solid var(--rule); }
+.ma-callout b { color: var(--ink); }
