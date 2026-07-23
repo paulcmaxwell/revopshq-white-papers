@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import UnitEconomicsCalculator from '@/components/UnitEconomicsCalculator';
 import MaturityAssessment from '@/components/MaturityAssessment';
+import AttributionReadiness from '@/components/AttributionReadiness';
 
 export const metadata: Metadata = {
   title: 'Tools',
@@ -41,6 +42,18 @@ export default function Tools() {
           weakest one, so the assessment points at the next move rather than the average.
         </p>
         <MaturityAssessment />
+      </section>
+
+      <section className="container tool-block">
+        <div className="section-head">
+          <h2>Attribution readiness</h2>
+          <span className="count">10 conditions</span>
+        </div>
+        <p className="tool-intro">
+          Channel-level CPA is only as trustworthy as the attribution beneath it. Check the
+          conditions you actually meet; the gaps are what to fix before you reallocate budget.
+        </p>
+        <AttributionReadiness />
       </section>
     </>
   );
