@@ -96,7 +96,7 @@ export const caseStudies: Paper[] = [
     series: 'revenue-systems-architecture',
     type: 'Case Study',
     category: 'Revenue Systems Architecture',
-    title: 'RIA wealth management — Redtail to HubSpot platform migration',
+    title: 'Migrating a wealth-advisory firm off Redtail to HubSpot',
     deck:
       'Moving an advisory firm off Redtail wasn’t a CRM swap — it was a platform migration: the data model, the compliance processes, and a decade of history, rebuilt so households, relationships, and the audit trail survived.',
     abstract:
@@ -113,7 +113,7 @@ export const caseStudies: Paper[] = [
     series: 'revenue-systems-architecture',
     type: 'Case Study',
     category: 'Revenue Systems Architecture',
-    title: 'Membership business — identity resolution and billing sync',
+    title: 'Stopping a Stripe–HubSpot sync from splitting 5,000 members',
     deck:
       'A membership business synced its billing platform to HubSpot with the native connector. Every re-signup minted a new record — ~5,000 members split into duplicates. The fix was an identity model behind middleware, not a field map.',
     abstract:
@@ -130,7 +130,7 @@ export const caseStudies: Paper[] = [
     series: 'revenue-systems-architecture',
     type: 'Case Study',
     category: 'Revenue Systems Architecture',
-    title: 'Equipment manufacturer — dealer-channel data model in HubSpot',
+    title: 'Modeling a dealer channel in HubSpot for an equipment manufacturer',
     deck:
       'A manufacturer sold through dealers but marketed to the operators who ran the machines. At the moment of sale the end customer vanished. Fixing it meant modeling the channel — not mapping more fields.',
     abstract:
@@ -147,7 +147,7 @@ export const caseStudies: Paper[] = [
     series: 'gtm-operations',
     type: 'Case Study',
     category: 'GTM Operations',
-    title: 'Custom fabricator — project-based pipeline rebuild in HubSpot',
+    title: 'Migrating a custom fabricator off a legacy PSA to HubSpot',
     deck:
       'A custom fabricator ran a bid-driven business through a pipeline inherited from its old tool — sales and production stages tangled together. The rebuild separated winning the work from doing the work, using the objects HubSpot already had.',
     abstract:
@@ -164,7 +164,7 @@ export const caseStudies: Paper[] = [
     series: 'gtm-operations',
     type: 'Case Study',
     category: 'GTM Operations',
-    title: 'Consumer law firm — high-volume intake and routing in HubSpot',
+    title: 'Scaling consult intake in HubSpot for a consumer law firm',
     deck:
       'A multi-office consumer law firm booked consultations at scale — but the scheduler was a data dead-end between the lead and the CRM. If the booking layer doesn’t write structured data back, the whole funnel goes dark.',
     abstract:
@@ -181,7 +181,7 @@ export const caseStudies: Paper[] = [
     series: 'commercial-strategy',
     type: 'Case Study',
     category: 'Commercial Strategy',
-    title: 'Hardware (B2B leasing + D2C) — CPQ, invoicing, and order-sync fixes',
+    title: 'Splitting B2B leasing from D2C in one HubSpot Commerce portal',
     deck:
       'A hardware company ran high-touch institutional leases and a transactional web store in the same HubSpot portal. The two motions collided — blank invoices, orders multiplied by lease term. The fix was separating them, not restarting.',
     abstract:
